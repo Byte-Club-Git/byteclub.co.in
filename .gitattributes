@@ -6,3 +6,7 @@
 *.html linguist-detectable=true
 *.css linguist-detectable=true
 *.js linguist-detectable=true
+
+*.css linguist-vendored=false
+*.js linguist-vendored=false
+*.html linguist-vendored=false
