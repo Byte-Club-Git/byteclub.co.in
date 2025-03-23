@@ -10,4 +10,6 @@
 *.css linguist-vendored=false
 *.js linguist-vendored=false
 *.html linguist-vendored=false
-assets/js/* linguist-vendored=false
+
+assets/js/keyboard.js linguist-generated=false
+assets/js/keyboardLayout.js linguist-generated=false
