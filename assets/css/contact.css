@@ -125,47 +125,47 @@ html.lenis body {
 @font-face {
     font-family: 'roslindale';
     /*a name to be used later*/
-    src: url('RoslindaleVariable-VF[Display]-Testing.ttf');
+    src: url('../fonts/RoslindaleVariable-VF[Display]-Testing.ttf');
     /*URL to font*/
 }
 
 @font-face {
     font-family: 'roslindale-light';
     /*a name to be used later*/
-    src: url('Roslindale-DisplayCondensedLight-Testing.ttf/')
+    src: url('../fonts/Roslindale-DisplayCondensedLight-Testing.ttf/')
 }
 
 @font-face {
     font-family: 'roslindale-extralight-italic';
     /*a name to be used later*/
-    src: url('Roslindale-DisplayCondensedExtraLightItalic-Testing.ttf')
+    src: url('../fonts/Roslindale-DisplayCondensedExtraLightItalic-Testing.ttf')
 }
 
 @font-face {
     font-family: 'cheguevaratext';
     /*a name to be used later*/
-    src: url('CheGuevaraText-Serif.ttf');
+    src: url('../fonts/CheGuevaraText-Serif.ttf');
     /*URL to font*/
 }
 
 @font-face {
     font-family: 'denver';
     /*a name to be used later*/
-    src: url('denver-serial-medium-regular.ttf');
+    src: url('../fonts/denver-serial-medium-regular.ttf');
     /*URL to font*/
 }
 
 @font-face {
     font-family: 'komrile';
     /*a name to be used later*/
-    src: url('Komrile-CondensedItalic.ttf');
+    src: url('../fonts/Komrile-CondensedItalic.ttf');
     /*URL to font*/
 }
 
 @font-face {
     font-family: 'Irish Grover';
     /*a name to be used later*/
-    src: url('IrishGrover.ttf');
+    src: url('../fonts/IrishGrover.ttf');
     /*URL to font*/
 }
 
@@ -302,6 +302,7 @@ html.lenis body {
     stroke: rgb(0, 0, 0);
     cursor: pointer;
 }
+
 
 svg {
     animation: sin 5s linear infinite;
@@ -480,6 +481,7 @@ svg {
     font-family: cheguevaratext;
 }
 
+
 .right>span {
     margin-bottom: 3vh;
     cursor: pointer;
@@ -511,54 +513,34 @@ svg {
 
 .main {
     position: absolute;
-    height: 525px;
     width: 100vw;
+    height: 70vh;
+    top: 14vh;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+    padding: 0 7vh;
+    box-sizing: border-box;
+
 }
 
 .heading {
-    width: 45%;
-    height: 70%;
+    width: 35%;
+    height: 420px;
     position: relative;
 }
 
-.resources,
-.credits {
-    width: 30%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    display: flex;
-    flex-direction: column;
-}
 
 .fWord,
 .sWord {
     color: #000;
-    font-family: Denver-Serial-Medium;
+    font-family: denver;
     font-size: 150px;
     font-style: normal;
     font-weight: 500;
+    line-height: normal;
     letter-spacing: -6px;
-    /* mix-blend-mode: difference;
-    filter: invert(1); */
-    pointer-events: none;
-    overflow: hidden;
 }
-
-.fWord>span {
-    display: block;
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
-}
-
-.sWord>span {
-    display: block;
-    animation: fadeDown 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
-}
-
 
 .fWord {
     position: absolute;
@@ -572,114 +554,280 @@ svg {
     right: 0;
 }
 
-canvas {
-    z-index: -1;
-    rotate: -7deg;
-    filter: blur(3px);
+.smallWord {
+    position: absolute;
+    top: 65%;
+    transform: translateY(-50%) translateX(-50%);
+    left: 30%;
+    color: #000;
+    font-family: Komrile;
+    font-size: 145px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 0%;
+    /* 0px */
+    letter-spacing: -5.8px;
 }
 
-.resources>span {
-    color: #393939;
-    text-align: right;
-    font-family: "roslindale-light";
+.formCont {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.contact {
+    width: max-content;
+    height: 50%;
+    display: flex;
+    justify-content: end;
+    box-sizing: border-box;
+    padding-bottom: 10%;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+.contact>div {
+    animation: fadeDown 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+.mail {
+    color: #007AAA;
+    font-family: Denver-Serial-Medium;
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: -1.8px;
+    text-decoration-line: underline;
+    margin-bottom: 1vh;
+}
+
+.socials {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.insta,
+.facebook {
+    color: #000;
+    font-family: Inter;
+    font-size: 22.5px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1.25px;
+    cursor: pointer;
+    position: relative;
+}
+
+.insta>.underline {
+    content: "";
+    width: 0%;
+    height: 2px;
+    position: absolute;
+    bottom: -6%;
+    border-radius: 1000px;
+    left: 0;
+    background: #f09433;
+    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f09433', endColorstr='#bc1888', GradientType=1);
+    transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.insta:hover>.underline {
+    width: 100%;
+}
+
+.facebook>.underline {
+    content: "";
+    width: 0%;
+    height: 2px;
+    position: absolute;
+    bottom: -6%;
+    border-radius: 1000px;
+    left: 0;
+    background: #4267B2;
+    transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.facebook:hover>.underline {
+    width: 100%;
+}
+
+form {
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.input {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3vh 0;
+}
+
+.input1 {
+    animation: fadeUpInput 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 0ms forwards;
+}
+
+.input2 {
+    animation: fadeUpInput 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 20ms forwards;
+}
+
+.input3 {
+    animation: fadeUpInput 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 40ms forwards;
+}
+
+@keyframes fadeUpInput {
+    0% {
+        opacity: 0;
+        transform: translateY(300%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0%);
+    }
+}
+
+form>div {
+    width: 100%;
+    overflow: hidden;
+}
+
+.input>span {
+    color: #585858;
+    font-family: "cheguevaratext";
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 0%;
+    /* 0px */
+    letter-spacing: -2px;
+}
+
+input {
+    width: 70%;
+    border: none;
+    border-bottom: 1px solid #807e7b;
+    background-color: transparent;
+    font-size: 20px;
+    height: 3vh;
+}
+
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+button {
+    background: transparent;
+    border: none;
+    color: #585858;
+    font-family: "Irish Grover";
     font-size: 40px;
     font-style: normal;
     font-weight: 400;
-    letter-spacing: 0.8px;
-    text-decoration-line: underline;
-    text-transform: lowercase;
-    overflow: hidden;
+    letter-spacing: -1.6px;
+    font-family: Irish Grover;
     cursor: pointer;
-    text-transform: capitalize;
-}
-
-.resources>span>span {
-    display: block;
-}
-
-.span1 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 0ms forwards;
-}
-
-.span2 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 20ms forwards;
-}
-
-.span3 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 40ms forwards;
-}
-
-.span4 {
     animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 60ms forwards;
 }
 
-.span5 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 80ms forwards;
+.lineSvg {
+    margin-right: 1vw;
 }
 
-.span6 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 100ms forwards;
-}
-
-.span7 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 120ms forwards;
-}
-
-.credits {
-    display: flex;
-    justify-content: end;
-    align-items: end;
-    box-sizing: border-box;
-}
-
-.credits>div {
-    width: 80%;
-    display: flex;
-    justify-content: end;
-}
-
-.credits>div:nth-child(1) {
-    margin-bottom: 2vh;
-}
-
-.post {
-    color: #000;
-    font-family: Denver;
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 500;
-    letter-spacing: -1.2px;
-    text-align: end;
-    margin-right: 5vw;
-    overflow: hidden;
+.send {
+    width: 100%;
     display: flex;
     justify-content: end;
     align-items: center;
 }
 
-.post>span {
-    display: block;
-    animation: fadeLeft 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
-
+.keyboard {
+    pointer-events: none;
 }
 
-.names {
-    display: flex;
-    flex-direction: column;
+canvas {
+    position: absolute;
+    z-index: 0;
+    rotate: -7deg;
+    filter: blur(3px);
+    top: 10%;
+    left: -10%;
+    pointer-events: all;
+}
+
+.rectangle-bottom>span {
+    position: absolute;
+    margin-left: 20vh;
+    top: 0;
+    transform: translateY(-100%);
+
     color: #000;
-    font-family: Denver;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    letter-spacing: -0.8px;
+    font-family: "roslindale-extralight-italic";
+    font-size: 50px;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: -2px;
+    animation: fadeRightSpan 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+@keyframes fadeRightSpan {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%) translateX(-100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(-100%) translate(0%);
+    }
+}
+
+.fWord,
+.sWord,
+.smallWord {
     overflow: hidden;
+    pointer-events: none;
 }
 
-.names>span {
+.smallWord {
+    width: 10vw;
+    height: 145px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fWord>span {
     display: block;
-    animation: fadeRight 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 0ms forwards;
+    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
 }
 
+.sWord>span {
+    display: block;
+    animation: fadeDown 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+.smallWord>span {
+    display: block;
+    animation: fadeRight 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+.mobileHeading{
+    display: none;
+}
 
 @keyframes fadeUp {
     0% {
@@ -708,34 +856,13 @@ canvas {
 @keyframes fadeRight {
     0% {
         opacity: 0;
-        transform: translateX(-100%);
+        transform: translateX(-200%);
     }
 
     100% {
         opacity: 1;
         transform: translate(0%);
     }
-}
-
-@keyframes fadeLeft {
-    0% {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translate(0%);
-    }
-}
-
-.lineSvg {
-    position: absolute;
-    transform: translateX(3.75vw);
-}
-
-.mobileHeading {
-    display: none;
 }
 
 
@@ -917,11 +1044,13 @@ canvas {
 
     /* -------------------------------------------------- */
 
-    .container1 {
-        height: 100dvh;
-    }
-
     .main {
+        width: 100vw;
+        height: 100dvh;
+        top: 7vh;
+        padding: 0;
+        justify-content: start;
+        align-items: center;
         flex-direction: column;
     }
 
@@ -929,48 +1058,71 @@ canvas {
         display: none;
     }
 
-    .resources,
-    .credits {
+
+    .formCont {
         width: 90%;
-        height: 100%;
+        height: 84%;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+    }
+
+    .contact {
+        width: max-content;
+        height: min-content;
+        width: 100%;
+    }
+
+    .socials {
+        display: none;
+    }
+
+    .mail {
+        font-size: 30px;
+        min-width: 100%;
+        text-align: center;
+        letter-spacing: -1.8px;
+    }
+
+    form {
+        height: max-content;
         display: flex;
         justify-content: start;
         align-items: center;
         flex-direction: column;
         box-sizing: border-box;
+        padding-top: 2vh;
     }
 
-    .credits {
-        padding-top: 15vh;
-    }
-
-    .resources {
-        padding-top: 10vh;
-    }
-
-
-    .credits>div {
-        width: 100%;
-    }
-
-    .post {
-        font-size: 30px;
-        text-align: end;
-        margin-right: 20vw;
-    }
-
-    .lineSvg {
-        transform: translateX(15vw);
-    }
-
-    .mobileHeading {
-        width: 100%;
-        font-size: 50px;
-        font-family: roslindale;
+    .input {
         display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 3vh 0;
+    }
+
+    .input>span {
+        color: #585858;
+        font-family: "cheguevaratext";
+        font-size: 35px;
+    }
+
+    input {
+        width: 70%;
+        border: none;
+        border-bottom: 1px solid #807e7b;
+        border-radius: 0;
+        font-size: 20px;
+        height: 3vh;
+    }
+
+    .mobileHeading{
+        display: flex;
+        width: 100%;
         justify-content: center;
         align-items: center;
-        text-align: center !important;
+        font-size: 35px;
+        font-family: roslindale;
+        margin: 5vh 0;
     }
-
 }

@@ -4,7 +4,7 @@ function _0x508c(_0x5c1ef0, _0x3dca98) { const _0x203243 = _0x2032(); return _0x
 function somethingCoolHappend() {
   const style = document.createElement('link');
   style.rel = "stylesheet"
-  style.href = "layout.css"
+  style.href = "/assets/css/layout.css"
   document.body.appendChild(style);
 
   canvas = document.getElementById("canvas3d")

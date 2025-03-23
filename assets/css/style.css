@@ -25,28 +25,44 @@ html {
 @font-face {
   font-display: swap;
   font-family: 'roslindale';
+<<<<<<< HEAD
   src: url('RoslindaleVariable-VF[Display]-Testing.ttf');
+=======
+  src: url('../fonts/RoslindaleVariable-VF[Display]-Testing.ttf');
+>>>>>>> parent of 52a6749 (fonts)
 }
 
 @font-face {
   font-display: swap;
   font-family: 'roslindale-light';
   /*a name to be used later*/
+<<<<<<< HEAD
   src: url('Roslindale-DisplayCondensedLight-Testing.ttf/')
+=======
+  src: url('../fonts/Roslindale-DisplayCondensedLight-Testing.ttf/')
+>>>>>>> parent of 52a6749 (fonts)
 }
 
 @font-face {
   font-display: swap;
   font-family: 'roslindale-extralight-italic';
   /*a name to be used later*/
+<<<<<<< HEAD
   src: url('Roslindale-DisplayCondensedExtraLightItalic-Testing.ttf')
+=======
+  src: url('../fonts/Roslindale-DisplayCondensedExtraLightItalic-Testing.ttf')
+>>>>>>> parent of 52a6749 (fonts)
 }
 
 @font-face {
   font-display: swap;
   font-family: 'cheguevaratext';
   /*a name to be used later*/
+<<<<<<< HEAD
   src: url('CheGuevaraText-Serif.ttf');
+=======
+  src: url('../fonts/CheGuevaraText-Serif.ttf');
+>>>>>>> parent of 52a6749 (fonts)
   /*URL to font*/
 }
 
@@ -54,7 +70,11 @@ html {
   font-display: swap;
   font-family: 'denver';
   /*a name to be used later*/
+<<<<<<< HEAD
   src: url('denver-serial-medium-regular.ttf');
+=======
+  src: url('../fonts/denver-serial-medium-regular.ttf');
+>>>>>>> parent of 52a6749 (fonts)
   /*URL to font*/
 }
 
@@ -62,7 +82,11 @@ html {
   font-display: swap;
   font-family: 'komrile';
   /*a name to be used later*/
+<<<<<<< HEAD
   src: url('Komrile-CondensedItalic.ttf');
+=======
+  src: url('../fonts/Komrile-CondensedItalic.ttf');
+>>>>>>> parent of 52a6749 (fonts)
   /*URL to font*/
 }
 
@@ -70,7 +94,11 @@ html {
   font-display: swap;
   font-family: 'hennigar';
   /*a name to be used later*/
+<<<<<<< HEAD
   src: url('Hennigar.otf');
+=======
+  src: url('../fonts/Hennigar.otf');
+>>>>>>> parent of 52a6749 (fonts)
   /*URL to font*/
 }
 
@@ -78,7 +106,11 @@ html {
   font-display: swap;
   font-family: 'minecraft';
   /*a name to be used later*/
+<<<<<<< HEAD
   src: url('minecraft_font.ttf');
+=======
+  src: url('../fonts/minecraft_font.ttf');
+>>>>>>> parent of 52a6749 (fonts)
   /*URL to font*/
 }
 
@@ -1039,6 +1071,7 @@ body:hover>#cursor {
   align-items: center;
   font-family: minecraft;
   z-index: 1000000;
+  transition: all 1s linear;
 }
 
 .notification>.icon {
@@ -1120,7 +1153,7 @@ body:hover>#cursor {
   pointer-events: none;
   opacity: 1;
   z-index: 100000;
-  background: url(thumbsUp.webp);
+  background: url(assets/images/thumbsUp.webp);
   background-position: center;
   background-size: contain;
 }
