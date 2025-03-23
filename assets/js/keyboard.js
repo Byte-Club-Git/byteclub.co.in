@@ -1,3 +1,5 @@
+// This is a manually written JavaScript file for ByteClub
+
 
 import { Application } from 'https://unpkg.com/@splinetool/runtime@1.9.0/build/runtime.js';
 			

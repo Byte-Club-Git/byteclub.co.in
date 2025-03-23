@@ -11,5 +11,5 @@
 *.js linguist-vendored=false
 *.html linguist-vendored=false
 
-assets/js/keyboard.js linguist-generated=false
+assets/js/keyboard.js linguist-generated=true
 assets/js/keyboardLayout.js linguist-generated=false
