@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Team</title>
+    <link rel="icon" type="image/x-icon" href="logoBlue.webp">
+    <link rel="apple-touch-icon" href="logoBlue.webp">
+    <link rel="stylesheet" href="team.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <link rel="canonical" href="https://byteclub.co.in/team">
+    <meta name="description" content="Meet the Team of Byte Club present at Bal Bharati Public School Pitampura.">
+    <meta name="keywords"
+        content="Byte Club, Meet the Team,tech club, Byteclub, BBPS, Bal Bharati Public School ,technology, programming, workshops, events, resources">
+</head>
+<body>
+    <div class="container1" id="container">
+        <div class="rectangle rectangle-left"></div>
+        <div class="rectangle rectangle-right"></div>
+        <div class="rectangle rectangle-top"></div>
+        <div class="rectangle rectangle-nav"></div>
+        <div class="rectangle rectangle-bottom"></div>
+
+        <section id="bigNav" class="center bigNav">
+            <div class="left">
+                <div>
+                    <span onclick="navMenuClick()" id="span1" onmouseover="rotateNumbers(this)"
+                        onmouseout="stopRotateNumbers(this)">
+                        <div class="numbers">
+                            <div class="number"></div>
+                        </div>
+                        <a href="/#spanA">ABOUT</a>
+                    </span>
+                </div>
+                <div>
+                    <span id="span2" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+                        <div class="numbers">
+                            <div class="number"></div>
+                            <div class="number"></div>
+                        </div>
+                        <a href="team">TEAM</a>
+                    </span>
+                </div>
+                <div>
+                    <span id="span3" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+                        <div class="numbers">
+                            <div class="number"></div>
+                            <div class="number"></div>
+                            <div class="number"></div>
+                        </div>
+                        <a href="resources">RESOURCES</a>
+                    </span>
+                </div>
+                <div>
+                    <span id="span4" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+                        <div class="numbers">
+                            <div class="number"></div>
+                            <div class="number"></div>
+                            <div class="number"></div>
+                            <div class="number"></div>
+                        </div>
+                        <a href="byteit">BYTE.IT</a>
+                    </span>
+                </div>
+            </div>
+            <div class="right">
+                <span onmouseover="document.getElementById('spanContact').style.width='100%'"
+                    onmouseout="document.getElementById('spanContact').style.width='0%'">
+                    <a href="contact">Contact</a>
+                    <span id="spanContact"></span>
+                </span>
+                <span onmouseover="document.getElementById('spanCredits').style.width='100%'"
+                    onmouseout="document.getElementById('spanCredits').style.width='0%'">
+                    <a href="credits">Credits</a>
+                    <span id="spanCredits"></span>
+                </span>
+            </div>
+        </section>
+
+        <div class="nav">
+            <span id="navByte" onclick="window.location = '/';" class="navByte">byte.</span>
+            <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
+                <img id="circle1" class="circle1" src="circle1.svg" alt="nav-circle1">
+                <img id="circle2" class="circle2" src="circle2.svg" alt="nav-circle2">
+                <div class="lines">
+                    <div id="line1" class="line1"></div>
+                    <div id="line2" class="line2"></div>
+                </div>
+            </span>
+        </div>
+
+        <div class="center headDiv">
+            <div id="leftDiv" class="left center">
+                <p>
+                    <span><span class="pSpan1">A team of designers, <br></span></span>
+                    <span><span class="pSpan2">developers, gamers, quizzers, <br></span></span>
+                    <span><span class="pSpan3">photographers, filmmakers.</span></span>
+                </p>
+            </div>
+            <div class="right">
+                <div>
+                    <div id="keyboard" class="keyboard">
+                        <img id="canvas3d" height="200" class="canvas3dImg" src="keyboard.webp" alt="keyboard">
+                        <!-- <canvas id="canvas3d"></canvas> -->
+                    </div>
+                    <div class="Fword"><span>The</span></div>
+                    <div class="Sword"><span>
+                            <h1>Team</h1>
+                        </span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="center option">
+            <div id="memberOpt" onclick="member()" class="members current">members</div>
+            <div id="alumOpt" onclick="alumni()" class="alumni">alumni</div>
+        </div>
+
+        <div id="cardsContainer" class="cardsContainer">
+            <div id="memberCards" class="memberCards">
+                <div class="center card">
+                    <div data-value="vanditkad@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Vandit <br>
+                        Kad
+                    </div>
+                    <div class="post">
+                        President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="gsoham562@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Soham <br>
+                        Gupta
+                    </div>
+                    <div class="post">
+                        President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="pratyushgarg527@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Pratyush <br>
+                        Garg
+                    </div>
+                    <div class="post">
+                        Vice President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="sharma.shaurya2007@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Shaurya <br>
+                        Sharma
+                    </div>
+                    <div class="post">
+                        Vice President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="aravgupta28@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Arav <br>
+                        Gupta
+                    </div>
+                    <div class="post">
+                        Vice President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="Saesha2801@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Saesha <br>
+                        Kapur
+                    </div>
+                    <div class="post">
+                        Vice President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="neilgandhi2009@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Neil <br>
+                        Gandhi
+                    </div>
+                    <div class="post">
+                        Club Ambassador
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="kapurpranav506@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Pranav <br>
+                        Kapur
+                    </div>
+                    <div class="post">
+                        Club Ambassador
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="namishoberoi2008@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Namish <br>
+                        Oberoi
+                    </div>
+                    <div class="post">
+                        Club Ambassador
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="suhangrover@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Suhan <br>
+                        Grover
+                    </div>
+                    <div class="post">
+                        Club Ambassador
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="kaveeshaarora23aka@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Kaveesha <br>
+                        Arora
+                    </div>
+                    <div class="post">
+                        Club Ambassador
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="aroraaadit1234@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Aadit <br>
+                        Arora
+                    </div>
+                    <div class="post">
+                        Robotics President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="amaanssethi@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Amaan <br>
+                        Singh
+                    </div>
+                    <div class="post">
+                        Robotics President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="Parnikas28@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Parnika <br>
+                        Sharma
+                    </div>
+                    <div class="post">
+                        Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="aayan.sardana@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Aayan <br>
+                        Sardana
+                    </div>
+                    <div class="post">
+                        Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="Jayeshdabas14@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Jayesh <br>
+                        Dabas
+                    </div>
+                    <div class="post">
+                        Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="contactsaky@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Saksham <br>
+                        Garg
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="sambhavjain.sj7@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Sambhav <br>
+                        Jain
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="aarush3gupta@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Aarush <br>
+                        Gupta
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="madansrijan@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Srijan <br>
+                        Madan
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="parthkhurana20008@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Parth <br>
+                        Khurana
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="me.geetansh@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Geetansh <br>
+                        Gupta
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="itsarnavgrover@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Arnav <br>
+                        Grover
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="krishivthakur2@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Krishiv <br>
+                        Thakur
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="neelaggarwal1101@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Neel <br>
+                        Aggarwal
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="ekanshgupta49@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Ekansh <br>
+                        Gupta
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="adhritgarg017@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Adhrit <br>
+                        Garg
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="parinkhurana@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Parin <br>
+                        Khurana
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="Abhayanvika2@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Abhay <br>
+                        Mangla
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="abhirajnarayan26@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Abhiraj <br>
+                        Narayan
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="anvisaluja24@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Anvi <br>
+                        Saluja
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="kabirdhingra001@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Kabir <br>
+                        Dhingra
+                    </div>
+                    <div class="post">
+                        Junior Member
+                    </div>
+                </div>
+            </div>
+            <div id="alumni" class="memberCards">
+                <div class="center card">
+                    <div data-value="sakshamkochar@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Saksham <br>
+                        Kochar
+                    </div>
+                    <div class="post">
+                        President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="ayushi_agrawal@hotmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Ayushi <br>
+                        Aggarwal
+                    </div>
+                    <div class="post">
+                        President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="star.shreya67.mangla@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Shreya <br> Mangla
+                    </div>
+                    <div class="post">
+                        Vice President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="shubhamgamer.6105@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Shubham <br> Aggarwal
+                    </div>
+                    <div class="post">
+                        Club Ambassador
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="Yttanay07@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Tanay <br> Jain
+                    </div>
+                    <div class="post">
+                        Vice President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="gavishjindal2006@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Gavish <br> Jindal
+                    </div>
+                    <div class="post">
+                        Co-President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="twittersaatvik@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Saatvik <br> Sachdeva
+                    </div>
+                    <div class="post">
+                        Club Ambassador
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="narulanischay2005@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Nischay <br> Narula
+                    </div>
+                    <div class="post">
+                        Club Ambassador
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="aryan_02@outlook.com" class="center pfp"></div>
+                    <div class="name">
+                        Aryan <br>
+                        Mediratta
+                    </div>
+                    <div class="post">
+                        President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="mah.ansh564@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Anshul <br>
+                        Mahajan
+                    </div>
+                    <div class="post">
+                        Co-President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="aaditsaluja@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Aadit <br>
+                        Saluja
+                    </div>
+                    <div class="post">
+                        Co-President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="ahujatejas06@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Tejas <br>
+                        Ahuja
+                    </div>
+                    <div class="post">
+                        Vice President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="singhjaspreet.official@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Jaspreet <br>
+                        Singh
+                    </div>
+                    <div class="post">
+                        Robotics President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="divyamarora2213@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Divyam <br>
+                        Arora
+                    </div>
+                    <div class="post">
+                        Robotics President
+                    </div>
+                </div>
+                <div class="center card">
+                    <div data-value="ngarg311@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Nabh <br> Garg
+                    </div>
+                    <div class="post">
+                        Alumni
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="adi.oberoi2004@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Aditya <br> Oberoi
+                    </div>
+                    <div class="post">
+                        Group Discussion
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="paartha27@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Paartha <br> Panwar
+                    </div>
+                    <div class="post">
+                        Quizzing
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="harshmittal101001@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Harsh <br> Mittal
+                    </div>
+                    <div class="post">
+                        President
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="mananmrig47@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Manan <br> Mrig
+                    </div>
+                    <div class="post">
+                        Alumni
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="gautamsinghi2013@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Gautam <br> Singhi
+                    </div>
+                    <div class="post">
+                        Alumni
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="manas.25.july@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Manas <br> Khandelwal
+                    </div>
+                    <div class="post">
+                        Alumni
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="saiyyamkochar@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Saiyyam <br> Kochar
+                    </div>
+                    <div class="post">
+                        President
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="yajatkhanna28@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Yajat <br> Khanna
+                    </div>
+                    <div class="post">
+                        Alumni
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="abheetkansal@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Abheet <br> Kansal
+                    </div>
+                    <div class="post">
+                        Alumni
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="ishpreet2000@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Ishpreet <br> Singh Bhasin
+                    </div>
+                    <div class="post">
+                        President
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="tharejatanmay@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Tanmay <br> Thareja
+                    </div>
+                    <div class="post">
+                        President
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="kapoornitigya@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Nitigya <br> Kapoor
+                    </div>
+                    <div class="post">
+                        Alumni
+                    </div>
+                </div>
+
+                <div class="center card">
+                    <div data-value="shivam0732@gmail.com" class="center pfp"></div>
+                    <div class="name">
+                        Shivam <br> Issar
+                    </div>
+                    <div class="post">
+                        Cryptic
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+<script>
+
+
+
+    // Function to detect mobile devices
+    function isMobile() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    const keyboard = document.getElementById("keyboard")
+    const container1 = document.getElementById("container")
+    container1.style.maxHeight = window.innerHeight + "px";
+
+    var canvas = document.getElementById("canvas3d")
+
+    if (!(isMobile())) {
+        setTimeout(() => {
+
+            canvas.remove()
+
+            var canvas3d = document.createElement('canvas');
+            canvas3d.id = "canvas3d"
+            canvas3d.height = "652"
+            canvas3d.width = "1232"
+            keyboard.appendChild(canvas3d);
+            canvas = document.getElementById("canvas3d")
+
+            var script = document.createElement('script');
+            script.src = 'keyboard.js';
+            script.defer = true;
+            script.type = "module";
+            document.head.appendChild(script);
+        }, 3000);
+
+    } else {
+        const leftDiv = document.getElementById("leftDiv")
+        keyboard.remove()
+        leftDiv.remove()
+    }
+
+    const pfp = document.getElementsByClassName("pfp")
+
+    for (let i = 0; i < pfp.length; i++) {
+        const e = pfp[i];
+        e.style.background = "url(https://gravatar.com/avatar/" + getGravatarHash(e.dataset.value) + "?s=600)  no-repeat center"
+    }
+    // gravatar
+
+    function getGravatarHash(email) {
+        const lowerCaseEmail = email.trim().toLowerCase();
+        // Get the SHA-256 hash using CryptoJS
+        const hash = CryptoJS.SHA256(lowerCaseEmail);
+        // Convert the hash to a hexadecimal string
+        const hashHex = hash.toString(CryptoJS.enc.Hex);
+        return hashHex;
+    }
+    // --------------------
+
+    memberCards = document.getElementById("memberCards")
+    alumnis = document.getElementById("alumni")
+    memberOpt = document.getElementById("memberOpt")
+    alumOpt = document.getElementById("alumOpt")
+
+    var n = 1
+
+    function alumni() {
+        alumnis.style.display = "flex"
+        memberCards.style.display = "none"
+        memberOpt.classList.remove("current")
+        alumOpt.classList.add("current")
+    }
+
+    function member() {
+        alumnis.style.display = "none"
+        memberCards.style.display = "flex"
+        memberOpt.classList.add("current")
+        alumOpt.classList.remove("current")
+    }
+
+
+    // scroll-----------------------------
+
+    let lastScrollTop = 0
+
+    const scrollableDiv = document.getElementById('cardsContainer');
+    function handleWheelEvent(event) {
+        // Determine scroll direction
+        let direction;
+
+        cards = document.getElementsByClassName("card")
+        names = document.getElementsByClassName("name")
+        pfps = document.getElementsByClassName("pfp")
+        posts = document.getElementsByClassName("post")
+
+        if (!(isMobile())) {
+            direction = Math.sign(event.deltaY);
+            scrollableDiv.scrollLeft += event.deltaY * 0.8;
+        } else {
+            scrolledAmount = scrollableDiv.scrollTop
+
+            if (scrolledAmount > lastScrollTop) {
+                direction = 1;
+            } else {
+                direction = -1;
+            }
+
+            lastScrollTop = scrolledAmount
+
+            if (lastScrollTop < 0) {
+                lastScrollTop = 0
+            }
+
+        }
+
+        if (direction > 0) {
+            scrollableDiv.classList.add("cardsContainerAdd")
+
+            line1.style.background = "whitesmoke"
+            line2.style.background = "whitesmoke"
+            circle1.classList.add("circleBigNav")
+            circle2.classList.add("circleBigNav")
+
+            for (let i = 0; i < cards.length; i++) {
+                const e = cards[i];
+                e.classList.add("cardAdd")
+            }
+
+            for (let i = 0; i < pfps.length; i++) {
+                const e = pfps[i];
+                e.classList.add("pfpAdd")
+            }
+
+            for (let i = 0; i < names.length; i++) {
+                const e = names[i];
+                e.classList.add("nameAdd")
+            }
+
+            for (let i = 0; i < posts.length; i++) {
+                const e = posts[i];
+                e.classList.add("postAdd")
+            }
+        } else if ((direction < 0) && (scrollableDiv.scrollLeft <= 800)) {
+
+            if (isMobile() && scrolledAmount > 400) {
+                return;
+            }
+
+            scrollableDiv.classList.remove("cardsContainerAdd")
+
+            if (!(bigNav.classList.contains("bigNavAppear"))) {
+                line1.style.background = "black"
+                line2.style.background = "black"
+                circle1.classList.remove("circleBigNav")
+                circle2.classList.remove("circleBigNav")
+
+            }
+
+            for (let i = 0; i < cards.length; i++) {
+                const e = cards[i];
+                e.classList.remove("cardAdd")
+            }
+
+            for (let i = 0; i < pfps.length; i++) {
+                const e = pfps[i];
+                e.classList.remove("pfpAdd")
+            }
+
+            for (let i = 0; i < names.length; i++) {
+                const e = names[i];
+                e.classList.remove("nameAdd")
+            }
+
+            for (let i = 0; i < posts.length; i++) {
+                const e = posts[i];
+                e.classList.remove("postAdd")
+            }
+        }
+    }
+
+    // Listen for wheel events (scroll attempts)
+    window.addEventListener('wheel', handleWheelEvent);
+
+    // Listen for touch events (scroll attempts on touch devices)
+    window.addEventListener('touchmove', handleWheelEvent);
+    window.addEventListener('touchstart', handleWheelEvent);
+
+
+
+
+
+    // -------------------------------------------------------
+
+    // ------------------------
+
+
+
+    function rotateNumbers(e) {
+        let numbers = e.querySelector(".numbers");
+        numbers.classList.add("numberRotate")
+    }
+
+    function stopRotateNumbers(e) {
+        let numbers = e.querySelector(".numbers");
+        numbers.classList.remove("numberRotate");
+    }
+
+
+
+    // navbar circles and lines
+
+    circle1 = document.getElementById("circle1")
+    circle2 = document.getElementById("circle2")
+    navByte = document.getElementById("navByte")
+    line1 = document.getElementById("line1")
+    line2 = document.getElementById("line2")
+    bigNav = document.getElementById("bigNav")
+    span1 = document.getElementById("span1")
+    span2 = document.getElementById("span2")
+    span3 = document.getElementById("span3")
+    span4 = document.getElementById("span4")
+    var n = 0
+
+    function rotateBack() {
+        circle1.classList.remove("rotateStop")
+        circle2.classList.remove("rotateStop")
+    }
+    function rotateStop() {
+        circle1.classList.add("rotateStop")
+        circle2.classList.add("rotateStop")
+    }
+    function navMenuClick() {
+        if (n == 0) {
+            line1.classList.add("line1Click")
+            line2.classList.add("line2Click")
+            circle1.classList.add("circleBigNav")
+            circle2.classList.add("circleBigNav")
+            bigNav.classList.add("bigNavAppear")
+            span1.style.animationPlayState = "running"
+            span2.style.animationPlayState = "running"
+            span3.style.animationPlayState = "running"
+            span4.style.animationPlayState = "running"
+            navByte.style.color = "whitesmoke"
+
+            n = 1
+        } else {
+            line1.classList.remove("line1Click")
+            line2.classList.remove("line2Click")
+            circle1.classList.remove("circleBigNav")
+            circle2.classList.remove("circleBigNav")
+            bigNav.classList.remove("bigNavAppear")
+            navByte.style.color = "black"
+
+            n = 0
+        }
+    }
+
+
+    //  -----------------------
+</script>
+
+
+</html>

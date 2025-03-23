@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get in Touch</title>
+  <link rel="icon" type="image/x-icon" href="logoBlue.webp">
+  <link rel="stylesheet" href="contact.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://kit.fontawesome.com/3a881cfccc.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BDK1C31Z2G"></script>
+<script src="https://smtpjs.com/v3/smtp.js"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-BDK1C31Z2G');
+</script>
+
+<body>
+  <div class="container1">
+    <div class="rectangle rectangle-left"></div>
+    <div class="rectangle rectangle-right"></div>
+    <div class="rectangle rectangle-top"></div>
+    <div class="rectangle rectangle-nav"></div>
+    <div class="rectangle rectangle-bottom">
+      <span>Or just say hello.</span>
+    </div>
+
+    <section id="bigNav" class="center bigNav">
+      <div class="left">
+        <div>
+          <span onclick="navMenuClick()" id="span1" onmouseover="rotateNumbers(this)"
+            onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+            </div>
+            <a href="/#spanA">ABOUT</a>
+          </span>
+        </div>
+        <div>
+          <span id="span2" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="team">TEAM</a>
+          </span>
+        </div>
+        <div>
+          <span id="span3" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="resources">RESOURCES</a>
+          </span>
+        </div>
+        <div>
+          <span id="span4" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="byteit">BYTE.IT</a>
+          </span>
+        </div>
+      </div>
+      <div class="right">
+        <span onmouseover="document.getElementById('spanContact').style.width='100%'"
+          onmouseout="document.getElementById('spanContact').style.width='0%'">
+          <a href="contact">Contact</a>
+          <span id="spanContact"></span>
+        </span>
+        <span onmouseover="document.getElementById('spanCredits').style.width='100%'"
+          onmouseout="document.getElementById('spanCredits').style.width='0%'">
+          <a href="credits">Credits</a>
+          <span id="spanCredits"></span>
+        </span>
+      </div>
+    </section>
+
+    <div class="nav">
+      <span id="navByte" onclick="window.location = '/';"
+        class="navByte">byte.</span>
+      <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
+        <img id="circle1" class="circle1" src="circle1.svg" alt="">
+        <img id="circle2" class="circle2" src="circle2.svg" alt="">
+        <div class="lines">
+          <div id="line1" class="line1"></div>
+          <div id="line2" class="line2"></div>
+        </div>
+      </span>
+    </div>
+
+    <div class="center bottom">
+      <div id="svg" class="svg">
+       <svg xmlns="http://www.w3.org/2000/svg" height="134"><path d="M-29 446 .4 98.95l.4-1.05.4-1.04.4-1.04.4-1.04.4-1.03.4-1.03.4-1.02.4-1.01.4-1 .4-.99.4-.98.41-.97.4-.96.4-.94.4-.92.4-.91.4-.9.4-.87.4-.86.4-.84.4-.82.4-.79.4-.78.4-.75.4-.73.4-.7.4-.68.4-.66.4-.63.4-.6.4-.57.4-.55.4-.52.4-.49.4-.46.4-.43.41-.4.4-.37.4-.33.4-.31.4-.28.4-.24.4-.21.4-.18.4-.15.4-.11.4-.08.4-.05.4-.01.4.01.4.06.4.08.4.12.4.15.4.18.4.21.4.25.4.28.4.31.4.34.4.37.41.4.4.44.4.46.4.49.4.52.4.55.4.58.4.61.4.63.4.65.4.69.4.7.4.74.4.75.4.78.4.8.4.82.4.84.4.85.4.88.4.9.4.91.4.93.4.94.4.96.41.96.4.99.4.99.4 1 .4 1.01.4 1.02.4 1.03.4 1.03.4 1.04.4 1.04.4 1.05.4 1.05.4 1.04.4 1.05.4 1.05.4 1.04.4 1.05.4 1.03.4 1.04.4 1.02.4 1.02.4 1.01.4 1 .4.99.4.98.41.97.4.95.4.94.4.92.4.91.4.9.4.87.4.85.4.84.4.82.4.79.4.77.4.75.4.73.4.7.4.68.4.65.4.63.4.6.4.57.4.54.4.52.4.48.4.46.4.43.41.4.4.36.4.34.4.3.4.27.4.24.4.21.4.18.4.14.4.11.4.08.4.04.4.01.4-.02.4-.05.4-.09.4-.12.4-.15.4-.19.4-.22.4-.25.4-.28.4-.31.4-.34.4-.38.41-.41.4-.43.4-.47.4-.49.4-.53.4-.55.4-.58.4-.61.4-.63.4-.66.4-.69.4-.71.4-.73.4-.76.4-.78.4-.8.4-.82.4-.84.4-.86.4-.88.4-.9.4-.91.4-.93.4-.94.4-.96.41-.97.4-.99.4-.99.4-1 .4-1.02.4-1.02.4-1.02.4-1.04.4-1.04.4-1.04.4-1.04.4-1.05.4-1.05.4-1.05.4-1.04.4-1.05.4-1.04.4-1.04.4-1.03.4-1.02.4-1.02.4-1.01.4-1 .4-.99.4-.98.41-.96.4-.96.4-.93.4-.93.4-.9.4-.89.4-.88.4-.85.4-.83.4-.82.4-.79.4-.77.4-.75.4-.72.4-.7.4-.68.4-.64.4-.63.4-.59.4-.57.4-.54.4-.52.4-.48.4-.46.4-.42.41-.39.4-.37.4-.33.4-.3.4-.27.4-.24.4-.2.4-.17.4-.14.4-.11.4-.07.4-.04.4-.01.4.02.4.06.4.09.4.12.4.16.4.19.4.22.4.25.4.29.4.31.4.35.4.38.41.41.4.44.4.47.4.5.4.52.4.56.4.58.4.61.4.64.4.66.4.69.4.71.4.73.4.76.4.78.4.81.4.82.4.85.4.86.4.88.4.9.4.91.4.93.4.95.4.96.41.97.4.98.4 1 .4 1 .4 1.02.4 1.02.4 1.03.4 1.03.4 1.04.4 1.04.4 1.05.4 1.05.4 1.04.4 1.05.4 1.05.4 1.04.4 1.04.4 1.04.4 1.03.4 1.03.4 1.01.4 1.01.4 1 .4.99.4.97.41.97.4.95.4.94.4.92.4.9.4.89.4.87.4.85.4.84.4.81.4.79.4.76.4.75.4.72.4.7.4.67.4.65.4.62.4.59.4.57.4.54.4.51.4.48.4.45.4.42.41.39.4.36.4.33.4.3.4.26.4.24.4.2.4.17.4.13.4.11.4.07.4.04h.4l.4-.03.4-.06.4-.09.4-.13.4-.16.4-.19.4-.22.4-.26.4-.29.4-.32.4-.35.4-.38.41-.41.4-.44.4-.48.4-.5.4-.53.4-.55.4-.59.4-.61.4-.64.4-.67.4-.69.4-.71.4-.74.4-.76.4-.78.4-.81.4-.83.4-.84.4-.87.4-.88.4-.9.4-.92.4-.93.4-.94.4-.97.41-.97.4-.98.4-1 .4-1 .4-1.02.4-1.02.4-1.03.4-1.03.4-1.04.4-1.05.4-1.04.4-1.05.4-1.05.4-1.05.4-1.04.4-1.05.4-1.04.4-1.03.4-1.03.4-1.03.4-1.01.4-1.01.4-1 .4-.99.4-.97.41-.96.4-.95.4-.94.4-.92.4-.9.4-.89.4-.87.4-.85.4-.83.4-.81.4-.78.4-.77.4-.74.4-.72.4-.7.4-.67.4-.64.4-.62.4-.59.4-.56.4-.54.4-.51.4-.47.4-.45.4-.42.41-.39.4-.36.4-.32.4-.3.4-.26.4-.23.4-.2.4-.16.4-.14.4-.1.4-.06.4-.04h.4l.4.03.4.07.4.09.4.13.4.17.4.19.4.23.4.26.4.29.4.32.4.35.4.39.41.41.4.45.4.47.4.51.4.53.4.56.4.59.4.62.4.64.4.66.4.7.4.71.4.74.4.77.4.78.4.81.4.83.4.85.4.86.4.89.4.9.4.92.4.93.4.95.4.96.41.98.4.98.4 1 .4 1.01.4 1.01.4 1.02.4 1.03.4 1.04.4 1.04.4 1.04.4 1.05.4 1.05.4 1.04.4 1.05.4 1.05.4 1.04.4 1.04.4 1.04.4 1.03.4 1.02.4 1.01.4 1.01.4 1 .4.98.41.98.4.96.4.95.4.93.4.92.4.9.4.89.4.86.4.85.4.83.4.81.4.78.4.77.4.74.4.71.4.7.4.66.4.64.4.62.4.59.4.56.4.53.4.51.4.47.4.45.41.41.4.39.4.35.4.32.4.29.4.26.4.23.4.19.4.17.4.13.4.09.4.07.4.03h.4l.4-.04.4-.06.4-.1.4-.14.4-.16.4-.2.4-.23.4-.26.4-.3.4-.32.4-.36.41-.39.4-.42.4-.45.4-.47.4-.51.4-.54.4-.56.4-.59.4-.62.4-.64.4-.67.4-.7.4-.72.4-.74.4-.77.4-.78.4-.81.4-.83.4-.85.4-.87.4-.89.4-.9.4-.92.4-.94.4-.95.41-.96.4-.97.4-.99.4-1 .4-1.01.4-1.01.4-1.03.4-1.03.4-1.03.4-1.04.4-1.05.4-1.04.4-1.05.4-1.05.4-1.05.4-1.04.4-1.05.4-1.04.4-1.03.4-1.03.4-1.02.4-1.02.4-1 .4-1 .4-.98.41-.97.4-.97.4-.94.4-.93.4-.92.4-.9.4-.88.4-.87.4-.84.4-.83.4-.81.4-.78.4-.76.4-.74.4-.71.4-.69.4-.67.4-.64.4-.61.4-.59.4-.55.4-.53.4-.5.4-.48.4-.44.41-.41.4-.38.4-.35.4-.32.4-.29.4-.26.4-.22.4-.19.4-.16.4-.13.4-.09.4-.06.4-.03h.4l.4.04.4.07.4.11.4.13.4.17.4.2.4.24.4.26.4.3.4.33.4.36.41.39.4.42.4.45.4.48.4.51.4.54.4.57.4.59.4.62.4.65.4.67.4.7.4.72.4.75.4.76.4.79.4.81.4.84.4.85.4.87.4.89.4.9.4.92.4.94.4.95.41.97.4.97.4.99.4 1 .4 1.01.4 1.01.4 1.03.4 1.03.4 1.04.4 1.04.4 1.04.4 1.05.4 1.05.4 1.04.4 1.05.4 1.05.4 1.04.4 1.04.4 1.03.4 1.03.4 1.02.4 1.02.4 1 .4 1 .4.98.41.97.4.96.4.95.4.93.4.91.4.9.4.88.4.86.4.85.4.82.4.81.4.78.4.76.4.73.4.71.4.69.4.66.4.64.4.61.4.58.4.56.4.52.4.5.4.47.4.44.41.41.4.38.4.35.4.31.4.29.4.25.4.22.4.19.4.16.4.12.4.09.4.06.4.02.4-.01.4-.04.4-.07.4-.11.4-.14.4-.17.4-.2.4-.24.4-.27.4-.3.4-.33.4-.37.41-.39.4-.42.4-.46.4-.48.4-.52.4-.54.4-.57.4-.59.4-.63.4-.64.4-.68.4-.7.4-.72.4-.75.4-.77.4-.79.4-.82.4-.83.4-.85.4-.88.4-.89.4-.9.4-.93.4-.93.4-.96.41-.96.4-.98.4-.99.4-1 .4-1.01.4-1.02.4-1.02.4-1.03.4-1.04.4-1.04.4-1.05.4-1.04.4-1.05.4-1.05.4-1.05.4-1.04.4-1.04.4-1.04.4-1.04.4-1.02.4-1.02.4-1.02.4-1 .4-.99.4-.99.41-.97.4-.96.4-.94.4-.93.4-.91.4-.9.4-.88.4-.86.4-.84.4-.82.4-.8.4-.78.4-.76.4-.73.4-.71.4-.69.4-.66.4-.63.4-.61.4-.58.4-.55.4-.53.4-.49.4-.47.4-.43.41-.41.4-.38.4-.34.4-.31.4-.28.4-.25.4-.22.4-.19.4-.15.4-.12.4-.09.4-.05.4-.02.4.01.4.04.4.08.4.11.4.14.4.18.4.21.4.24.4.27.4.3.4.34.4.36.41.4.4.43.4.46.4.48.4.52.4.54.4.57.4.6.4.63.4.65.4.68.4.7.4.73.4.75.4.77.4.79.4.82.4.84.4.85.4.87.4.9.4.91.4.92.4.94.4.95.41.97.4.98.4.99.4 1 .4 1.01.4 1.02.4 1.02.4 1.04.4 1.03.4 1.05.4 1.04.4 1.05.4 1.05.4 1.04.4 1.05.4 1.05.4 1.04.4 1.04.4 1.03.4 1.03.4 1.02.4 1.01.4 1 .4.99.4.99.41.96.4.96.4.94.4.93.4.91.4.9.4.88.4.85.4.84.4.82.4.8.4.78.4.75.4.74.4.7.4.69.4.65.4.63.4.61.4.58.4.55.4.52.4.49.4.46.4.44.41.4.4.37.4.34.4.31.4.28.4.25.4.21.4.18.4.15.4.12.4.08.4.06.4.01.4-.01.4-.05.4-.08.4-.11.4-.15.4-.18.4-.21.4-.24.4-.28.4-.31.4-.33.4-.37.41-.4.4-.43.4-.46.4-.49.4-.52.4-.55.4-.57.4-.6.4-.63.4-.66.4-.68.4-.7.4-.73.4-.75.4-.78.4-.79.4-.82.4-.84.4-.86.4-.87.4-.9.4-.91.4-.92.4-.94.4-.96.41-.97.4-.98.4-.99.4-1 .4-1.01.4-1.02.4-1.03.4-1.03.4-1.04.4-1.04.4-1.04.4-1.05L515 361Z" class="sinWave"/></svg>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="mobileHeading">
+        Get in touch
+      </div>
+      <div class="heading">
+        <div id="keyboard" class="keyboard">
+          <canvas id="canvas3d"></canvas>
+        </div>
+        <div class="fWord">
+          <span>get</span>
+        </div>
+        <div class="sWord">
+          <span>touch</span>
+        </div>
+        <div class="smallWord">
+          <span>in</span>
+        </div>
+      </div>
+      <div class="formCont">
+        <div class="contact">
+          <div>
+            <div class="mail">byteclub@pp.balbharati.org</div>
+            <div class="socials">
+              <div class="insta" onclick="window.open('https://www.instagram.com/bytebbps/')">
+                <i class="fa-brands fa-instagram"></i> instagram
+                <div class="underline"></div>
+              </div>
+              <div class="facebook" onclick="window.open('https://www.facebook.com/ByteClubBBPSPP/')">
+                <i class="fa-brands fa-facebook"></i> facebook
+                <div class="underline"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form id="form" action="#">
+          <div>
+            <div class="input input1">
+              <span>Name</span>
+              <input type="text" name="name" id="name" required>
+            </div>
+          </div>
+          <div>
+            <div class="input input2">
+              <span>Email</span>
+              <input type="email" name="email" id="email" required>
+            </div>
+          </div>
+          <div>
+            <div class="input input3">
+              <span>Message</span>
+              <input type="text" name="text" id="text" required>
+            </div>
+          </div>
+          <div class="send">
+            <img class="lineSvg" src="Line.svg" alt="">
+            <button type="submit">
+              send
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+
+  // Function to detect mobile devices
+  function isMobile() {
+    return /Mobi|Android/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 800);
+  }
+
+  if (!(isMobile())) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'keyboard.js';
+    script.defer = true;
+    script.type = "module";
+    document.head.appendChild(script);
+  }
+
+  // smooth scrolll
+  const lenis = new Lenis()
+
+  lenis.on('scroll', (e) => {
+    // console.log(e)
+  })
+
+  function raf(time) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+  }
+  requestAnimationFrame(raf)
+
+  const fullName = document.getElementById("name");
+  const email = document.getElementById("email");
+  const msg = document.getElementById("text");
+  const form = document.getElementById("form");
+
+  function sendEmail() {
+    const bodyMsg = `<b><h4>Name</h3></b> ${fullName.value} <br> <b><h4>Email</h3></b> ${email.value} <br> <b><h4>Message</h4></b> ${msg.value}`;
+
+    Email.send({
+      SecureToken: '64186b92-3ea1-473f-8e1b-0d3fe443d519',
+      To: 'byteclub@pp.balbharati.org',
+      From: "byteclub@pp.balbharati.org",
+      Subject: `${fullName.value} would like to contact you`,
+      Body: bodyMsg
+    }).then(
+      message => alert("Message sent successfully!")
+    ).catch(
+      error => console.log(error)
+    );
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    sendEmail();
+  })
+
+  function rotateNumbers(e) {
+    numbers = $(e).find(".numbers")[0]
+    numbers.classList.add("numberRotate")
+  }
+  function stopRotateNumbers(e) {
+    numbers = $(e).find(".numbers")[0]
+    numbers.classList.remove("numberRotate");
+  }
+
+
+
+  // navbar circles and lines
+
+  circle1 = document.getElementById("circle1")
+  circle2 = document.getElementById("circle2")
+  navByte = document.getElementById("navByte")
+  line1 = document.getElementById("line1")
+  line2 = document.getElementById("line2")
+  bigNav = document.getElementById("bigNav")
+  span1 = document.getElementById("span1")
+  span2 = document.getElementById("span2")
+  span3 = document.getElementById("span3")
+  span4 = document.getElementById("span4")
+  var n = 0
+
+  function rotateBack() {
+    circle1.classList.remove("rotateStop")
+    circle2.classList.remove("rotateStop")
+  }
+  function rotateStop() {
+    circle1.classList.add("rotateStop")
+    circle2.classList.add("rotateStop")
+  }
+  function navMenuClick() {
+    if (n == 0) {
+      line1.classList.add("line1Click")
+      line2.classList.add("line2Click")
+      circle1.classList.add("circleBigNav")
+      circle2.classList.add("circleBigNav")
+      bigNav.classList.add("bigNavAppear")
+      span1.style.animationPlayState = "running"
+      span2.style.animationPlayState = "running"
+      span3.style.animationPlayState = "running"
+      span4.style.animationPlayState = "running"
+      navByte.style.color = "whitesmoke"
+
+      n = 1
+    } else {
+      line1.classList.remove("line1Click")
+      line2.classList.remove("line2Click")
+      circle1.classList.remove("circleBigNav")
+      circle2.classList.remove("circleBigNav")
+      bigNav.classList.remove("bigNavAppear")
+      navByte.style.color = "black"
+
+      n = 0
+    }
+  }
+
+
+</script>
+
+</html>
