@@ -208,8 +208,8 @@ if (!(sessionStorage.getItem('hasVisited'))) {
         n = 1000
     }
 } else {
-    n = 0
     loader.style.display = "none"
+    n = 0
 }
 const footer = document.getElementById("footer")
 setTimeout(

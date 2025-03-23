@@ -1025,7 +1025,7 @@ body:hover>#cursor {
 }
 
 .notification {
-  transform: translateX(150%) !important;
+  transform: translateX(150%);
   position: fixed;
   top: 1%;
   right: 0;
@@ -1039,7 +1039,13 @@ body:hover>#cursor {
   align-items: center;
   font-family: minecraft;
   z-index: 1000000;
-  transition: all 1s linear;
+  transition: transform 0s linear;
+  will-change: transform;
+}
+
+.notifCome{
+  transition: transform 1s linear;
+  transform: translateX(0%);
 }
 
 .notification>.icon {
