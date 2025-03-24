@@ -48,7 +48,7 @@ document.getElementById("form").addEventListener("submit", function (e) {
                     content: `${date} \n**${fname + " " + lname}**: ${discordID}`
                 };
                 // Send the message to the Discord webhook
-                fetch("https://discord.com/api/webhooks/1296905066933915668/ZYZ2Eq8BJ8DWbZ475cbI-tv7X7g9Y7LwDbd0v0jh67q2MvZN3OP49Kw1HalQitvVl7Sq", {
+                fetch("https://l.webhook.party/hook/7O04Veyj%2BtIv6A4BZkuND5g8Qi2Yf211dZz41wEdG4m9etQiwlscaothBrX1nWR5MQpws2Fo5uQbge55y96XrNOoWWIxYQuAuJ3dZ7138qOFp793333ZN1JpY2cVoGMe4tRkk0P2wQTDiyUdTvbUOBRA%2Bdk3fOfbVbm0xlYbeSftYmQSx3GBpY%2FX1S%2FNl%2BJpPJeaXk4AAYPjgeMDU1sy%2BKF5sLCu80b%2B0arN4%2FIKRtd8f%2BrQoFDMvINKJ7ytONtDOPwwndKN2QdsOPHkDk0uUAtU%2BTPnC9O0nktJzmnaT%2Fj5rxvR9RCUvM3QoGVA%2Fi3V463%2Biii5%2FtrYRZiS5qnkklKk%2BtVZ2mOaNHanuuSiN%2FPGzcB%2B03VITxJSWCSh3MATogDI0voKjfc%3D/DusFgkYYNaEvVfAb", {
                     method: 'POST',
                     body: JSON.stringify(payload),
                     headers: {

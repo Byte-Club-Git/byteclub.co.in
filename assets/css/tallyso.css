@@ -135,75 +135,47 @@ html.lenis body {
 @font-face {
     font-family: 'roslindale';
     /*a name to be used later*/
-<<<<<<< HEAD
-    src: url('RoslindaleVariable-VF[Display]-Testing.ttf');
-=======
     src: url('../fonts/RoslindaleVariable-VF[Display]-Testing.ttf');
->>>>>>> parent of 52a6749 (fonts)
     /*URL to font*/
 }
 
 @font-face {
     font-family: 'roslindale-light';
     /*a name to be used later*/
-<<<<<<< HEAD
-    src: url('Roslindale-DisplayCondensedLight-Testing.ttf/')
-=======
     src: url('../fonts/Roslindale-DisplayCondensedLight-Testing.ttf/')
->>>>>>> parent of 52a6749 (fonts)
 }
 
 @font-face {
     font-family: 'roslindale-extralight-italic';
     /*a name to be used later*/
-<<<<<<< HEAD
-    src: url('Roslindale-DisplayCondensedExtraLightItalic-Testing.ttf')
-=======
     src: url('../fonts/Roslindale-DisplayCondensedExtraLightItalic-Testing.ttf')
->>>>>>> parent of 52a6749 (fonts)
 }
 
 @font-face {
     font-family: 'cheguevaratext';
     /*a name to be used later*/
-<<<<<<< HEAD
-    src: url('CheGuevaraText-Serif.ttf');
-=======
     src: url('../fonts/CheGuevaraText-Serif.ttf');
->>>>>>> parent of 52a6749 (fonts)
     /*URL to font*/
 }
 
 @font-face {
     font-family: 'denver';
     /*a name to be used later*/
-<<<<<<< HEAD
-    src: url('denver-serial-medium-regular.ttf');
-=======
     src: url('../fonts/denver-serial-medium-regular.ttf');
->>>>>>> parent of 52a6749 (fonts)
     /*URL to font*/
 }
 
 @font-face {
     font-family: 'komrile';
     /*a name to be used later*/
-<<<<<<< HEAD
-    src: url('Komrile-CondensedItalic.ttf');
-=======
     src: url('../fonts/Komrile-CondensedItalic.ttf');
->>>>>>> parent of 52a6749 (fonts)
     /*URL to font*/
 }
 
 @font-face {
     font-family: 'Irish Grover';
     /*a name to be used later*/
-<<<<<<< HEAD
-    src: url('IrishGrover.ttf');
-=======
     src: url('../fonts/IrishGrover.ttf');
->>>>>>> parent of 52a6749 (fonts)
     /*URL to font*/
 }
 
