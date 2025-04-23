@@ -724,46 +724,84 @@ canvas {
     background: var(--lines);
     right: 0;
 }
-/*
-.hoverme:hover .pfp {
-    animation: goup 1s forwards ease-in-out;
-  }
-  .hoverme:hover .name {
-    animation: goup 1s forwards ease-in-out;
-  }
-  .hoverme:hover .post {
-    animation: goup 1s forwards ease-in-out;
-  }*/
+
   .hoverme:hover .social-links {
+    /*
     animation: links 1s forwards ease-in-out;
-    display: inline;
+    animation-delay: .5s;
+    display: flex;*/
   }
 
  .hoverme:not(hover) .social-links {
-        display: none;
-    position: absolute;
+    display: none;
+
     opacity: 0;
-    bottom: 200px;
+    top: 500px;
     font-size: large;
  }
 
   .social-links{
-        display: none;
-    color: white;
+    display: none;
+
+    gap: 10px;
+    padding: 20px;
 }
 
+.social-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  
+.social-link {
+    color: #fff;
+    font-family: Inter;
+    text-decoration: none;
+    font-size: 27px ;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    transition: color 0.3s;
+  }
+  .social-links.animated {
+    display: flex; /* Shown when animation starts */
+}
+  
+  .social-link:hover {
+    color: #ccc;
+  }
+  
+  .social-link i {
+    font-size: 20px;
+  }
+.link-img{
+    height: 30px;
+}
+.social-link {
+    opacity: .8;
+}
 @keyframes links {
     0% {
         opacity: 0;
+        height: 0%;
         transform: translateY(0px);
 
     }
     100%{
         opacity: 1;
+        height: 100%;
         transform: translateY(25px);
         }
 }
-@keyframes linksdown {
+@keyframes linksout {
     0% {
         opacity: 1;
         transform: translateY(0px);
@@ -780,13 +818,13 @@ canvas {
         opacity: 1;
     }
     100% {
-        transform: translateY(-200px);
+        transform: translateY(-85px);
         opacity: .7;
     }
 }
 @keyframes godown {
     0% {
-        transform: translateY(-200px);
+        transform: translateY(-85px);
         opacity: .7;
     }
     100% {
@@ -796,7 +834,12 @@ canvas {
 }
 
 
-
+.visible{
+    opacity: 1;
+}
+.invisible{
+    opacity: 0;
+}
 
 .pfp {
     width: 9vw;
