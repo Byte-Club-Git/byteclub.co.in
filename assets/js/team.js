@@ -1,5 +1,3 @@
-
-// Function to detect mobile devices
 function isMobile() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
@@ -9,6 +7,25 @@ const container1 = document.getElementById("container")
 container1.style.maxHeight = window.innerHeight + "px";
 
 var canvas = document.getElementById("canvas3d")
+
+document.querySelectorAll('.hoverme').forEach(item => {
+    const pfp = item.querySelector('.pfp');
+  
+    item.addEventListener('mouseenter', () => {
+      pfp.style.animation = 'goup 1s ease forwards';
+      pfp.style.animationDelay = '0.5s'
+    });
+  
+    item.addEventListener('mouseleave', () => {
+      // Reset animation so it can re-trigger on next hover
+      pfp.style.animation = 'godown 1s ease forwards';
+
+      // Trigger a reflow to apply the reset
+    //  void pfp.offsetWidth;
+      // Optional: you can add a reverse animation here or leave it still
+    });
+  });
+
 
 if (!(isMobile())) {
     setTimeout(() => {
@@ -111,7 +128,7 @@ function handleWheelEvent(event) {
 
     if (direction > 0) {
         scrollableDiv.classList.add("cardsContainerAdd")
-
+        console.log("balckie")
         line1.style.background = "whitesmoke"
         line2.style.background = "whitesmoke"
         circle1.classList.add("circleBigNav")
@@ -137,7 +154,7 @@ function handleWheelEvent(event) {
             e.classList.add("postAdd")
         }
     } else if ((direction < 0) && (scrollableDiv.scrollLeft <= 800)) {
-
+        console.log("notbalckie")
         if (isMobile() && scrolledAmount > 400) {
             return;
         }
@@ -149,7 +166,7 @@ function handleWheelEvent(event) {
             line2.style.background = "black"
             circle1.classList.remove("circleBigNav")
             circle2.classList.remove("circleBigNav")
-
+            
         }
 
         for (let i = 0; i < cards.length; i++) {
@@ -246,10 +263,8 @@ function navMenuClick() {
         circle2.classList.remove("circleBigNav")
         bigNav.classList.remove("bigNavAppear")
         navByte.style.color = "black"
+        console.log("blackie")
 
         n = 0
     }
 }
-
-
-//  -----------------------
