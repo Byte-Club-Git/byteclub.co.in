@@ -977,12 +977,13 @@ canvas {
     position: absolute;
     width: max-content;
     height: max-content;
-    top: 0;
+    top: -17.5%;
+    pointer-events: none;
     left: calc(3.5vw + 50%);
     transform: translateX(-50%) translateY(-100%);
     z-index: 1000;
     background: rgba(120, 118, 113, 1);
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     font-family: sans-serif;
@@ -991,6 +992,8 @@ canvas {
     padding: 7px;
     color: whitesmoke;
     border: 0.5px solid black;
+    opacity: 0;
+    transition: 100ms ease-in-out;
 }
 
 .discordID{
@@ -998,8 +1001,8 @@ canvas {
     padding-left: 1.5vw;
 }
 
-.discordID:focus+.warning {
-    display: flex;
+.discordInput:focus-within>.warning {
+    opacity: 1;
 }
 
 .discordUserSymbol{
