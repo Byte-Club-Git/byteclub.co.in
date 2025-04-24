@@ -261,6 +261,7 @@ html.lenis body {
 
 .headerHighlight {
   font-size: 0.8rem;
+  font-weight: 600;
   color: rgba(255, 255, 255, 0.65);
 }
 
@@ -1524,11 +1525,19 @@ body:hover>#cursor {
       width: 5vh;
       height: 5vh;
     }
-  
+
     100% {
       width: 22vh;
       height: 5vh;
     }
+  }
+
+  .headerHighlight {
+    font-size: 0.7rem;
+  }
+
+  .contentHighlight {
+    font-size: 0.8rem;
   }
 
 }
