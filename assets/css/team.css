@@ -738,7 +738,7 @@ canvas {
 }
   .social-links{
     visibility: hidden;
-
+    height: 0px;
     gap: 10px;
     padding: 0px;
 }
