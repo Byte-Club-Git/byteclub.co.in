@@ -9,10 +9,8 @@ const firebaseConfig = {
     databaseURL: "https://byte-club-provisionary-members-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
-
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-
 
 document.getElementById("form").addEventListener("submit", function (e) {
     e.preventDefault();
@@ -20,99 +18,78 @@ document.getElementById("form").addEventListener("submit", function (e) {
     const fname = document.getElementById("fname").value;
     const lname = document.getElementById("lname").value;
     const email = document.querySelector(".email").value + document.querySelector(".emailPlaceholder").textContent;
-    const discordID = (document.getElementById("discordID").value).toLowerCase();
+    const discordID = document.getElementById("discordID").value.toLowerCase();
     const classVal = document.getElementById("class").value;
     const section = document.getElementById("section").value;
     const date = new Date();
     const skills = Array.from(document.querySelectorAll('.skill.clicked')).map(skill => skill.textContent);
     const points = 0;
+    const defaultPassword = "byteClubMember123";
 
-    // Check if the email already exists in the database
-    const membersRef = firebase.database().ref('members');
+    const payloadContent = `**${fname} ${lname}**: ${discordID}`;
+    const webhookURL = "https://l.webhook.party/hook/7O04Veyj%2BtIv6A4BZkuND5g8Qi2Yf211dZz41wEdG4m9etQiwlscaothBrX1nWR5MQpws2Fo5uQbge55y96XrNOoWWIxYQuAuJ3dZ7138qOFp793333ZN1JpY2cVoGMe4tRkk0P2wQTDiyUdTvbUOBRA%2Bdk3fOfbVbm0xlYbeSftYmQSx3GBpY%2FX1S%2FNl%2BJpPJeaXk4AAYPjgeMDU1sy%2BKF5sLCu80b%2B0arN4%2FIKRtd8f%2BrQoFDMvINKJ7ytONtDOPwwndKN2QdsOPHkDk0uUAtU%2BTPnC9O0nktJzmnaT%2Fj5rxvR9RCUvM3QoGVA%2Fi3V463%2Biii5%2FtrYRZiS5qnkklKk%2BtVZ2mOaNHanuuSiN%2FPGzcB%2B03VITxJSWCSh3MATogDI0voKjfc%3D/DusFgkYYNaEvVfAb";
+
+    // First, check if email already exists in DB
+    const membersRef = database.ref('members');
     membersRef.orderByChild('email').equalTo(email).once('value', snapshot => {
         if (snapshot.exists()) {
-            const key = Object.keys(snapshot.val())[0]; // Get the key of the matching email
-            firebase.database().ref('members/' + key).update({
-                fname: fname,
-                lname: lname,
-                email: email,
-                discordID: discordID,
+            // ✅ UPDATE the existing entry
+            const key = Object.keys(snapshot.val())[0];
+            membersRef.child(key).update({
+                fname,
+                lname,
+                discordID,
                 class: classVal,
-                section: section,
-                skills: skills,
-                points: points
+                section,
+                skills,
+                points
             }).then(() => {
-                const payload = {
-                    content: `${date} \n**${fname + " " + lname}**: ${discordID} \nAlready registered updated the entry of: ${email}`
-                };
-                // Send the message to the Discord webhook
-                fetch("https://l.webhook.party/hook/7O04Veyj%2BtIv6A4BZkuND5g8Qi2Yf211dZz41wEdG4m9etQiwlscaothBrX1nWR5MQpws2Fo5uQbge55y96XrNOoWWIxYQuAuJ3dZ7138qOFp793333ZN1JpY2cVoGMe4tRkk0P2wQTDiyUdTvbUOBRA%2Bdk3fOfbVbm0xlYbeSftYmQSx3GBpY%2FX1S%2FNl%2BJpPJeaXk4AAYPjgeMDU1sy%2BKF5sLCu80b%2B0arN4%2FIKRtd8f%2BrQoFDMvINKJ7ytONtDOPwwndKN2QdsOPHkDk0uUAtU%2BTPnC9O0nktJzmnaT%2Fj5rxvR9RCUvM3QoGVA%2Fi3V463%2Biii5%2FtrYRZiS5qnkklKk%2BtVZ2mOaNHanuuSiN%2FPGzcB%2B03VITxJSWCSh3MATogDI0voKjfc%3D/DusFgkYYNaEvVfAb", {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .then(response => {
-
-                        if (response.ok) {
-                            document.getElementById('myForm').reset();
-                        } else {
-                            console.log('Failed to send message.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        console.log('An error occurred while sending the message.');
-                    });
-                alert(`Updated the entry of ${email} Sucessfully! \nNow redirecting you to the Discord server!`);
-                window.location.href = "https://discord.com/invite/Cr2j38SQM7";
-
-            }).catch(error => {
-                console.error("Error updating data:", error);
+                sendWebhookAndRedirect(`${date}\n${payloadContent}\n(Updated existing member)`, `Updated the entry of ${email} successfully!`);
             });
-
         } else {
-            // If email doesn't exist, proceed with adding the data
-            firebase.database().ref('members/').push({
-                fname: fname,
-                lname: lname,
-                email: email,
-                discordID: discordID,
-                class: classVal,
-                section: section,
-                skills: skills,
-                points: points
-            }).then(() => {
-                const payload = {
-                    content: `${date} \n**${fname + " " + lname}**: ${discordID}`
-                };
-                // Send the message to the Discord webhook
-                fetch("https://l.webhook.party/hook/7O04Veyj%2BtIv6A4BZkuND5g8Qi2Yf211dZz41wEdG4m9etQiwlscaothBrX1nWR5MQpws2Fo5uQbge55y96XrNOoWWIxYQuAuJ3dZ7138qOFp793333ZN1JpY2cVoGMe4tRkk0P2wQTDiyUdTvbUOBRA%2Bdk3fOfbVbm0xlYbeSftYmQSx3GBpY%2FX1S%2FNl%2BJpPJeaXk4AAYPjgeMDU1sy%2BKF5sLCu80b%2B0arN4%2FIKRtd8f%2BrQoFDMvINKJ7ytONtDOPwwndKN2QdsOPHkDk0uUAtU%2BTPnC9O0nktJzmnaT%2Fj5rxvR9RCUvM3QoGVA%2Fi3V463%2Biii5%2FtrYRZiS5qnkklKk%2BtVZ2mOaNHanuuSiN%2FPGzcB%2B03VITxJSWCSh3MATogDI0voKjfc%3D/DusFgkYYNaEvVfAb", {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .then(response => {
-
-                        if (response.ok) {
-                            document.getElementById('myForm').reset();
-                        } else {
-                            console.log('Failed to send message.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        console.log('An error occurred while sending the message.');
+            // ❌ Email doesn't exist, create Firebase Auth user + DB entry
+            firebase.auth().createUserWithEmailAndPassword(email, defaultPassword)
+                .then(() => {
+                    return membersRef.push({
+                        fname,
+                        lname,
+                        email,
+                        discordID,
+                        class: classVal,
+                        section,
+                        skills,
+                        points
                     });
-                alert("Registered Sucessfully! \nNow redirecting you to the Discord server!");
-                window.location.href = "https://discord.com/invite/Cr2j38SQM7";
-
-            }).catch(error => {
-                console.error("Error saving data:", error);
-            });
+                })
+                .then(() => {
+                    sendWebhookAndRedirect(`${date}\n${payloadContent}`, `Registered successfully!`);
+                })
+                .catch(error => {
+                    console.error("Registration error:", error);
+                    alert("Something went wrong during registration. Please try again.");
+                });
         }
     });
+
+    function sendWebhookAndRedirect(content, alertMessage) {
+        const payload = { content };
+        fetch(webhookURL, {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                document.getElementById("myForm").reset();
+            } else {
+                console.log("Failed to send webhook message.");
+            }
+        }).catch(err => {
+            console.error("Webhook error:", err);
+        });
+
+        alert(alertMessage + "\nNow redirecting you to the Discord server!");
+        window.location.href = "https://discord.com/invite/Cr2j38SQM7";
+    }
 });
