@@ -22,6 +22,7 @@ document.querySelectorAll('.hoverme2').forEach(item => {
   
       // Set a timeout to trigger animations after 0.5s
       hoverTimeout = setTimeout(() => {
+        clearTimeout(invisibleTimeout);
         sociallinks.style.visibility = 'visible';
         sociallinks.style.position = 'static'; // Ensure position is applied
 
@@ -48,7 +49,7 @@ document.querySelectorAll('.hoverme2').forEach(item => {
         post.style.animation = 'godown .5s ease forwards';
         sociallinks.style.animation = 'linksout .25s forwards ease-in-out';
         
-        setTimeout(() => {
+        invisibleTimeout = setTimeout(() => {
             sociallinks.style.visibility = 'hidden';
             sociallinks.style.height = '0px';
       //  sociallinks.style.height = '0px'; // Reset position to absolute
