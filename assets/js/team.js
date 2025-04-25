@@ -8,6 +8,8 @@ const keyboard = document.getElementById("keyboard")
 const container1 = document.getElementById("container")
 container1.style.maxHeight = window.innerHeight + "px";
 
+removeHover();
+
 var canvas = document.getElementById("canvas3d")
 if (!(isMobile())) {
 document.querySelectorAll('.hoverme2').forEach(item => {
@@ -212,14 +214,8 @@ function handleWheelEvent(event) {
     }
 
     if (direction > 0) {
-        document.querySelectorAll('.hoverme2').forEach(card => {
-            if(!isMobile()){
-            card.classList.add('hoverme');
-            console.log("added")
-            isAnimationEnabled = false
-            navByte.classList.remove("invisible")
-        }
-        })
+        addHover();
+        navByte.classList.remove("invisible")
         scrollableDiv.classList.add("cardsContainerAdd")
         isAnimationEnabled = true
         navByte.classList.add("invisible")
@@ -264,14 +260,7 @@ function handleWheelEvent(event) {
             circle2.classList.remove("circleBigNav")
             navByte.classList.remove("invisible")
             if(!isMobile()){
-            document.querySelectorAll('.hoverme2').forEach(card => {
-              //  sociallinks.style.animation = 'linksout .5s forwards ease-in-out';
-              //      card.classList.remove('hoverme');
-                console.log("removed")
-                isAnimationEnabled = false
-               
-            
-            })
+            removeHover();
             
         }}
 
@@ -377,16 +366,24 @@ function navMenuClick() {
 
 
 //  -----------------------
+function removeHover(){
+  document.querySelectorAll('.hoverme2').forEach(card => {
+    //  sociallinks.style.animation = 'linksout .5s forwards ease-in-out';
+    //      card.classList.remove('hoverme');
+      card.style.marginTop = "15px"
+      isAnimationEnabled = false
+     
+  
+  })
+}
 
-function resetHoverme() {
-    const cards = document.querySelectorAll('.hoverme2');
-    if (cards.length === 0) {
-        console.warn('No elements with the class "card" found.');
-        return;
-    }
-
-    cards.forEach(card => {
-        card.style.animationPlayState = 'paused';
-        card.style.animationFillMode = 'forwards';
-    });
+function addHover(){
+  document.querySelectorAll('.hoverme2').forEach(card => {
+    if(!isMobile()){
+    card.classList.add('hoverme');
+    console.log("added")
+    isAnimationEnabled = false
+    card.style.marginTop = "30px"
+}
+})
 }
