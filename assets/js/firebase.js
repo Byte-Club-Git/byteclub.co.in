@@ -31,79 +31,45 @@ document.getElementById("form").addEventListener("submit", function (e) {
 
     // First, check if email already exists in DB
     const membersRef = database.ref('members');
-    firebase.auth().signInWithEmailAndPassword(email, defaultPassword)
-        .then(() => {
-            // Now user is authenticated, safe to access database
-            const membersRef = database.ref('members');
-            membersRef.orderByChild('email').equalTo(email).once('value', snapshot => {
-                if (snapshot.exists()) {
-                    // ✅ UPDATE the existing entry
-                    const key = Object.keys(snapshot.val())[0];
-                    membersRef.child(key).update({
+    membersRef.orderByChild('email').equalTo(email).once('value', snapshot => {
+        if (snapshot.exists()) {
+            // ✅ UPDATE the existing entry
+            const key = Object.keys(snapshot.val())[0];
+            membersRef.child(key).update({
+                fname,
+                lname,
+                discordID,
+                class: classVal,
+                section,
+                skills,
+                points
+            }).then(() => {
+                sendWebhookAndRedirect(`${date}\n${payloadContent}\n(Updated existing member)`, `Updated the entry of ${email} successfully!`);
+            });
+        } else {
+            // ❌ Email doesn't exist, create Firebase Auth user + DB entry
+            firebase.auth().createUserWithEmailAndPassword(email, defaultPassword)
+                .then(() => {
+                    return membersRef.push({
                         fname,
                         lname,
+                        email,
                         discordID,
                         class: classVal,
                         section,
                         skills,
                         points
-                    }).then(() => {
-                        sendWebhookAndRedirect(`${date}\n${payloadContent}\n(Updated existing member)`, `Updated the entry of ${email} successfully!`);
                     });
-                } else {
-                    // ❌ Email doesn't exist, create Firebase Auth user + DB entry
-                    firebase.auth().createUserWithEmailAndPassword(email, defaultPassword)
-                        .then(() => {
-                            return membersRef.push({
-                                fname,
-                                lname,
-                                email,
-                                discordID,
-                                class: classVal,
-                                section,
-                                skills,
-                                points
-                            });
-                        })
-                        .then(() => {
-                            sendWebhookAndRedirect(`${date}\n${payloadContent}`, `Registered successfully!`);
-                        })
-                        .catch(error => {
-                            console.error("Registration error:", error);
-                            alert("Something went wrong during registration. Please try again.");
-                        });
-                }
-            });
-        })
-        .catch((error) => {
-            if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential' || error.code === 'auth/internal-error') {
-                // User not found → proceed normally (create user + data)
-                const membersRef = database.ref('members');
-                firebase.auth().createUserWithEmailAndPassword(email, defaultPassword)
-                    .then(() => {
-                        return membersRef.push({
-                            fname,
-                            lname,
-                            email,
-                            discordID,
-                            class: classVal,
-                            section,
-                            skills,
-                            points
-                        });
-                    })
-                    .then(() => {
-                        sendWebhookAndRedirect(`${date}\n${payloadContent}`, `Registered successfully!`);
-                    })
-                    .catch(error => {
-                        console.error("Registration error:", error);
-                        alert("Something went wrong during registration. Please try again.");
-                    });
-            } else {
-                console.error("Auth error:", error);
-                alert("Authentication error. Please try again.");
-            }
-        });
+                })
+                .then(() => {
+                    sendWebhookAndRedirect(`${date}\n${payloadContent}`, `Registered successfully!`);
+                })
+                .catch(error => {
+                    console.error("Registration error:", error);
+                    alert("Something went wrong during registration. Please try again.");
+                });
+        }
+    });
 
     function sendWebhookAndRedirect(content, alertMessage) {
         const payload = { content };
