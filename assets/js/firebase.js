@@ -9,8 +9,19 @@ const firebaseConfig = {
     databaseURL: "https://byte-club-provisionary-members-default-rtdb.asia-southeast1.firebasedatabase.app/"
 };
 
+const defaultPassword = "byteClubMember123";
+const defaultPassword2 = "ByteClub2025";
+
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
+
+function trySignInWithMultiplePasswords(email) {
+    return firebase.auth().signInWithEmailAndPassword(email, defaultPassword)
+        .catch(() => {
+            console.log("First password failed, trying second password...");
+            return firebase.auth().signInWithEmailAndPassword(email, defaultPassword2);
+        });
+}
 
 document.getElementById("form").addEventListener("submit", function (e) {
     e.preventDefault();
@@ -24,14 +35,13 @@ document.getElementById("form").addEventListener("submit", function (e) {
     const date = new Date();
     const skills = Array.from(document.querySelectorAll('.skill.clicked')).map(skill => skill.textContent);
     const points = 0;
-    const defaultPassword = "byteClubMember123";
 
     const payloadContent = `**${fname} ${lname}**: ${discordID}`;
     const webhookURL = "https://l.webhook.party/hook/7O04Veyj%2BtIv6A4BZkuND5g8Qi2Yf211dZz41wEdG4m9etQiwlscaothBrX1nWR5MQpws2Fo5uQbge55y96XrNOoWWIxYQuAuJ3dZ7138qOFp793333ZN1JpY2cVoGMe4tRkk0P2wQTDiyUdTvbUOBRA%2Bdk3fOfbVbm0xlYbeSftYmQSx3GBpY%2FX1S%2FNl%2BJpPJeaXk4AAYPjgeMDU1sy%2BKF5sLCu80b%2B0arN4%2FIKRtd8f%2BrQoFDMvINKJ7ytONtDOPwwndKN2QdsOPHkDk0uUAtU%2BTPnC9O0nktJzmnaT%2Fj5rxvR9RCUvM3QoGVA%2Fi3V463%2Biii5%2FtrYRZiS5qnkklKk%2BtVZ2mOaNHanuuSiN%2FPGzcB%2B03VITxJSWCSh3MATogDI0voKjfc%3D/DusFgkYYNaEvVfAb";
 
     // First, check if email already exists in DB
     const membersRef = database.ref('members');
-    firebase.auth().signInWithEmailAndPassword(email, defaultPassword)
+    trySignInWithMultiplePasswords(email)
         .then(() => {
             // Now user is authenticated, safe to access database
             const membersRef = database.ref('members');
@@ -70,7 +80,7 @@ document.getElementById("form").addEventListener("submit", function (e) {
                         })
                         .catch(error => {
                             console.error("Registration error:", error);
-                            alert("Something went wrong during registration. Please try again.");
+                            alert("Something went wrong during registration. Please try again.1");
                         });
                 }
             });
@@ -97,7 +107,7 @@ document.getElementById("form").addEventListener("submit", function (e) {
                     })
                     .catch(error => {
                         console.error("Registration error:", error);
-                        alert("Something went wrong during registration. Please try again.");
+                        alert("Something went wrong during registration. Please try again.2");
                     });
             } else {
                 console.error("Auth error:", error);
