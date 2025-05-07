@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+    <link rel="stylesheet" href="../assets/css/tasksdashboard.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <header>
+        <div class="personalInfo">
+            <a href="../">byteclub.co.in</a>
+            <span class="slash">/</span>
+            <span>Tasks</span>
+            <span class="slash">/</span>
+            <a href="#">Dashboard</a>
+        </div>
+        <div class="headerOptions">
+            <a class="contact" href="../contact">
+                <i class="bi bi-question-circle"></i>
+                <span>Help</span>
+            </a>
+            <a class="discord" href="https://discord.com/invite/Cr2j38SQM7">
+                <i class="bi bi-discord"></i>
+            </a>
+            <div class="profile">
+                <span id="initials"></span>
+                <div class="profileData"></div>
+            </div>
+        </div>
+    </header>
+    <div class="navbar">
+        <div class="logo">
+            <img src="../assets/icons/logoBlue.webp" alt="">
+        </div>
+        <div class="navItem active" title="Dashboard">
+            <i class="bi bi-house-door"></i>
+        </div>
+
+        <div class="divider"></div>
+
+        <a class="navItem" title="Leaderboard" href="leaderboard">
+            <i class="bi bi-trophy"></i>
+        </a>
+
+        <div class="flexibleSpace"></div>
+
+        <div class="navItem logout" title="Log Out" onclick="logoutFirebase()">
+            <i class="bi bi-box-arrow-right"></i>
+        </div>
+
+    </div>
+    <main>
+        <div class="greeting">
+            HI, <span id="accountName"></span>
+        </div>
+        <div class="stats">
+            <div class="statBox">
+                <div class="statHeading">
+                    <div class="statIcon">
+                        <i class="bi bi-check-all"></i>
+                    </div>
+                    <span>Completed</span>
+                </div>
+                <div class="statSubheading">
+                    Tasks Done
+                </div>
+                <div class="value">
+                    0
+                </div>
+            </div>
+            <div class="statBox">
+                <div class="statHeading">
+                    <div class="statIcon">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+                    <span>Pending</span>
+                </div>
+                <div class="statSubheading">
+                    Tasks Left
+                </div>
+                <div class="value">
+                    0
+                </div>
+            </div>
+            <div class="statBox">
+                <div class="statHeading">
+                    <div class="statIcon">
+                        <i class="bi bi-award"></i>
+                    </div>
+                    <span>Points</span>
+                </div>
+                <div class="statSubheading">
+                    Earned Score
+                </div>
+                <div class="value">
+                    0
+                </div>
+            </div>
+            <div class="statBox">
+                <div class="statHeading">
+                    <div class="statIcon">
+                        <i class="bi bi-person-check"></i>
+                    </div>
+                    <span>Skills</span>
+                </div>
+                <div class="statSubheading">
+                    Task Types Allocated
+                </div>
+                <div class="skillSack">
+                </div>
+            </div>
+        </div>
+        <div class="tasks">
+            <div class="tasksHeading">
+                <div class="heading" onclick="headingSelect(0)">
+                    Current Tasks
+                </div>
+                <div class="heading" onclick="headingSelect('calc(15ch + 2vw)')">
+                    Previous Tasks
+                </div>
+                <div id="activeHeading" class="activeHeading"></div>
+            </div>
+            <div class="currentTasks" id="currentTasks">
+            </div>
+            <div class="previousTasks" id="previousTasks">
+            </div>
+        </div>
+    </main>
+</body>
+<script src="../assets/js/firebase.js"></script>
+<script src="../assets/js/tasksdashboard.js"></script>
+<script>
+
+    function headingSelect(left){
+        activeHeading = document.getElementById("activeHeading")
+        currentTasks = document.getElementById("currentTasks")
+        previousTasks = document.getElementById("previousTasks")
+        activeHeading.style.left = left
+
+        if (left == 0) {
+            currentTasks.style.display = "flex"
+            previousTasks.style.display = "none"
+        } else{
+            currentTasks.style.display = "none"
+            previousTasks.style.display = "flex"
+        }
+    }
+
+</script>
+</html>

@@ -4,7 +4,7 @@
     --bg: #E6E3DB;
     --lines: #D0CDC8;
     --accent-1: #2B4E6B;
-    --aceent-2: #B9D7D9;
+    --accent-2: #B9D7D9;
     --text: #D9D9D9;
 }
 
@@ -965,11 +965,11 @@ canvas {
     }
 }
 
-.disordBox {
+.disordBox, .pwdBox {
     overflow: visible;
 }
 
-.discordInput {
+.discordInput, .pwdInput {
     position: relative;
 }
 
@@ -999,6 +999,11 @@ canvas {
 .discordID{
     box-sizing: border-box;
     padding-left: 1.5vw;
+}
+
+.pwdID{
+    box-sizing: border-box;
+    padding-left: 0;
 }
 
 .discordInput:focus-within>.warning {
@@ -1254,6 +1259,11 @@ canvas {
     .discordID{
         box-sizing: border-box;
         padding-left: 5vw;
+    }
+
+    .pwdID{
+        box-sizing: border-box;
+        padding-left: 0;
     }
 
     .discordUserSymbol{

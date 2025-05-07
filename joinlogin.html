@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Join the club</title>
+  <title>Join the club - Login</title>
   <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
   <link rel="stylesheet" href="assets/css/join.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -110,24 +110,6 @@
         </div>
         <form id="form" action="#">
           <div>
-            <div class="input input1">
-              <span>Name</span>
-              <input class="fname" type="text" name="fname" id="fname" required>
-              <input class="lname" type="text" name="lname" id="lname" required>
-            </div>
-          </div>
-          <div class="disordBox">
-            <div class="input input1 discordInput">
-              <span><i class="fa-brands fa-discord"></i></span>
-              <input class="discordID" type="text" name="discordID" id="discordID" placeholder="Discord ID Is Mandatory" required>
-              <div class="discordUserSymbol">@</div>
-              <div class="warning">
-                Copy the username exactly
-                <div class="arrow"></div>
-              </div>
-            </div>
-          </div>
-          <div>
             <div class="input input2">
               <span>Email</span>
               <div class="emailInputBox">
@@ -138,43 +120,17 @@
               </div>
             </div>
           </div>
-          <div>
-            <div class="input input3">
-              <span>Class</span>
-              <input class="classInp" type="number" name="class" id="class" min="4" max="12" placeholder="12" required>
-              <input class="sectionInp" type="text" name="section" id="section" placeholder="C" pattern="[A-Ia-i]{1}"
-                oninvalid="this.setCustomValidity('Not Valid')" onchange="try{setCustomValidity('')}catch(e){}"
-                required>
+          <div class="pwdBox">
+            <div class="input input1 pwdInput">
+              <span>
+                Password
+              </span>
+              <input class="pwdID" type="password" name="Password" id="pwd" required>
             </div>
           </div>
-          <div class="skillFormDiv">
-            <div class="input input3 skillsInp">
-              <span>Skills</span>
-              <div class="skillInpBox">
-                <div onclick="skillClicked(this)" class="skill">Programming</div>
-                <div onclick="skillClicked(this)" class="skill">Web Development</div>
-                <div onclick="skillClicked(this)" class="skill">Motion Design</div>
-                <div onclick="skillClicked(this)" class="skill">Graphic Design</div>
-                <div onclick="skillClicked(this)" class="skill">Cryptic</div>
-                <div onclick="skillClicked(this)" class="skill">Photographer</div>
-                <div onclick="skillClicked(this)" class="skill">Group Discussion</div>
-                <div onclick="skillClicked(this)" class="skill">Quizzer</div>
-                <div onclick="skillClicked(this)" class="skill">Game developer</div>
-                <div onclick="skillClicked(this)" class="skill">Entrepreneurship</div>
-                <div onclick="skillClicked(this)" class="skill">Video Editor</div>
-                <div onclick="skillClicked(this)" class="skill">Gamer</div>
-                <div onclick="skillClicked(this)" class="skill">3D design</div>
-                <div onclick="skillClicked(this)" class="skill">Robotics</div>
-                <div onclick="skillClicked(this)" class="skill">Film Making</div>
-                <div onclick="skillClicked(this)" class="skill">Acting</div>
-                <div onclick="skillClicked(this)" class="skill">Not Sure</div>
-              </div>
-            </div>
-          </div>
-
           <div class="send">
-            <img class="lineSvg" id="lineSvg" src="assets/icons/Line.svg" alt="">
-            <button type="submit" id="submitBtn">
+            <img class="lineSvg" src="assets/icons/Line.svg" alt="">
+            <button type="submit">
               send
             </button>
           </div>
@@ -185,6 +141,6 @@
 </body>
 
 <script src="assets/js/firebase.js"></script>
-<script src="assets/js/join.js"></script>
+<script src="assets/js/joinlogin.js"></script>
 
 </html>
