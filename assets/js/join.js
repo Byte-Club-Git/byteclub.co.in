@@ -169,7 +169,7 @@ document.getElementById("form").addEventListener("submit", function (e) {
                         })
                         .catch(error => {
                             console.error("Registration error:", error);
-                            alert("Something went wrong during registration. Please try again.1");
+                            alert("Something went wrong during registration. Please try again.");
                         });
                 }
             });
@@ -196,7 +196,7 @@ document.getElementById("form").addEventListener("submit", function (e) {
                     })
                     .catch(error => {
                         console.error("Registration error:", error);
-                        alert("Something went wrong during registration. Please try again.2");
+                        alert("Password may have been reset. Try logging in at byteclub.co.in/joinlogin. If not, an unexpected error occurred.");
                     });
             } else {
                 console.error("Auth error:", error);

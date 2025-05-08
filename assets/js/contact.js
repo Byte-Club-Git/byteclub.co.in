@@ -41,15 +41,18 @@ function sendEmail() {
         Subject: `${fullName.value} would like to contact you`,
         Body: bodyMsg
     }).then(
-        message => alert("Message sent successfully!")
+        message => {
+            alert(`${fullName.value} your message was sent successfully!`)
+            form.reset()
+        }
     ).catch(
         error => console.log(error)
-    );
+    )
 }
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    sendEmail();
+    sendEmail()
 })
 
 function rotateNumbers(e) {
