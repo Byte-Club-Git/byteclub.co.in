@@ -117,11 +117,18 @@ document.getElementById("form").addEventListener("submit", function (e) {
                 const userData = Object.values(snapshot.val())[0]; // get first matched user
                 const fullName = `${userData.fname} ${userData.lname}`;
                 alert(`Successfully logged in, ${fullName}!`);
-                if (email == "201150@pp.balbharati.org") {
-                    window.location.href = "/tasks/admindashboard.html";
-                } else{
-                    window.location.href = "/tasks/dashboard.html";
-                }
+                firebase.auth().currentUser.getIdTokenResult()
+                    .then((idTokenResult) => {
+                        if (idTokenResult.claims.admin) {
+                            window.location.href = "/tasks/admindashboard.html";
+                        } else {
+                            window.location.href = "/tasks/dashboard.html";
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error checking admin claim:", error);
+                        window.location.href = "/tasks/dashboard.html"; // fallback
+                    });
             } else {
                 alert("Logged in, but user data not found!");
             }
