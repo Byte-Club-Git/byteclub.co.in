@@ -1,15 +1,20 @@
-
 firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged((user) => {
-
     if (user) {
-        if (user.email !== "201150@pp.balbharati.org") {
-            alert("Access denied. You are not authorized to view this page.");
-            window.location.href = "../index.html"; // redirect to home or login
-        }
+        user.getIdTokenResult().then(async (idTokenResult) => {
+            if (!idTokenResult.claims.admin) {
+                alert("Access denied. You are not authorized to view this page.");
+                window.location.href = "../index.html"; // or unauthorized.html
+            } else {
+                const email = user.email;
+            }
+        }).catch((error) => {
+            console.error("Error checking admin claim:", error);
+            window.location.href = "../index.html";
+        });
     } else {
         alert("You are not logged in!");
-        window.location.href = "../joinlogin.html"; // redirect to login
+        window.location.href = "../joinlogin.html";
     }
 });
 const urlParams = new URLSearchParams(window.location.search);
@@ -30,7 +35,7 @@ async function loadSubmissions() {
 
     const list = document.getElementById("submissionList");
     const tasksContainer = document.getElementById("tasksContainer");
-    
+
     list.innerHTML = "";
 
     if (Object.keys(submissions).length === 0) {
