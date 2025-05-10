@@ -32,7 +32,7 @@ window.addEventListener("load", () => {
 
 function displayUserStats(userData) {
     document.getElementById("accountName").textContent = `${userData.fname} ${userData.lname}`;
-    document.getElementById("initials").textContent = `${userData.fname.slice(0,1)}${userData.lname.slice(0,1)}`;
+    document.getElementById("initials").textContent = `${userData.fname.slice(0, 1)}${userData.lname.slice(0, 1)}`;
 
     // Display skills
     const skillSack = document.querySelector(".skillSack");
@@ -56,6 +56,9 @@ async function loadUserTasks(skills, email) {
     currentTasksContainer.innerHTML = "";
     previousTasksContainer.innerHTML = "";
 
+    const today = new Date();
+    const allTasks = [];
+
     for (const skill of skills) {
         const taskCol = firestore.collection("tasks").doc(skill).collection("tasks");
         const taskSnap = await taskCol.get();
@@ -63,90 +66,78 @@ async function loadUserTasks(skills, email) {
         taskSnap.forEach(doc => {
             const task = doc.data();
             const taskId = doc.id;
-            console.log("Task document data:", task); // Add this line
-            const taskBox = document.createElement("div");
-            taskBox.className = "taskBox";
-            var currentScore;
-            if (scores[taskId]) {
-                currentScore = scores[taskId]
-            } else {
-                currentScore = "nil"
-            }
-
-            // Task heading and link
-            taskBox.innerHTML = `
-                <div class="statHeading">
-                    <div class="statIcon"><i class="bi bi-file-earmark-text"></i></div>
-                    <span>${task.taskName || "Unnamed Task"}</span>
-                    <div class="deleteIconUser">
-                         Score: ${currentScore}
-                    </div>
-                </div>
-                <div class="taskSkill">
-                        <div class="skill">${skill}</div>
-                </div>
-                <div class="taskLink previousTaskLink previousTaskLink1">
-                    <a href="${task.promptLink}" target="_blank">${task.promptLink}</a>
-                </div>
-            `;
-
-            const footer = document.createElement("div");
-            footer.className = "taskFooter";
             const deadline = new Date(task.deadline);
-            footer.innerHTML = `<span class='deadlineDate' title='Deadline'>${formatDate(deadline)}</span>`;
-
             const submissions = task.submissions || {};
             const username = email.split('@')[0];
             const userSubmission = submissions[username];
+            const timestamps = task.submissionTimestamps || {};
+            const submittedAt = timestamps[username];
 
-
-            if (userSubmission) {
-                // Previous task
-
-                const timestamps = task.submissionTimestamps || {};
-                const submittedAt = timestamps[username];
-
-                let submittedDate;
-                if (submittedAt && submittedAt.toDate) {
-                    submittedDate = submittedAt.toDate(); // Convert Firestore Timestamp → JS Date
-                } else if (submittedAt instanceof Date) {
-                    submittedDate = submittedAt;
-                } else {
-                    submittedDate = null;
-                }
-
-                footer.innerHTML = `
-                <span class='deadlineDate' title='Deadline'>${formatDate(deadline)}</span>
-                <span class='submissionDate' title='Submission Date'>${formatDateTime(submittedDate)}</span>
-
-                        `;
-
-
-                taskBox.classList.add("previousTaskBox");
-                footer.classList.add("previousTaskFooter");
-
-                const submissionLink = document.createElement("div");
-                submissionLink.className = "taskLink previousTaskLink previousTaskLink2";
-                submissionLink.innerHTML = `<span>submission: </span><a href="${userSubmission}" target="_blank">${userSubmission}</a>`;
-
-                taskBox.appendChild(submissionLink);
-                previousTasksContainer.appendChild(taskBox);
-                completed++;
-            } else {
-                // Current task with submit button
-                const submitBtn = document.createElement("div");
-                submitBtn.className = "submitTask";
-                submitBtn.textContent = "Submit";
-                submitBtn.addEventListener("click", () => submitTask(skill, doc.id, email));
-
-                footer.appendChild(submitBtn);
-                currentTasksContainer.appendChild(taskBox);
-                pending++;
-            }
-
-            taskBox.appendChild(footer);
+            allTasks.push({
+                ...task,
+                id: taskId,
+                skill,
+                deadline,
+                userSubmission,
+                submittedDate: submittedAt?.toDate ? submittedAt.toDate() : submittedAt,
+            });
         });
     }
+    allTasks.sort((a, b) => b.deadline - a.deadline);
+
+    allTasks.forEach(task => {
+        const taskBox = document.createElement("div");
+        taskBox.className = "taskBox";
+        const currentScore = scores[task.id] ?? "nil";
+
+        taskBox.innerHTML = `
+            <div class="statHeading">
+                <div class="statIcon"><i class="bi bi-file-earmark-text"></i></div>
+                <span>${task.taskName || "Unnamed Task"}</span>
+                <div class="deleteIconUser">${currentScore}</div>
+            </div>
+            <div class="taskSkill">
+                <div class="skill">${task.skill}</div>
+            </div>
+            <div class="taskLink previousTaskLink previousTaskLink1">
+                <a href="${task.promptLink}" target="_blank">${task.promptLink}</a>
+            </div>
+        `;
+
+        const footer = document.createElement("div");
+        footer.className = "taskFooter";
+
+        if (task.userSubmission || task.deadline < today) {
+            // Previous Task
+            footer.innerHTML = `
+                <span class='deadlineDate' title='Deadline'>${formatDate(task.deadline)}</span>
+                <span class='submissionDate' title='Submission Date'>${formatDateTime(task.submittedDate)}</span>
+            `;
+            taskBox.classList.add("previousTaskBox");
+            footer.classList.add("previousTaskFooter");
+
+            const submissionLink = document.createElement("div");
+            submissionLink.className = "taskLink previousTaskLink previousTaskLink2";
+            submissionLink.innerHTML = `<span>submission: </span><a href="${task.userSubmission}" target="_blank">${task.userSubmission}</a>`;
+
+            taskBox.appendChild(submissionLink);
+            previousTasksContainer.appendChild(taskBox);
+            completed++;
+        } else {
+            // Current Task
+            const submitBtn = document.createElement("div");
+            submitBtn.className = "submitTask";
+            submitBtn.textContent = "Submit";
+            submitBtn.addEventListener("click", () => submitTask(task.skill, task.id, email));
+
+            footer.innerHTML = `<span class='deadlineDate' title='Deadline'>${formatDate(task.deadline)}</span>`;
+            footer.appendChild(submitBtn);
+            currentTasksContainer.appendChild(taskBox);
+            pending++;
+        }
+
+        taskBox.appendChild(footer);
+    });
 
     // Update stats
     document.querySelectorAll(".statBox")[0].querySelector(".value").textContent = completed;
@@ -169,6 +160,7 @@ async function submitTask(skill, taskId, email) {
 
     const taskData = taskDoc.data();
     const deadline = new Date(taskData.deadline);
+    deadline.setHours(23, 59, 0, 0);
     const now = new Date();
 
     if (now > deadline) {
@@ -210,7 +202,7 @@ function formatDate(date) {
 function formatDateTime(date) {
     if (!(date instanceof Date)) return null;
 
-    finalDate =  {
+    finalDate = {
         month: date.toLocaleString('en-US', { month: 'short' }), // "May"
         day: date.getDate(),                                      // 2
         hour: date.getHours(),                                    // 15 (24-hr)

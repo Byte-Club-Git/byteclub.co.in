@@ -219,6 +219,10 @@ main {
     position: relative;
 }
 
+.statHeading > .deleteIconUser {
+    color: var(--accent-1);
+}
+
 .deleteIcon, .deleteIconUser{
     position: absolute;
     right: 0;
@@ -561,4 +565,9 @@ button:active{
 .deadlineDate{
     color: #dc3545;
     font-weight: 600;
+}
+
+.clicked{
+    background: var(--text-2) !important;
+    color: var(--bg) !important;
 }

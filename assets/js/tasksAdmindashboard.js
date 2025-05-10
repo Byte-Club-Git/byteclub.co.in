@@ -29,9 +29,11 @@ firebase.auth().onAuthStateChanged((user) => {
 const addTask = document.getElementById("addTask")
 
 function skillClicked(e) {
-    e.style.background = "var(--text-2)"
-    e.style.color = "var(--bg)"
-    e.classList.add("clicked")
+    if (e.classList.contains("clicked")) {
+        e.classList.remove("clicked")
+    } else {
+        e.classList.add("clicked")
+    }
 }
 
 function headingSelect(left) {
@@ -80,13 +82,69 @@ document.querySelector("form").addEventListener("submit", async function (e) {
     }
 
     try {
+        var webhookURL;
+        var payload;
         for (let skill of clickedSkills) {
+
+
+            if (skill == "Programming") {
+                webhookURL = "https://l.webhook.party/hook/rfyEb3L6HHnhLey%2BAiPlueXUqA12MPcjIN3HgiOSxAm%2F7jg8VGY9FJMKnuVyRBMYcw4Wt3w8GV8Qfk%2BbJgvZ%2Fva45iCg0u0MoBd4mMLnS7WsgIc1tVZsxWpDoQ3yDLwkZtgfSs9dcPYfbdDEcy0T404yBWakCkyfdXIfke%2FhpIFBpvDotvvXAPO1Hzv7RyWFEKk3%2F41WF%2FNYlvUQHBnqrizvSvWcenXROIjQp9CfjG1HKmMroi5ZsJCUM3WicBw7VbMWe4jvlRkvenUp0xkodw3UpNpuuqqlVgsJ5bA9IitDf2XJq4yplMLT41aH5zljyob0JN9maiGIXcsh4IN%2BZumds2pYTw9ffyLg1oHHUOua2fPoLvTmaEib18mqWBq3E3h36umImdc%3D/Jp3GJGfSlNmNGNNj"
+            }
+
             await db.collection("tasks").doc(skill).collection("tasks").add({
                 taskName,
                 promptLink,
                 deadline,
                 currentTime,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            payload = {
+                embeds: [
+                    {
+                        color: 0x67A9E4,
+                        fields: [
+                            {
+                                name: "📝 Title",
+                                value: `**${taskName}**`,
+                            },
+                            {
+                                name: "🔗 Prompt Link",
+                                value: `[Open Prompt](${promptLink})`,
+                            },
+                            {
+                                name: "🗓️ Deadline",
+                                value: `> ${deadline}, 11:59PM`,
+                                inline: true
+                            },
+                            {
+                                name: "⏰ Posted At",
+                                value: `> ${currentTime}`,
+                                inline: true
+                            }
+                        ],
+                        footer: {
+                            text: skill + " Task | Byte Club",
+                        },
+                        timestamp: new Date().toISOString()
+                    }
+                ]
+            };
+
+            fetch(webhookURL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    alert(`Alert Sent to: ${skill} members`)
+                } else {
+                    console.log("Failed to send webhook message.");
+                }
+            }).catch(err => {
+                console.error("Webhook error:", err);
             });
         }
         alert("Task added to all clicked skill categories!");
@@ -123,6 +181,7 @@ async function fetchTasksForUser() {
     previousTasksContainer.innerHTML = "";
 
     const today = new Date();
+    const tasks = [];
 
     for (const skill of skills) {
         const tasksRef = firebase.firestore()
@@ -136,44 +195,58 @@ async function fetchTasksForUser() {
                 const task = doc.data();
                 const taskId = doc.id;
                 const deadlineDate = new Date(task.deadline);
-                const isUpcoming = deadlineDate >= today;
 
-                const taskBox = document.createElement("div");
-                taskBox.className = "taskBox";
-                taskBox.innerHTML = `
-                        <div class="statHeading">
-                            <div class="statIcon">
-                                <i class="bi bi-file-earmark-text"></i>
-                            </div>
-                            <span>${task.taskName}</span>
-                                <div class="deleteIcon" onclick="deleteTask('${skill}', '${taskId}')">
-                                    <i class="bi bi-trash"></i>
-                                </div>
-                        </div>
-                        <div class="taskSkill">
-                            <div class="skill">${skill}</div>
-                        </div>
-                        <div class="taskLink">
-                            <a href="${task.promptLink}" target="_blank">
-                                ${task.promptLink}
-                            </a>
-                        </div>
-                        <div class="taskFooter">
-                            <span>${formatDate(deadlineDate)}</span>
-                            <div class="submitTask" onclick="viewSubmissions('${skill}', '${taskId}')">Submissions</div>
-                        </div>
-                    `;
-
-                if (isUpcoming) {
-                    currentTasksContainer.appendChild(taskBox);
-                } else {
-                    previousTasksContainer.appendChild(taskBox);
-                }
+                tasks.push({
+                    ...task,
+                    id: taskId,
+                    deadlineDate,
+                    isUpcoming: deadlineDate >= today,
+                    skill: skill
+                });
             });
+
         } catch (error) {
             console.error(`Error fetching tasks for ${skill}:`, error);
         }
     }
+
+
+    tasks.sort((a, b) => b.deadlineDate - a.deadlineDate);
+    console.log(tasks)
+
+    tasks.forEach(task => {
+        const taskBox = document.createElement("div");
+        taskBox.className = "taskBox";
+        taskBox.innerHTML = `
+                    <div class="statHeading">
+                        <div class="statIcon">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <span>${task.taskName}</span>
+                        <div class="deleteIcon" onclick="deleteTask('${task.skill}', '${task.id}')">
+                            <i class="bi bi-trash"></i>
+                        </div>
+                    </div>
+                    <div class="taskSkill">
+                        <div class="skill">${task.skill}</div>
+                    </div>
+                    <div class="taskLink">
+                        <a href="${task.promptLink}" target="_blank">
+                            ${task.promptLink}
+                        </a>
+                    </div>
+                    <div class="taskFooter">
+                        <span>${formatDate(task.deadlineDate)}</span>
+                        <div class="submitTask" onclick="viewSubmissions('${task.skill}', '${task.id}')">Submissions</div>
+                    </div>
+                `;
+
+        if (task.isUpcoming) {
+            currentTasksContainer.appendChild(taskBox);
+        } else {
+            previousTasksContainer.appendChild(taskBox);
+        }
+    });
 }
 
 // Helper to format date as "MMM DD, h:mm A"
