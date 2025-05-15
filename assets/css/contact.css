@@ -630,7 +630,7 @@ html.lenis body {
     right: 0;
     top: 0;
     content: "";
-    animation: divider 1s forwards ease-out 2s;
+    animation: divider 1s forwards ease-out 1.25s;
 }
 
 #text-measurer {
