@@ -187,15 +187,27 @@ window.addEventListener('DOMContentLoaded', () => {
     const span = document.getElementById('text-measurer');
 
     function resizeInput(withBuffer = true) {
-      span.textContent = input.value || ' ';
-      const width = span.offsetWidth;
-      input.style.width = (width + (withBuffer ? 16 : 0)) + 'px'; // 1px buffer if desired
+        if (!(withBuffer) && (input.value == '')) {
+            input.value = "Your Name"
+            span.textContent
+        }
+        span.textContent = input.value || ' ';
+        const width = span.offsetWidth;
+        input.style.width = (width + (withBuffer ? 16 : 0)) + 'px'; // 1px buffer if desired
+    }
+
+    function removeDefault() {
+        if (input.value === "Your Name") {
+            input.value = '';
+            resizeInput(true);
+        }
     }
 
     document.fonts.ready.then(() => resizeInput(false));
     input.addEventListener('input', () => resizeInput(true));
     input.addEventListener('focus', () => resizeInput(true));
     input.addEventListener('blur', () => resizeInput(false));
+    input.addEventListener('click', () => removeDefault());
 });
 
 function socialFlyHover(e) {
@@ -238,33 +250,33 @@ window.onscroll = function () {
 
 const welcomeMsgspans = document.querySelectorAll('.welcomeMsg > div > span');
 welcomeMsgspans.forEach((span, index) => {
-  const delay = (index * 0.005 + 1).toFixed(2);
-  span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
+    const delay = (index * 0.005 + 3).toFixed(2);
+    span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
 });
 
 const welcomeMsgAspans = document.querySelectorAll('.welcomeMsg > div > a > span');
 welcomeMsgAspans.forEach((span, index) => {
-  const delay = (index * 0.005 + 1.18).toFixed(2);
-  span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
+    const delay = (index * 0.005 + 3.18).toFixed(2);
+    span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
 });
 
 const quotespans = document.querySelectorAll('.quote > span');
 quotespans.forEach((span, index) => {
-  const delay = (index * 0.005 + 1).toFixed(2);
-  span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
+    const delay = (index * 0.005 + 3).toFixed(2);
+    span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
 });
 
 const namespans = document.querySelectorAll('.name > span');
 namespans.forEach((span, index) => {
-  const delay = (index * 0.015 + 1.31).toFixed(2);
-  span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
+    const delay = (index * 0.015 + 3.31).toFixed(2);
+    span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
 });
 
 const main = document.getElementById("main")
 const footer = document.getElementById("footer")
 
 
-setTimeout(function() {
-  main.style.overflow = "visible"
-  footer.style.display = "flex"
+setTimeout(function () {
+    main.style.overflow = "visible"
+    footer.style.display = "flex"
 }, 2000);

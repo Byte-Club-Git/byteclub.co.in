@@ -25,6 +25,9 @@ body {
     background-color: var(--bg);
     max-width: 100vw;
     width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding-top: 14vh;
 }
 
 html {
@@ -553,8 +556,8 @@ html.lenis body {
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    height: 83vh;
-    top: 17vh;
+    height: 86vh;
+    margin-top: 14vh;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -627,7 +630,7 @@ html.lenis body {
     right: 0;
     top: 0;
     content: "";
-    animation: divider 1s forwards ease-out 1s;
+    animation: divider 1s forwards ease-out 2s;
 }
 
 #text-measurer {
@@ -737,7 +740,7 @@ html.lenis body {
     width: 0%;
     height: 1px;
     background-color: black;
-    animation: underline 1s forwards cubic-bezier(0.075, 0.82, 0.165, 1) 2s;
+    animation: underline 1s forwards cubic-bezier(0.075, 0.82, 0.165, 1) 4s;
 }
 
 @keyframes underline {
@@ -762,7 +765,7 @@ html.lenis body {
     font-weight: 200;
     opacity: 0;
     transform: translateY(10%);
-    animation: textArea 0.5s forwards cubic-bezier(0.075, 0.82, 0.165, 1) 1.31s;
+    animation: textArea 0.5s forwards cubic-bezier(0.075, 0.82, 0.165, 1) 3.31s;
 }
 
 @keyframes textArea {
@@ -817,7 +820,7 @@ form {
     font-family: inter;
     font-weight: 200;
     transform: translateY(200%);
-    animation: email 0.5s forwards cubic-bezier(0.075, 0.82, 0.165, 1) 1.31s;
+    animation: email 0.5s forwards cubic-bezier(0.075, 0.82, 0.165, 1) 3.31s;
 }
 
 @keyframes email {
@@ -849,7 +852,7 @@ form {
     justify-content: center;
     align-items: center;
     transform: translateY(200%);
-    animation: email 0.5s forwards cubic-bezier(0.075, 0.82, 0.165, 1) 1.8s;
+    animation: email 0.5s forwards cubic-bezier(0.075, 0.82, 0.165, 1) 3.8s;
 }
 
 .quote {
