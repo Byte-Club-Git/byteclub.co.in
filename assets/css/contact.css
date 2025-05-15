@@ -639,7 +639,7 @@ html.lenis body {
     left: -9999px;
     visibility: hidden;
     white-space: pre;
-    font-family: 'Inter', sans-serif;
+    font-family: hatton, serif;
     font-weight: 200;
     font-size: 2rem;
 }
@@ -660,7 +660,7 @@ html.lenis body {
 .nameInp {
     border: none;
     background-color: transparent;
-    font-family: hatton;
+    font-family: hatton, serif;
     font-weight: 200;
     font-size: 2rem;
     width: 8.5ch;
