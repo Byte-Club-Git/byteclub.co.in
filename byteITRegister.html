@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickByte</title>
+    <link rel="icon" type="image/x-icon" href="logoBlue.webp">
+    <link rel="stylesheet" href="assets/css/byteitregform.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/3a881cfccc.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+    <script async src="https://tally.so/widgets/embed.js"></script>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BDK1C31Z2G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BDK1C31Z2G');
+</script>
+<body>
+ <div class="center container1">
+        <div class="rectangle rectangle-left"></div>
+        <div class="rectangle rectangle-right"></div>
+        <div class="rectangle rectangle-top"></div>
+        <div class="rectangle rectangle-nav"></div>
+        <div class="rectangle rectangle-bottom"></div>
+
+        <section id="bigNav" class="center bigNav">
+          <div class="left">
+            <div>
+              <span onclick="navMenuClick()" id="span1" onmouseover="rotateNumbers(this)"
+                onmouseout="stopRotateNumbers(this)">
+                <div class="numbers">
+                  <div class="number"></div>
+                </div>
+                <a href="/#spanA">ABOUT</a>
+              </span>
+            </div>
+            <div>
+              <span id="span2" onmouseover="rotateNumbers(this)"
+                onmouseout="stopRotateNumbers(this)">
+                <div class="numbers">
+                  <div class="number"></div>
+                  <div class="number"></div>
+                </div>
+                <a href="team">TEAM</a>
+              </span>
+            </div>
+            <div>
+              <span id="span3" onmouseover="rotateNumbers(this)"
+                onmouseout="stopRotateNumbers(this)">
+                <div class="numbers">
+                  <div class="number"></div>
+                  <div class="number"></div>
+                  <div class="number"></div>
+                </div>
+                <a href="resources">RESOURCES</a>
+              </span>
+            </div>
+            <div>
+              <span id="span4" onmouseover="rotateNumbers(this)"
+                onmouseout="stopRotateNumbers(this)">
+                <div class="numbers">
+                  <div class="number"></div>
+                  <div class="number"></div>
+                  <div class="number"></div>
+                  <div class="number"></div>
+                </div>
+                <a href="byteit">BYTE.IT</a>
+              </span>
+            </div>
+          </div>
+          <div class="right">
+            <span onmouseover="document.getElementById('spanContact').style.width='100%'"
+              onmouseout="document.getElementById('spanContact').style.width='0%'">
+              <a href="contact">Contact</a>
+              <span id="spanContact"></span>
+            </span>
+            <span onmouseover="document.getElementById('spanCredits').style.width='100%'"
+              onmouseout="document.getElementById('spanCredits').style.width='0%'">
+              <a href="credits">Credits</a>
+              <span id="spanCredits"></span>
+            </span>
+          </div>
+        </section>
+      
+          <div class="nav">
+            <span id="navByte" onclick="window.location = '/';" class="navByte">byte.</span>
+            <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
+              <img id="circle1" class="circle1" src="assets/icons/circle1.svg" alt="">
+              <img id="circle2" class="circle2" src="assets/icons/circle2.svg" alt="">
+              <div class="lines">
+                <div id="line1" class="line1"></div>
+                <div id="line2" class="line2"></div>
+              </div>
+            </span>
+          </div>
+        <iframe data-tally-src="https://tally.so/r/mJYAaz?transparentBackground=1" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" title="Registration form"></iframe>
+    </div>
+</body>
+<script>
+
+    // smooth scrolll
+    const lenis = new Lenis()
+
+    lenis.on('scroll', (e) => {
+        // console.log(e)
+    })
+
+    function raf(time) {
+        lenis.raf(time)
+        requestAnimationFrame(raf)
+    }
+    requestAnimationFrame(raf)
+
+
+
+    function rotateNumbers(e) {
+        numbers = $(e).find(".numbers")[0]
+        numbers.classList.add("numberRotate")
+    }
+    function stopRotateNumbers(e) {
+        numbers = $(e).find(".numbers")[0]
+        numbers.classList.remove("numberRotate");
+    }
+
+
+
+    // navbar circles and lines
+
+    circle1 = document.getElementById("circle1")
+    circle2 = document.getElementById("circle2")
+    navByte = document.getElementById("navByte")
+    line1 = document.getElementById("line1")
+    line2 = document.getElementById("line2")
+    bigNav = document.getElementById("bigNav")
+    span1 = document.getElementById("span1")
+    span2 = document.getElementById("span2")
+    span3 = document.getElementById("span3")
+    span4 = document.getElementById("span4")
+    var n = 0
+
+    function rotateBack() {
+        circle1.classList.remove("rotateStop")
+        circle2.classList.remove("rotateStop")
+    }
+    function rotateStop() {
+        circle1.classList.add("rotateStop")
+        circle2.classList.add("rotateStop")
+    }
+    function navMenuClick() {
+        if (n == 0) {
+            line1.classList.add("line1Click")
+            line2.classList.add("line2Click")
+            circle1.classList.add("circleBigNav")
+            circle2.classList.add("circleBigNav")
+            bigNav.classList.add("bigNavAppear")
+            span1.style.animationPlayState = "running"
+            span2.style.animationPlayState = "running"
+            span3.style.animationPlayState = "running"
+            span4.style.animationPlayState = "running"
+            navByte.style.color = "whitesmoke"
+
+            n = 1
+        } else {
+            line1.classList.remove("line1Click")
+            line2.classList.remove("line2Click")
+            circle1.classList.remove("circleBigNav")
+            circle2.classList.remove("circleBigNav")
+            bigNav.classList.remove("bigNavAppear")
+            navByte.style.color = "black"
+
+            n = 0
+        }
+    }
+
+
+</script>
+</html>
