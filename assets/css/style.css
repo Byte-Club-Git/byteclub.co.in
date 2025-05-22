@@ -1530,3 +1530,135 @@ body:hover>#cursor {
         font-size: 0.8rem;
     }
 }
+
+.dynamicNavbar{
+    z-index: 1001;
+    position: fixed;
+    left: 50%;
+    top: 10.5vh;
+    transform: translateX(-50%) translateY(-50%);
+    /* width: max-content; */
+    height: 5vh;
+    display: flex;
+    /* background: #1A1A1D; */
+    color: whitesmoke;
+    border-radius: 15px;
+    align-items: center;
+    padding: 0 0vw;
+    font-family: poppins;
+    transition: all 300ms ease-out, border-radius 0s;
+
+    background: rgba(0, 0, 0, 0.45);
+    box-shadow: 0 2px 8px 0 rgba(3, 3, 3, 0.37);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+/* 
+.contentElement{
+    position: fixed;
+    width: 100%;
+    height: 0vh;
+    background: #1A1A1D;
+    left: 0;
+    top: 50%;
+    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: -1;
+    border-radius: 15px;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dynamicNavbar::before{
+    content: "";
+    position: absolute;
+    z-index: 10;
+    width: 80%;
+    height: 1px;
+    background: #323237;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0%;
+    opacity: 0;
+    transition: all 150ms ease-out;
+} */
+
+/* .dynamicNavbar:hover{
+    padding: 0 0.5vw;
+    height: 6.5vh;
+} */
+/* 
+.dynamicNavbar:hover .contentElement{
+    padding-top: 3.25vh;
+    height: 20vh;
+} */
+/* .dynamicNavbar:hover::before{
+    opacity: 1;
+} */
+
+.elements{
+    width: 100%;
+    display: flex;
+    height: 5vh;
+    align-items: center;
+}
+
+.element{
+    padding: 0 0.5vw;
+    margin: 0 0.5vw;
+    display: flex;
+    font-size: 0.9rem;
+    height: 80%;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 150ms ease-out;
+    position: relative;
+}
+
+.element::after{
+    content: "";
+    position: absolute;
+    right: -0.5vw;
+    height: 75%;
+    width: 1px;
+    background: var(--lines);
+}
+
+.element:last-child::after{
+    display: none;
+}
+
+.element:hover{
+    background-color: whitesmoke;
+    color: #1A1A1D;
+}
+.element:hover > .iconDynamic > img{
+    filter: brightness(0) saturate(100%) invert(8%) sepia(6%) saturate(863%) hue-rotate(202deg) brightness(99%) contrast(94%);
+}
+
+/* .iconDynamic{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0.5vw;
+}
+
+.iconDynamic > img{
+    height: 1.25rem;
+    width: auto;
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(2701%) hue-rotate(7deg) brightness(119%) contrast(92%);
+}
+
+.descriptionElement{
+    color: #ababab;
+    font-size: 0.75rem;
+    width: 85%;
+    margin-top: 1.3vh;
+} */
