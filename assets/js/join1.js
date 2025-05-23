@@ -99,8 +99,7 @@ function navMenuClick() {
 const defaultPassword = "byteClubMember123";
 const defaultPassword2 = "ByteClub2025";
 
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+
 
 function trySignInWithMultiplePasswords(email) {
     return firebase.auth().signInWithEmailAndPassword(email, defaultPassword)
