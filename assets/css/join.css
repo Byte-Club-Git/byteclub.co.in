@@ -1312,3 +1312,7 @@ canvas {
     }
 
 }
+.note{
+    animation: fadeUpInput 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 0ms forwards;
+    color: rgb(104, 41, 41);
+}
