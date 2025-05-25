@@ -98,15 +98,16 @@
           <span>join</span>
         </div>
         <div class="sWord">
-          <span>club</span>
+          <span>workshops</span>
         </div>
         <div class="smallWord">
-          <span>the</span>
+          <!-- <span>the</span> -->
         </div>
       </div>
       <div class="formCont">
         <div class="mobileHeading">
-          Join The Club
+          <!-- Join The Club -->
+          Join Workshops
         </div>
         <form id="form" action="#">
           <div>
@@ -119,7 +120,8 @@
           <div class="disordBox">
             <div class="input input1 discordInput">
               <span><i class="fa-brands fa-discord"></i></span>
-              <input class="discordID" type="text" name="discordID" id="discordID" placeholder="Discord ID Is Mandatory" required>
+              <input class="discordID" type="text" name="discordID" id="discordID" placeholder="Discord ID Is Mandatory"
+                required>
               <div class="discordUserSymbol">@</div>
               <div class="warning">
                 Copy the username exactly
@@ -132,8 +134,8 @@
               <span>Email</span>
               <div class="emailInputBox">
                 <input class="email" type="text" name="text" pattern="[0-9]{6}"
-                  oninvalid="this.setCustomValidity('Not a school Gmail')" onchange="try{setCustomValidity('')}catch(e){}"
-                  required>
+                  oninvalid="this.setCustomValidity('Not a school Gmail')"
+                  onchange="try{setCustomValidity('')}catch(e){}" required>
                 <div class="emailPlaceholder">@pp.balbharati.org</div>
               </div>
             </div>
@@ -183,7 +185,9 @@
     </div>
   </div>
 </body>
-
+<script>
+  alert("To attend the workshops, you will be registered as a provisional member. This status grants you full access, including the opportunity to be assigned tasks and take part in all activities — alongside peers of your skill level.")
+</script>
 <script src="assets/js/firebase.js"></script>
 <script src="assets/js/join.js"></script>
 
