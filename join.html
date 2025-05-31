@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join the club</title>
+  <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+  <link rel="stylesheet" href="assets/css/join.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://kit.fontawesome.com/3a881cfccc.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+</head>
+
+<body>
+  <div class="container1">
+    <div class="rectangle rectangle-left"></div>
+    <div class="rectangle rectangle-right"></div>
+    <div class="rectangle rectangle-top"></div>
+    <div class="rectangle rectangle-nav"></div>
+
+    <section id="bigNav" class="center bigNav">
+      <div class="left">
+        <div>
+          <span onclick="navMenuClick()" id="span1" onmouseover="rotateNumbers(this)"
+            onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+            </div>
+            <a href="/#spanA">ABOUT</a>
+          </span>
+        </div>
+        <div>
+          <span id="span2" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="team">TEAM</a>
+          </span>
+        </div>
+        <div>
+          <span id="span3" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="resources">RESOURCES</a>
+          </span>
+        </div>
+        <div>
+          <span id="span4" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="byteit">BYTE.IT</a>
+          </span>
+        </div>
+      </div>
+      <div class="right">
+        <span onmouseover="document.getElementById('spanContact').style.width='100%'"
+          onmouseout="document.getElementById('spanContact').style.width='0%'">
+          <a href="contact">Contact</a>
+          <span id="spanContact"></span>
+        </span>
+        <span onmouseover="document.getElementById('spanCredits').style.width='100%'"
+          onmouseout="document.getElementById('spanCredits').style.width='0%'">
+          <a href="credits">Credits</a>
+          <span id="spanCredits"></span>
+        </span>
+      </div>
+    </section>
+
+    <div class="nav">
+      <span id="navByte" onclick="window.location = '/';" class="navByte">byte.</span>
+      <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
+        <img id="circle1" class="circle1" src="assets/icons/circle1.svg" alt="">
+        <img id="circle2" class="circle2" src="assets/icons/circle2.svg" alt="">
+        <div class="lines">
+          <div id="line1" class="line1"></div>
+          <div id="line2" class="line2"></div>
+        </div>
+      </span>
+    </div>
+    <div class="main">
+      <div class="heading">
+        <div id="keyboard" class="keyboard">
+          <canvas id="canvas3d"></canvas>
+        </div>
+        <div class="fWord">
+          <span>join</span>
+        </div>
+        <div class="sWord">
+          <span>club</span>
+        </div>
+        <div class="smallWord">
+          <span>the</span>
+        </div>
+      </div>
+      <div class="formCont">
+        <div class="mobileHeading">
+          Join The Club
+        </div>
+        <form id="form" action="#">
+          <div>
+            <div class="input input1">
+              <span>Name</span>
+              <input class="fname" type="text" name="fname" id="fname" required>
+              <input class="lname" type="text" name="lname" id="lname" required>
+            </div>
+          </div>
+          <div class="disordBox">
+            <div class="input input1 discordInput">
+              <span><i class="fa-brands fa-discord"></i></span>
+              <input class="discordID" type="text" name="discordID" id="discordID" placeholder="Discord ID Is Mandatory" required>
+              <div class="discordUserSymbol">@</div>
+              <div class="warning">
+                Copy the username exactly
+                <div class="arrow"></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="input input2">
+              <span>Email</span>
+              <div class="emailInputBox">
+                <input class="email" type="text" name="text" pattern="[0-9]{6}"
+                  oninvalid="this.setCustomValidity('Not a school Gmail')" onchange="try{setCustomValidity('')}catch(e){}"
+                  required>
+                <div class="emailPlaceholder">@pp.balbharati.org</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="input input3">
+              <span>Class</span>
+              <input class="classInp" type="number" name="class" id="class" min="4" max="12" placeholder="12" required>
+              <input class="sectionInp" type="text" name="section" id="section" placeholder="C" pattern="[A-Ia-i]{1}"
+                oninvalid="this.setCustomValidity('Not Valid')" onchange="try{setCustomValidity('')}catch(e){}"
+                required>
+            </div>
+          </div>
+          <div class="skillFormDiv">
+            <div class="input input3 skillsInp">
+              <span>Skills</span>
+              <div class="skillInpBox">
+                <div onclick="skillClicked(this)" class="skill">Programming</div>
+                <div onclick="skillClicked(this)" class="skill">Web Development</div>
+                <div onclick="skillClicked(this)" class="skill">Motion Design</div>
+                <div onclick="skillClicked(this)" class="skill">Graphic Design</div>
+                <div onclick="skillClicked(this)" class="skill">Cryptic</div>
+                <div onclick="skillClicked(this)" class="skill">Photographer</div>
+                <div onclick="skillClicked(this)" class="skill">Group Discussion</div>
+                <div onclick="skillClicked(this)" class="skill">Quizzer</div>
+                <div onclick="skillClicked(this)" class="skill">Game developer</div>
+                <div onclick="skillClicked(this)" class="skill">Entrepreneurship</div>
+                <div onclick="skillClicked(this)" class="skill">Video Editor</div>
+                <div onclick="skillClicked(this)" class="skill">Gamer</div>
+                <div onclick="skillClicked(this)" class="skill">3D design</div>
+                <div onclick="skillClicked(this)" class="skill">Robotics</div>
+                <div onclick="skillClicked(this)" class="skill">Film Making</div>
+                <div onclick="skillClicked(this)" class="skill">Acting</div>
+                <div onclick="skillClicked(this)" class="skill">Not Sure</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="send">
+            <img class="lineSvg" id="lineSvg" src="assets/icons/Line.svg" alt="">
+            <button type="submit" id="submitBtn">
+              send
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="assets/js/firebase.js"></script>
+<script src="assets/js/join.js"></script>
+
+</html>
