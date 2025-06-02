@@ -1005,3 +1005,6 @@ canvas {
     display: block;
     animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
 }
+.link{
+    color: #393939;
+}
