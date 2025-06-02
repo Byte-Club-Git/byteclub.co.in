@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 :root {
-    --bg: #e6e3db;
-    --lines: #d0cdc8;
-    --accent-1: #2b4e6b;
-    --accent-2: #b9d7d9;
-    --text: #d9d9d9;
+    --bg: #E6E3DB;
+    --lines: #D0CDC8;
+    --accent-1: #2B4E6B;
+    --accent-2: #B9D7D9;
+    --text: #D9D9D9;
 }
 
 * {
@@ -86,11 +88,11 @@ html.lenis body {
     top: 14vh;
     height: 36vh;
     border-top: 1px solid var(--lines);
-    border-bottom: 1px solid var(--lines);
+    border-bottom: none;
 }
 
 .rectangle-bottom {
-    top: calc(100vh - 2vh - 14vh);
+    top: calc(100vh - 2vh);
     height: 2vh;
     border-top: 1px solid var(--lines);
     border-bottom: 1px solid var(--lines);
@@ -123,49 +125,49 @@ html.lenis body {
 }
 
 @font-face {
-    font-family: "roslindale";
+    font-family: 'roslindale';
     /*a name to be used later*/
-    src: url("../fonts/RoslindaleVariable-VF[Display]-Testing.ttf");
+    src: url('../fonts/RoslindaleVariable-VF[Display]-Testing.ttf');
     /*URL to font*/
 }
 
 @font-face {
-    font-family: "roslindale-light";
+    font-family: 'roslindale-light';
     /*a name to be used later*/
-    src: url("../fonts/Roslindale-DisplayCondensedLight-Testing.ttf/");
+    src: url('../fonts/Roslindale-DisplayCondensedLight-Testing.ttf/')
 }
 
 @font-face {
-    font-family: "roslindale-extralight-italic";
+    font-family: 'roslindale-extralight-italic';
     /*a name to be used later*/
-    src: url("../fonts/Roslindale-DisplayCondensedExtraLightItalic-Testing.ttf");
+    src: url('../fonts/Roslindale-DisplayCondensedExtraLightItalic-Testing.ttf')
 }
 
 @font-face {
-    font-family: "cheguevaratext";
+    font-family: 'cheguevaratext';
     /*a name to be used later*/
-    src: url("../fonts/CheGuevaraText-Serif.ttf");
+    src: url('../fonts/CheGuevaraText-Serif.ttf');
     /*URL to font*/
 }
 
 @font-face {
-    font-family: "denver";
+    font-family: 'denver';
     /*a name to be used later*/
-    src: url("../fonts/denver-serial-medium-regular.ttf");
+    src: url('../fonts/denver-serial-medium-regular.ttf');
     /*URL to font*/
 }
 
 @font-face {
-    font-family: "komrile";
+    font-family: 'komrile';
     /*a name to be used later*/
-    src: url("../fonts/Komrile-CondensedItalic.ttf");
+    src: url('../fonts/Komrile-CondensedItalic.ttf');
     /*URL to font*/
 }
 
 @font-face {
-    font-family: "Irish Grover";
+    font-family: 'Irish Grover';
     /*a name to be used later*/
-    src: url("../fonts/IrishGrover.ttf");
+    src: url('../fonts/IrishGrover.ttf');
     /*URL to font*/
 }
 
@@ -177,7 +179,7 @@ html.lenis body {
     transition: all 150ms ease-in-out;
 }
 
-.svg:hover > svg > .sinWave {
+.svg:hover>svg>.sinWave {
     stroke-width: 2;
 }
 
@@ -231,8 +233,7 @@ html.lenis body {
 }
 
 .circleBigNav {
-    filter: brightness(0) saturate(100%) invert(89%) sepia(2%) saturate(903%)
-        hue-rotate(342deg) brightness(111%) contrast(80%);
+    filter: brightness(0) saturate(100%) invert(89%) sepia(2%) saturate(903%) hue-rotate(342deg) brightness(111%) contrast(80%);
 }
 
 .lines {
@@ -304,6 +305,7 @@ html.lenis body {
     cursor: pointer;
 }
 
+
 svg {
     animation: sin 5s linear infinite;
 }
@@ -311,10 +313,12 @@ svg {
 @keyframes sin {
     0% {
         transform: translateX(0%);
+
     }
 
     100% {
         transform: translateX(-80%);
+
     }
 }
 
@@ -352,11 +356,13 @@ svg {
     width: 100vw;
     height: 100vh;
     background: rgb(0, 0, 0);
-    color: #e6e3db;
+    color: #E6E3DB;
     z-index: 100;
     transition: all 300ms ease-in-out;
     justify-content: space-between;
 }
+
+
 
 .bigNavAppear {
     opacity: 1 !important;
@@ -381,37 +387,33 @@ svg {
     flex-direction: column;
 }
 
-.left > div > span {
+.left>div>span {
     display: flex;
     align-items: center;
     transform: translateY(100%);
 }
 
-.left > div:nth-child(1) > span {
-    animation: fadein 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 20ms forwards;
+.left>div:nth-child(1)>span {
+    animation: fadein 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 20ms forwards;
     animation-play-state: paused;
 }
 
-.left > div:nth-child(2) > span {
-    animation:
-        fadein 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 70ms forwards,
-        slideLeft 520ms cubic-bezier(0.215, 0.61, 0.355, 1) 500ms forwards;
+.left>div:nth-child(2)>span {
+    animation: fadein 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 70ms forwards, slideLeft 520ms cubic-bezier(0.215, 0.610, 0.355, 1) 500ms forwards;
     animation-play-state: paused;
 }
 
-.left > div:nth-child(3) > span {
-    animation: fadein 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 120ms forwards;
+.left>div:nth-child(3)>span {
+    animation: fadein 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 120ms forwards;
     animation-play-state: paused;
 }
 
-.left > div:nth-child(4) > span {
-    animation:
-        fadein 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 170ms forwards,
-        slideLeft 520ms cubic-bezier(0.215, 0.61, 0.355, 1) 500ms forwards;
+.left>div:nth-child(4)>span {
+    animation: fadein 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 170ms forwards, slideLeft 520ms cubic-bezier(0.215, 0.610, 0.355, 1) 500ms forwards;
     animation-play-state: paused;
 }
 
-.left > div {
+.left>div {
     width: max-content;
     overflow: hidden;
     margin-bottom: 4vh;
@@ -481,13 +483,14 @@ svg {
     font-family: cheguevaratext;
 }
 
-.right > span {
+
+.right>span {
     margin-bottom: 3vh;
     cursor: pointer;
     position: relative;
 }
 
-.right > span > span {
+.right>span>span {
     content: "";
     position: absolute;
     width: 0%;
@@ -498,12 +501,12 @@ svg {
     transition: all 300ms ease-in-out;
 }
 
-.left > div > span > a {
+.left>div>span>a {
     text-decoration: inherit;
     color: inherit;
 }
 
-.right > span > a {
+.right>span>a {
     text-decoration: inherit;
     color: inherit;
 }
@@ -512,52 +515,42 @@ svg {
 
 .main {
     position: absolute;
-    height: 525px;
     width: 100vw;
+    height: 84vh;
+    top: 14vh;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+    padding: 0 7vh;
+    box-sizing: border-box;
+
+}
+
+.heading-placeholder {
+    width: 35%;
+    height: 420px;
+    /* matches the .heading size to preserve layout space */
 }
 
 .heading {
-    width: 45%;
-    height: 70%;
-    position: relative;
-}
-
-.resources,
-.credits {
-    width: 30%;
-    height: 120%;
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    display: flex;
-    flex-direction: column;
+    width: 35%;
+    height: 420px;
+    position: fixed;
+    top: 34%;    /* or whatever offset you need */
+    left: 11%;   /* adjust if needed */
+        z-index: 10;        /* so it stays above other content */
 }
 
 .fWord,
 .sWord {
     color: #000;
-    font-family: Denver-Serial-Medium;
+    font-family: denver;
     font-size: 150px;
     font-style: normal;
     font-weight: 500;
+    line-height: normal;
     letter-spacing: -6px;
-    /* mix-blend-mode: difference;
-    filter: invert(1); */
-    pointer-events: none;
-    overflow: hidden;
-}
-
-.fWord > span {
-    display: block;
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-}
-
-.sWord > span {
-    display: block;
-    animation: fadeDown 500ms cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+    padding: 0 6px;
 }
 
 .fWord {
@@ -572,109 +565,375 @@ svg {
     right: 0;
 }
 
-canvas {
-    z-index: -1;
-    rotate: -7deg;
-    filter: blur(3px);
-}
-
-.resources > span {
-    color: #004F6E;
-    text-align: right;
-    font-family: "roslindale-light";
-    font-size: 40px;
-    font-style: normal;
+.smallWord {
+    position: absolute;
+    top: 65%;
+    transform: translateY(-50%) translateX(-50%);
+    left: 30%;
+    color: #000;
+    font-family: Komrile;
+    font-size: 145px;
+    font-style: italic;
     font-weight: 400;
-    letter-spacing: 0.8px;
-    text-transform: lowercase;
-    text-transform: capitalize;
-    margin-bottom:17px;
+    line-height: 0%;
+    letter-spacing: -5.8px;
+    padding: 0 5.8px;
+
 }
 
-.resources > span > span {
-    display: block;
+.formCont {
+    width: 33%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
 }
 
-.span1 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 0ms forwards;
-}
-
-.span2 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 20ms forwards;
-}
-
-.span3 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 40ms forwards;
-}
-
-.span4 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 60ms forwards;
-}
-
-.span5 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 80ms forwards;
-}
-
-.span6 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms forwards;
-}
-
-.span7 {
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 120ms forwards;
-}
-
-.credits {
+.contact {
+    width: max-content;
+    height: 50%;
     display: flex;
     justify-content: end;
-    align-items: end;
+    box-sizing: border-box;
+    padding-bottom: 10%;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+
+    display: none;
+}
+
+.contact>div {
+    animation: fadeDown 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+.mail {
+    color: #007AAA;
+    font-family: Denver-Serial-Medium;
+    font-size: 45px;
+    font-style: normal;
+    font-weight: 500;
+    letter-spacing: -1.8px;
+    text-decoration-line: underline;
+    margin-bottom: 1vh;
+}
+
+.socials {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.insta,
+.facebook {
+    color: #000;
+    font-family: Inter;
+    font-size: 22.5px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1.25px;
+    cursor: pointer;
+    position: relative;
+}
+
+.insta>.underline {
+    content: "";
+    width: 0%;
+    height: 2px;
+    position: absolute;
+    bottom: -6%;
+    border-radius: 1000px;
+    left: 0;
+    background: #f09433;
+    background: -moz-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: -webkit-linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f09433', endColorstr='#bc1888', GradientType=1);
+    transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.insta:hover>.underline {
+    width: 100%;
+}
+
+.facebook>.underline {
+    content: "";
+    width: 0%;
+    height: 2px;
+    position: absolute;
+    bottom: -6%;
+    border-radius: 1000px;
+    left: 0;
+    background: #4267B2;
+    transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.facebook:hover>.underline {
+    width: 100%;
+}
+
+form {
+    /* height: 50%; */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.input {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin: 3vh 0;
+}
+
+.input>span {
+    width: 7vw;
+}
+
+.fname,
+.lname {
+    width: 32.5%;
+}
+
+.fname {
+    margin-right: 5%;
+}
+
+.emailInputBox {
+    width: 70%;
+    position: relative;
+}
+
+.email {
+    width: 45%;
+}
+
+.emailPlaceholder {
+    position: absolute;
+    font-size: 20px;
+    color: #807e7b;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+    padding-left: 5px;
+
+    right: 0;
+    bottom: 0;
+    width: 55%;
+    height: 90%;
+    text-align: right;
+    pointer-events: none;
+}
+
+.classInp,
+.sectionInp {
+    width: 32.5%;
+}
+
+.classInp {
+    margin-right: 5%;
+}
+
+.skillsInp {
+    padding-left: 7vw;
+    height: max-content;
+    position: relative;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
+
+.skillsInp>span {
+    position: absolute;
+    left: 0;
+    top: 1.5vh;
+}
+
+.skillInpBox {
+    width: 70%;
+    height: max-content;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: start;
     box-sizing: border-box;
 }
 
-.credits > div {
-    width: 80%;
-    display: flex;
-    justify-content: end;
+.skill{
+    padding: 1vh;
+    font-size: 15px;
+    margin-right: 1vh;
+    margin-bottom: 5px;
+    width: max-content;
+    font-family: Arial, Helvetica, sans-serif;
+    background: rgba(88, 88, 88, 0);
+    border-radius: 10px;
+    color: black;
+    border: 0.5px solid black;
+    cursor: pointer;
+    transition: all 100ms ease-in-out;
 }
 
-.credits > div:nth-child(1) {
-    margin-bottom: 2vh;
+.clicked{
+    background: rgba(88, 88, 88, 1);
+    color: white;
 }
 
-.post {
-    color: #000;
-    font-family: Denver;
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 500;
-    letter-spacing: -1.2px;
-    text-align: end;
-    margin-right: 5vw;
+.input1 {
+    animation: fadeUpInput 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 0ms forwards;
+}
+
+.input2 {
+    animation: fadeUpInput 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 20ms forwards;
+}
+
+.input3 {
+    animation: fadeUpInput 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 40ms forwards;
+}
+
+@keyframes fadeUpInput {
+    0% {
+        opacity: 0;
+        transform: translateY(300%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0%);
+    }
+}
+
+form>div {
+    width: 100%;
     overflow: hidden;
+}
+
+.skillFormDiv{
+    overflow: visible;
+}
+
+.input>span {
+    color: #585858;
+    font-family: "cheguevaratext";
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 0%;
+    letter-spacing: -2px;
+}
+
+input {
+    width: 70%;
+    border: none;
+    border-bottom: 1px solid #807e7b;
+    background-color: transparent;
+    font-size: 20px;
+    height: 3vh;
+}
+
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+button {
+    background: transparent;
+    border: none;
+    color: #585858;
+    font-family: "Irish Grover";
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -1.6px;
+    font-family: Irish Grover;
+    cursor: pointer;
+    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 60ms forwards;
+}
+
+.lineSvg {
+    margin-right: 1vw;
+}
+
+.send {
+    width: 100%;
     display: flex;
     justify-content: end;
     align-items: center;
 }
 
-.post > span {
-    display: block;
-    animation: fadeLeft 500ms cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+.keyboard {
+    pointer-events: none;
 }
 
-.names {
-    display: flex;
-    flex-direction: column;
+canvas {
+    position: absolute;
+    z-index: 0;
+    rotate: -7deg;
+    filter: blur(3px);
+    top: 10%;
+    left: -10%;
+    pointer-events: all;
+}
+
+.rectangle-bottom>span {
+    position: absolute;
+    margin-left: 20vh;
+    top: 0;
+    transform: translateY(-100%);
+
     color: #000;
-    font-family: Denver;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    letter-spacing: -0.8px;
-    overflow: hidden;
+    font-family: "roslindale-extralight-italic";
+    font-size: 50px;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: -2px;
+    animation: fadeRightSpan 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
 }
 
-.names > span {
+@keyframes fadeRightSpan {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%) translateX(-100%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(-100%) translate(0%);
+    }
+}
+
+.fWord,
+.sWord,
+.smallWord {
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.smallWord {
+    width: 10vw;
+    height: 145px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fWord>span {
     display: block;
-    animation: fadeRight 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 0ms forwards;
+    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+.sWord>span {
+    display: block;
+    animation: fadeDown 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+}
+
+.smallWord>span {
+    display: block;
+    animation: fadeRight 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
 }
 
 @keyframes fadeUp {
@@ -704,7 +963,7 @@ canvas {
 @keyframes fadeRight {
     0% {
         opacity: 0;
-        transform: translateX(-100%);
+        transform: translateX(-200%);
     }
 
     100% {
@@ -713,30 +972,85 @@ canvas {
     }
 }
 
-@keyframes fadeLeft {
-    0% {
-        opacity: 0;
-        transform: translateX(100%);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translate(0%);
-    }
+.disordBox, .pwdBox {
+    overflow: visible;
 }
 
-.lineSvg {
+.discordInput, .pwdInput {
+    position: relative;
+}
+
+.warning {
     position: absolute;
-    transform: translateX(2.75vw);
+    width: max-content;
+    height: max-content;
+    top: -17.5%;
+    pointer-events: none;
+    left: calc(3.5vw + 50%);
+    transform: translateX(-50%) translateY(-100%);
+    z-index: 1000;
+    background: rgba(120, 118, 113, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+    border-radius: 10px;
+    font-size: 14px;
+    padding: 7px;
+    color: whitesmoke;
+    border: 0.5px solid black;
+    opacity: 0;
+    transition: 100ms ease-in-out;
 }
 
-.mobileHeading {
+.discordID{
+    box-sizing: border-box;
+    padding-left: 1.5vw;
+}
+
+.pwdID{
+    box-sizing: border-box;
+    padding-left: 0;
+}
+
+.discordInput:focus-within>.warning {
+    opacity: 1;
+}
+
+.discordUserSymbol{
+    pointer-events: none;
+    position: absolute;
+    left: 7vw;
+    top: 0;
+    width: 70%;
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.arrow {
+    background: linear-gradient(315deg, rgba(120, 118, 113, 1) 0 50%, transparent 50% 100%);
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    bottom: 0;
+    transform: translateY(52%) rotate(45deg);
+    border-radius: 2.5px;
+    border-bottom: 0.5px solid black;
+    border-right: 0.5px solid black;
+}
+
+.mobileHeading{
     display: none;
 }
 
 @media (max-width: 599px) {
+
     body {
-        max-height: 100dvh;
+        max-height: 100vh;
     }
 
     #trailer {
@@ -772,6 +1086,7 @@ canvas {
     .rectangle-bottom {
         display: none;
     }
+
 
     .nav {
         top: 0vh;
@@ -843,6 +1158,8 @@ canvas {
         background: whitesmoke;
     }
 
+
+
     .svg {
         width: 62px;
     }
@@ -852,6 +1169,7 @@ canvas {
         flex-direction: column;
         justify-content: start;
     }
+
 
     .left,
     .right {
@@ -883,13 +1201,14 @@ canvas {
         font-family: cheguevaratext;
     }
 
-    .right > span {
+    .right>span {
         margin-bottom: 3vh;
         cursor: pointer;
         position: relative;
     }
 
-    .right > span > span {
+
+    .right>span>span {
         content: "";
         position: absolute;
         width: 0%;
@@ -906,51 +1225,80 @@ canvas {
 
     /* -------------------------------------------------- */
 
-    .container1 {
-        height: 100dvh;
-    }
-
-    .main {
-        flex-direction: column;
-    }
-
     .heading {
+        position: relative;
         display: none;
     }
+    .heading-placeholder{
+        display: none;
+    }
+    .main {
+        width: 100vw;
+        min-height: 100vh;
+        top: 20vh;
+        padding: 0 7.5vw;
+    }
 
-    .resources,
-    .credits {
-        width: 90%;
+    .formCont {
+        margin-top: 600px;
+        width: 100%;
+        height: max-content;
+    }
+
+
+    .input>span {
+        color: #585858;
+        font-family: "cheguevaratext";
+        font-size: 40px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 0%;
+        letter-spacing: -2px;
+        width: 20vw;
+    }
+
+    input {
+        width: 70%;
+        border: none;
+        border-bottom: 1px solid #807e7b;
+        background-color: transparent;
+        font-size: 15px;
+        height: 3vh;
+        border-radius: 0;
+    }
+
+    .discordID{
+        box-sizing: border-box;
+        padding-left: 5vw;
+    }
+
+    .pwdID{
+        box-sizing: border-box;
+        padding-left: 0;
+    }
+
+    .discordUserSymbol{
+        pointer-events: none;
+        position: absolute;
+        left: 20vw;
+        top: 0;
+        width: 70%;
+        font-size: 15px;
+        font-family: Arial, Helvetica, sans-serif;
         height: 100%;
         display: flex;
         justify-content: start;
         align-items: center;
-        flex-direction: column;
-        box-sizing: border-box;
-    }
-    .resources>span{
-        text-align: left;
-    }
-    .credits {
-        padding-top: 15vh;
     }
 
-    .resources {
-        padding-top: 10vh;
+    .emailPlaceholder {
+        font-size: 15px;
     }
 
-    .credits > div {
-        width: 100%;
-    }
 
-    .post {
-        font-size: 30px;
-        text-align: end;
-        margin-right: 20vw;
-    }
-
-    .lineSvg {
-        transform: translateX(15vw);
+    .skillsInp {
+        padding-left: 20vw;
+        height: max-content;
     }
 
     .mobileHeading {
@@ -960,78 +1308,61 @@ canvas {
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-bottom: 50px;
         text-align: center !important;
     }
+
+    .skillInpBox {
+        width: 70%;
+        height: 100%;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: start;
+        align-items: start;
+        box-sizing: border-box;
+    }
+
 }
 
-.subline {
-    position: absolute;
-    bottom: 0;
-    right: 10%;
-    text-align: right;
-    box-sizing: border-box;
-    padding-right: 1vw;
-    width: 25.2vw;
-    color: #000;
-    font-family: Komrile;
-    font-size: 130px;
-    font-style: italic;
-    font-weight: 400;
-    letter-spacing: -5.2px;
-    pointer-events: none;
-    overflow: hidden;
+.workshopnames{
+    color: #007aaa;
+    font-size: 50px;
+    
 }
 
-.subline>span {
-    display: block;
-    padding-right: 5%;
-    animation: fadeDown 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
+.workshoptakers{
+    font-size: 30px;
+    
 }
-.byteIt {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: #000;
-    font-family: Denver;
-    font-size: 200px;
-    font-style: normal;
-    font-weight: 500;
-    letter-spacing: -8px;
-    pointer-events: none;
-    overflow: hidden;
+.workshopnames>span{
+    margin-right: 100px;
+    
 }
 
-.byteIt>span {
-    display: block;
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) forwards;
-}
-.link{
-    color: #393939;
-}
-.send {
-    width: 100%;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    margin-right: 50px;
-    width: fit-content;
-        padding: 13px;
-        border-radius: 10px;
-            cursor: pointer;
-    margin-bottom: 20px;
-}
-button {
-    background: transparent;
+  .byte-button {
+    background-color: #454444; /* blackish-gray */
+    color: white;
+    padding: 0.75rem 1.5rem;
     border: none;
-color:  rgba(88, 88, 88, 1);
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 42px;
-    font-style: normal;
-    font-weight: 400;
-    letter-spacing: -1.0px;
-    font-family: Irish Grover;
-cursor: pointer;
-    animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 60ms forwards;
+    border-radius: 12px;
+    font-family: 'Georgia', serif;
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    width: 200px;
+  }
+
+  .byte-button:hover {
+    background-color: #1f1f1f;
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+.workshopss{
+    padding-bottom: 150px;
+
 }
 .byteSubLine {
     font-size: 30px;
