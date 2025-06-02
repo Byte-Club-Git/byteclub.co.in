@@ -1034,7 +1034,7 @@ color: white;
     font-weight: 400;
     letter-spacing: -1.0px;
     font-family: Irish Grover;
-
+    cursor: pointer;
     animation: fadeUp 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 60ms forwards;
 }
 .byteSubLine {
