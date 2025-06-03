@@ -1361,7 +1361,7 @@ canvas {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   }
 .workshopss{
-    padding-bottom: 150px;
+    padding-bottom: 90px;
 
 }
 .byteSubLine {
@@ -1375,7 +1375,7 @@ canvas {
 }
 
 .highlights {
-    z-index: 1;
+    z-index: 1001;
     position: fixed;
     border-radius: 100000vw;
     overflow: hidden;
@@ -1409,20 +1409,20 @@ canvas {
     }
 
     100% {
-        width: 6vh; /* 7.5vh * 0.8 */
-        height: 6vh;
+        width: 5vh;
+        height: 5vh;
     }
 }
 
 @keyframes highlightsAnimeExpand {
     0% {
-        width: 6vh;
-        height: 6vh;
+        width: 5vh;
+        height: 5vh;
     }
 
     100% {
-        width: 24vh; /* 30vh * 0.8 */
-        height: 6vh;
+        width: 20vh;
+        height: 5vh;
     }
 }
 
@@ -1436,8 +1436,8 @@ canvas {
     align-items: center;
 }
 
-.iconHighlight > img {
-    height: 75%; /* 75% * 0.8 */
+.iconHighlight>img {
+    height: 75%;
     width: 75%;
 }
 
@@ -1445,7 +1445,7 @@ canvas {
     z-index: 1;
     display: flex;
     position: absolute;
-    left: 7.2vh; /* 9vh * 0.8 */
+    left: 6vh;
     font-family: inter;
     color: white;
     display: flex;
@@ -1457,11 +1457,18 @@ canvas {
 }
 
 .headerHighlight {
-    font-size: 0.96rem; /* 1.2rem * 0.8 */
+    font-size: 0.8rem;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.65);
 }
 
 .contentHighlight {
-    font-size: 1.08rem; /* 1.35rem * 0.8 */
+    font-size: 0.9rem;
+}
+.joinlink{
+    font-size: 20px;
+}
+.joinlink>a{
+    text-decoration: none;
+    color: #005d82;;
 }
