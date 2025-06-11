@@ -30,6 +30,12 @@ html {
 
 @font-face {
     font-display: swap;
+    font-family: "cyberwhiz";
+    src: url("../fonts/cyberwhiz.regular.ttf");
+}
+
+@font-face {
+    font-display: swap;
     font-family: "roslindale-light";
     /*a name to be used later*/
     src: url("../fonts/Roslindale-DisplayCondensedLight-Testing.ttf/");
@@ -1529,6 +1535,27 @@ body:hover>#cursor {
     .contentHighlight {
         font-size: 0.8rem;
     }
+}
+
+.anda{
+    transform: scale(0.1);
+    max-height: 100vh;
+    width: 100vw;
+}
+
+.murgi{
+    transform: scale(10);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    padding-top: 5%;
+    z-index: -100000;
+    font-size: 10em;
+    font-family: cyberwhiz;
+    width: 100vw;
+    height: 100vh;
 }
 
 .dynamicNavbar{
