@@ -45,11 +45,9 @@ if (!(isMobile())) {
             keyboardJs.async = true;
             keyboardJs.type = "module";
             document.head.appendChild(keyboardJs);
-        }
-        setTimeout(() => {
             canvas.remove()
             canvasOriginal.style.opacity = "0.9"
-        }, 1);
+        }
     });
 
 } else {
