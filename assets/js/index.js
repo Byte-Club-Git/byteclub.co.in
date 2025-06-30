@@ -18,6 +18,7 @@ const byteHead1 = document.getElementById("byteHead1")
 var canvasImg = document.getElementById("canvas3dImg")
 var canvas = document.getElementById("canvas3dFake")
 var canvasOriginal = document.getElementById("canvas3d")
+let loaded = false
 
 // Function to detect mobile devices
 function isMobile() {
@@ -31,25 +32,25 @@ if (!(isMobile())) {
         const element = e[i];
         element.remove()
     }
-    var keyboardJs = document.createElement('script');
-    keyboardJs.src = 'assets/js/keyboard.js';
-    keyboardJs.async = true;
-    keyboardJs.type = "module";
-    document.head.appendChild(keyboardJs);
     for (let i = 0; i < e2.length; i++) {
         const element = e2[i];
         element.remove()
     }
 
-    setTimeout(() => {
-        let marginTopVal = canvas.style.marginTop
-        let leftVal = canvas.style.left
-        let webkitFilterVal = canvas.style.webkitFilter
-        let transformVal = canvas.style.transform
-        canvas.remove()
-
-        canvasOriginal.style.opacity = "0.9"
-    }, 3000);
+    document.addEventListener('mousemove', (event) => {
+        if (!loaded) {
+            loaded = true
+            var keyboardJs = document.createElement('script');
+            keyboardJs.src = 'assets/js/keyboard.js';
+            keyboardJs.async = true;
+            keyboardJs.type = "module";
+            document.head.appendChild(keyboardJs);
+        }
+        setTimeout(() => {
+            canvas.remove()
+            canvasOriginal.style.opacity = "0.9"
+        }, 1);
+    });
 
 } else {
     var realScript = document.createElement('script');
@@ -285,10 +286,14 @@ window.onscroll = function () {
 
     if (scroll <= height) {
         canvas.style.marginTop = scroll + 'px'
+        canvasOriginal.style.marginTop = scroll + 'px'
         canvas.style.left = 50 - 40 * (scroll / height) + '%'
+        canvasOriginal.style.left = 50 - 40 * (scroll / height) + '%'
         opacity = (0.9 - 0.4 * (scroll / height))
         canvas.style.webkitFilter = 'blur(' + 3 * (scroll / height) + 'px)'
+        canvasOriginal.style.webkitFilter = 'blur(' + 3 * (scroll / height) + 'px)'
         canvas.style.transform = 'translateX(' + (-50 + 50 * (scroll / height)) + '%)' + ' translateY(-50%) rotate(-7deg)';
+        canvasOriginal.style.transform = 'translateX(' + (-50 + 50 * (scroll / height)) + '%)' + ' translateY(-50%) rotate(-7deg)';
         svg.style.right = "7vw"
         for (let i = 0; i < letsChat.length; i++) {
             const e = letsChat[i];
