@@ -16,7 +16,8 @@ const svg = document.getElementById("svg")
 const keyboard = document.getElementById("keyboard")
 const byteHead1 = document.getElementById("byteHead1")
 var canvasImg = document.getElementById("canvas3dImg")
-var canvas = document.getElementById("canvas3d")
+var canvas = document.getElementById("canvas3dFake")
+var canvasOriginal = document.getElementById("canvas3d")
 
 // Function to detect mobile devices
 function isMobile() {
@@ -30,37 +31,24 @@ if (!(isMobile())) {
         const element = e[i];
         element.remove()
     }
+    var keyboardJs = document.createElement('script');
+    keyboardJs.src = 'assets/js/keyboard.js';
+    keyboardJs.async = true;
+    keyboardJs.type = "module";
+    document.head.appendChild(keyboardJs);
     for (let i = 0; i < e2.length; i++) {
         const element = e2[i];
         element.remove()
     }
 
     setTimeout(() => {
-
         let marginTopVal = canvas.style.marginTop
         let leftVal = canvas.style.left
         let webkitFilterVal = canvas.style.webkitFilter
         let transformVal = canvas.style.transform
         canvas.remove()
 
-        var canvas3d = document.createElement('canvas');
-        canvas3d.id = "canvas3d"
-        canvas3d.height = "652"
-        canvas3d.width = "1232"
-        document.body.appendChild(canvas3d);
-        canvas = document.getElementById("canvas3d")
-
-        var keyboardJs = document.createElement('script');
-        keyboardJs.src = 'assets/js/keyboard.js';
-        keyboardJs.async = true;
-        keyboardJs.type = "module";
-        document.head.appendChild(keyboardJs);
-
-
-        canvas.style.marginTop = marginTopVal
-        canvas.style.left = leftVal
-        canvas.style.webkitFilter = webkitFilterVal
-        canvas.style.transform = transformVal
+        canvasOriginal.style.opacity = "0.9"
     }, 3000);
 
 } else {
@@ -200,7 +188,7 @@ mobileByte.classList.add("mobileByte")
 
 var n
 
-if (!(sessionStorage.getItem('hasVisited'))) {
+if (false) {
 
     if ((isMobile())) {
         n = 2000
