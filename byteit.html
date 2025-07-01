@@ -13,15 +13,27 @@
   <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
   <script type="module" defer src="assets/js/keyboard.js"></script>
 </head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BDK1C31Z2G"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
-
-  gtag('config', 'G-BDK1C31Z2G');
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://byteclub.co.in"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Byte.IT",
+      "item": "https://byteclub.co.in/byteit"
+    }
+  ]
+}
 </script>
+
 
 <body>
   <div class="center container1">
