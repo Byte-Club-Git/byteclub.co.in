@@ -19,6 +19,37 @@ var canvasImg = document.getElementById("canvas3dImg")
 var canvas = document.getElementById("canvas3dFake")
 var canvasOriginal = document.getElementById("canvas3d")
 let loaded = false
+let mystring;
+
+window.addEventListener('keydown', function (e) {
+    keys += e.key
+    mystring = keys.replace(//g, "");
+    mystring = mystring.toLowerCase()
+})
+
+const loadKeyboardScript = () => {
+    if (loaded) return;
+    loaded = true;
+
+    import('./keyboardLayout.js')
+        .catch((err) => {
+            console.error('Failed to load keyboardLayout.js:', err);
+        });
+    import('./keyboard.js')
+        .catch((err) => {
+            console.error('Failed to load keyboard.js:', err);
+        });
+
+    canvas.remove()
+    canvasOriginal.style.opacity = "0.9"
+
+    window.removeEventListener('mousemove', loadKeyboardScript);
+    window.removeEventListener('keydown', loadKeyboardScript);
+};
+
+window.addEventListener('mousemove', loadKeyboardScript, { once: true });
+window.addEventListener('keydown', loadKeyboardScript, { once: true });
+
 
 // Function to detect mobile devices
 function isMobile() {
@@ -37,18 +68,18 @@ if (!(isMobile())) {
         element.remove()
     }
 
-    document.addEventListener('mousemove', (event) => {
-        if (!loaded) {
-            loaded = true
-            var keyboardJs = document.createElement('script');
-            keyboardJs.src = 'assets/js/keyboard.js';
-            keyboardJs.async = true;
-            keyboardJs.type = "module";
-            document.head.appendChild(keyboardJs);
-            canvas.remove()
-            canvasOriginal.style.opacity = "0.9"
-        }
-    });
+    // document.addEventListener('mousemove', (event) => {
+    //     if (!loaded) {
+    //         loaded = true
+    //         var keyboardJs = document.createElement('script');
+    //         keyboardJs.src = 'assets/js/keyboard.js';
+    //         keyboardJs.async = true;
+    //         keyboardJs.type = "module";
+    //         document.head.appendChild(keyboardJs);
+    //         canvas.remove()
+    //         canvasOriginal.style.opacity = "0.9"
+    //     }
+    // });
 
 } else {
     var realScript = document.createElement('script');
