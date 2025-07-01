@@ -535,6 +535,9 @@ svg {
     display: flex;
     flex-direction: column;
 }
+.resources{
+    gap: 1rem;
+}
 
 .fWord,
 .sWord {
@@ -1007,4 +1010,165 @@ canvas {
 }
 .link{
     color: #393939;
+}
+
+
+.container{
+    pointer-events: all;
+    border: 1px white solid;
+    height: 70vh;
+    width: 150vh;
+    padding: 0;
+    box-shadow: 0 0 5px white, 0 0 5px white; 
+        overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: white   #222; /* For Firefox */
+
+}
+.navbar{
+    color: black;
+    background-color: white;
+    width: max-content;
+    display: flex;
+    gap: 5rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: .4rem;
+    padding-left: 1rem;
+    width: max-content;
+    color: #000;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    pointer-events: all;
+    cursor: pointer;
+}
+.teams{
+  display: flex;
+    height: 10%;
+    align-items: center;
+    border: 1px solid black;
+box-shadow: 0px 0px 7px 0px black;
+flex-shrink: 0;
+}
+.position{
+  border: 1px solid black;
+background: black;
+box-shadow: 0px 0px 8px 0px black;
+width: 3.5%;
+height: 100%;
+flex-shrink: 0;
+display: flex;
+align-items: center;
+justify-content: center;
+color: white;
+font-size: 1.2rem;
+font-style: normal;
+font-weight: 300;
+line-height: normal;
+}
+.allteams{
+        padding: 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.2rem;
+  height: 100%;
+
+}
+
+/* For Chrome, Edge, Safari */
+.allteams::-webkit-scrollbar {
+    width: 10px;
+    background: #222;
+    border-radius: 8px;
+}
+
+.allteams::-webkit-scrollbar-thumb {
+    background: white ;
+    border-radius: 8px;
+    border: 2px solid #222;
+}
+
+.allteams::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
+
+.teampfp{
+  margin: 1rem;
+  background: #D9D9D9;
+  height: 20%;
+  aspect-ratio: 1;
+  height: 65%; 
+}
+.participantname{
+  color: black;
+text-shadow: 0px 0px 8px #FFF;
+
+font-size: 16px;
+font-style: normal;
+font-weight: 30;
+line-height: normal;
+}
+
+.text{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-right: 1rem;
+}
+.points, .teamname{
+  font-weight: 300;
+}
+
+.teams.you {
+  border: 2px solid #00f0ff;
+
+  background-color: rgba(0, 240, 255, 0.08);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+  font-weight: bold;
+}
+.position.you{
+  background-color: #00f0ff;
+}
+
+
+.teams.first {
+  background-color: rgba(255, 215, 0, 0.15); /* gold */
+  border-left: 4px solid #FFD700;
+}
+
+.teams.second {
+  background-color: rgba(192, 192, 192, 0.15); /* silver */
+  border-left: 4px solid #C0C0C0;
+}
+
+.teams.third {
+  background-color: rgba(205, 127, 50, 0.15); /* bronze */
+  border-left: 4px solid #CD7F32;
+}
+
+.position.first {
+  background-color: #FFD700
+
+}
+
+.position.second {
+  background-color: #C0C0C0
+}
+
+.position.third {
+  background-color: #CD7F32
+}
+
+.teams.you {
+  border: 2px solid #00f0ff;
+
+}
+.alink{
+  color: black;
+  text-decoration: none;
+  pointer-events: all;
+  align-items: center;
 }
