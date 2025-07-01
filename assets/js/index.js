@@ -233,7 +233,6 @@ function yourFunction() {
 }
 yourFunction();
 const keyClick = new Audio("assets/audios/keyPress.mp3");
-const radarPing = new Audio("radarPing.mp3");
 
 let speedX = 2;
 let speedY = 2;
