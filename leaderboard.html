@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Byte.it</title>
+  <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+  <link rel="stylesheet" href="assets/css/byteitm.css">
+  <link rel="stylesheet" href="assets/css/leaderboard.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://kit.fontawesome.com/3a881cfccc.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+  <script type="module" defer src="assets/js/keyboard.js"></script>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BDK1C31Z2G"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-BDK1C31Z2G');
+</script>
+
+<body>
+  <div class="center container1">
+    <div class="rectangle rectangle-left"></div>
+    <div class="rectangle rectangle-right"></div>
+    <div class="rectangle rectangle-top"></div>
+    <div class="rectangle rectangle-nav"></div>
+    <div class="rectangle rectangle-bottom"></div>
+
+    <section id="bigNav" class="center bigNav">
+      <div class="left">
+        <div>
+          <span onclick="navMenuClick()" id="span1" onmouseover="rotateNumbers(this)"
+            onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+            </div>
+            <a href="/#spanA">ABOUT</a>
+          </span>
+        </div>
+        <div>
+          <span id="span2" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="team">TEAM</a>
+          </span>
+        </div>
+        <div>
+          <span id="span3" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="resources">RESOURCES</a>
+          </span>
+        </div>
+        <div>
+          <span id="span4" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="byteit">BYTE.IT</a>
+          </span>
+        </div>
+      </div>
+      <div class="right">
+        <span onmouseover="document.getElementById('spanContact').style.width='100%'"
+          onmouseout="document.getElementById('spanContact').style.width='0%'">
+          <a href="contact">Contact</a>
+          <span id="spanContact"></span>
+        </span>
+        <span onmouseover="document.getElementById('spanCredits').style.width='100%'"
+          onmouseout="document.getElementById('spanCredits').style.width='0%'">
+          <a href="credits">Credits</a>
+          <span id="spanCredits"></span>
+        </span>
+      </div>
+    </section>
+
+    <div class="nav">
+      <span id="navByte" onclick="window.location = '/';" class="navByte">byte.</span>
+      
+      <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
+        <img id="circle1" class="circle1" src="assets/icons/circle1.svg" alt="">
+        <img id="circle2" class="circle2" src="assets/icons/circle2.svg" alt="">
+        <div class="lines">
+          <div id="line1" class="line1"></div>
+          <div id="line2" class="line2"></div>
+        </div>
+      </span>
+    </div>
+
+    
+    <div class="main">
+      
+      <div class="container"><span class="navheading">Byte IT'25 Result</span>
+
+<div class="allteams">
+      <div class="teams  ">
+          <div class="position leadheading  "><span>Rank</span></div>
+          
+          <div class="headtext">
+            <span class="position leadheading headingteam">Team</span>
+            <span class="points leadheading">
+              Score
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams top3 ">
+          <div class="position top3 rank1"><span> 1</span></div>
+          
+          <div class="text">
+            <span class="participantname top3">Ncrypt</span>
+            <span class="points top3">
+              130
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams top3 ">
+          <div class="position top3 "><span>2</span></div>
+          
+          <div class="text">
+            <span class="participantname top3">Syndication</span>
+            <span class="points top3">
+              130
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams top3 ">
+          <div class="position top3 "><span>3</span></div>
+          
+          <div class="text">
+            <span class="participantname top3">Alvxna</span>
+            <span class="points top3">
+              130
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>4</span></div>
+          
+          <div class="text">
+            <span class="participantname">Cryptonite</span>
+            <span class="points">
+              100
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>5</span></div>
+          
+          <div class="text">
+            <span class="participantname">Minet</span>
+            <span class="points">
+              100
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>6</span></div>
+          
+          <div class="text">
+            <span class="participantname">404</span>
+            <span class="points">
+              100
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>7</span></div>
+          
+          <div class="text">
+            <span class="participantname">Pyrotech</span>
+            <span class="points">
+              100
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>08</span></div>
+          
+          <div class="text">
+            <span class="participantname">TechSyndicate (TS)</span>
+            <span class="points">
+              100
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>09</span></div>
+          
+          <div class="text">
+            <span class="participantname">Rags</span>
+            <span class="points">
+              100
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>010</span></div>
+          
+          <div class="text">
+            <span class="participantname">Naoh Cao</span>
+            <span class="points">
+              100
+              
+
+            </span>
+          </div>
+        </div>
+              
+        <div class="teams  ">
+          <div class="position  "><span>011</span></div>
+          
+          <div class="text">
+            <span class="participantname">я</span>
+            <span class="points">
+              90
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>012</span></div>
+          
+          <div class="text">
+            <span class="participantname">Kachua</span>
+            <span class="points">
+              90
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>013</span></div>
+          
+          <div class="text">
+            <span class="participantname">cikrypt</span>
+            <span class="points">
+              90
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>014</span></div>
+          
+          <div class="text">
+            <span class="participantname">mazerunners</span>
+            <span class="points">
+              90
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>015</span></div>
+          
+          <div class="text">
+            <span class="participantname">RetroFusionists</span>
+            <span class="points">
+              90
+              
+
+            </span>
+          </div>
+        </div>
+      
+        <div class="teams  ">
+          <div class="position  "><span>016</span></div>
+          
+          <div class="text">
+            <span class="participantname">ByteMe</span>
+            <span class="points">
+              90
+              
+
+            </span>
+          </div>
+        </div>   
+    </div> </div></div>
+</div>
+
+
+  </div>
+
+</body>
+<script src="assets/js/byteitreg.js"></script>
+<script src="assets/js/lenis.js"></script>
+</html>
