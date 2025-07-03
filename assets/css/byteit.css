@@ -14,7 +14,8 @@
 body {
     background-color: var(--bg);
     overflow-x: hidden;
-
+    min-height: 200vh;
+    max-height: 200vh;
 }
 
 html {
@@ -395,61 +396,38 @@ svg {
     flex-direction: column;
 }
 
-.left,
-.right {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-sizing: border-box;
-}
-
-.left {
-    width: 80%;
-    font-family: denver;
-    font-size: 130px;
-    padding-left: 7vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.left > div > span {
+.left>div>span {
     display: flex;
     align-items: center;
     transform: translateY(100%);
 }
 
-.left > div:nth-child(1) > span {
-    animation: fadein 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 20ms forwards;
+.left>div:nth-child(1)>span {
+    animation: fadein 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 20ms forwards;
     animation-play-state: paused;
 }
 
-.left > div:nth-child(2) > span {
-    animation:
-        fadein 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 70ms forwards,
-        slideLeft 520ms cubic-bezier(0.215, 0.61, 0.355, 1) 500ms forwards;
+.left>div:nth-child(2)>span {
+    animation: fadein 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 70ms forwards, slideLeft 520ms cubic-bezier(0.215, 0.610, 0.355, 1) 500ms forwards;
     animation-play-state: paused;
 }
 
-.left > div:nth-child(3) > span {
-    animation: fadein 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 120ms forwards;
+.left>div:nth-child(3)>span {
+    animation: fadein 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 120ms forwards;
     animation-play-state: paused;
 }
 
-.left > div:nth-child(4) > span {
-    animation:
-        fadein 500ms cubic-bezier(0.215, 0.61, 0.355, 1) 170ms forwards,
-        slideLeft 520ms cubic-bezier(0.215, 0.61, 0.355, 1) 500ms forwards;
+.left>div:nth-child(4)>span {
+    animation: fadein 500ms cubic-bezier(0.215, 0.610, 0.355, 1) 170ms forwards, slideLeft 520ms cubic-bezier(0.215, 0.610, 0.355, 1) 500ms forwards;
     animation-play-state: paused;
 }
 
-.left > div {
+.left>div {
     width: max-content;
     overflow: hidden;
     margin-bottom: 4vh;
     cursor: pointer;
 }
-
 
 @keyframes fadein {
     0% {
@@ -655,19 +633,8 @@ canvas {
     }
 }
 
-.resources > span {
-    color: #393939;
-    text-align: right;
-    font-family: "roslindale-light";
-    font-size: 40px;
-    font-style: normal;
-    font-weight: 400;
-    letter-spacing: 0.8px;
-    text-decoration-line: underline;
-    text-transform: lowercase;
-    overflow: hidden;
-    cursor: pointer;
-    text-transform: capitalize;
+.resources>span {
+    margin-bottom: 5vh;
 }
 
 .resources>span:last-child {
@@ -678,15 +645,9 @@ canvas {
     letter-spacing: -2px;
 }
 
-.resources,
-.credits {
-    width: 30%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: end;
-    display: flex;
-    flex-direction: column;
+.resources {
+    box-sizing: border-box;
+    padding-right: 4vw;
 }
 
 .sponsorsHeading{
@@ -986,11 +947,4 @@ canvas {
         padding-right: 5vw !important;
         /* background: red; */
     }
-}
-.tallyform{
-    margin-top: 90px;
-    padding-right: 150px;
-    position: fixed;
-    width: 80%;
-    align-self:left;
 }

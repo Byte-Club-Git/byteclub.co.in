@@ -89,7 +89,7 @@
 
     <div class="nav">
       <span id="navByte" onclick="window.location = '/';" class="navByte">byte.</span>
-      
+
       <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
         <img id="circle1" class="circle1" src="assets/icons/circle1.svg" alt="">
         <img id="circle2" class="circle2" src="assets/icons/circle2.svg" alt="">
@@ -100,20 +100,24 @@
       </span>
     </div>
 
-    
+
     <div class="main">
-      
-      <div class="container"><span class="navheading">Byte IT'25 Result</span>
 
-<div class="allteams"  id="leaderboardContainer">
-      
-</div>
+      <div class="containerBig">
+        <div class="container">
+          <span class="navheading">Byte IT'25 Result</span>
+          <div class="allteams" id="leaderboardContainer"></div>
+        </div>
 
-</div></div></div></body>
+      </div>
+    </div>
+  </div>
+</body>
 
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-  <script src="assets/js/leaderboard.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="assets/js/leaderboard.js"></script>
 <script src="assets/js/byteitreg.js"></script>
 <script src="assets/js/lenis.js"></script>
+
 </html>

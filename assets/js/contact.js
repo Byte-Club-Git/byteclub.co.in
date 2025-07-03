@@ -4,6 +4,15 @@ function isMobile() {
     return /Mobi|Android/i.test(navigator.userAgent) || (window.innerWidth <= 800 && window.innerHeight <= 800);
 }
 
+if (!(isMobile())) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'assets/js/keyboard.js';
+    script.defer = true;
+    script.type = "module";
+    document.head.appendChild(script);
+}
+
 // smooth scrolll
 const lenis = new Lenis()
 
@@ -17,14 +26,12 @@ function raf(time) {
 }
 requestAnimationFrame(raf)
 
-const fullName = document.getElementById("input");
+const fullName = document.getElementById("name");
 const email = document.getElementById("email");
-const msg = document.getElementById("formTextarea");
+const msg = document.getElementById("text");
 const form = document.getElementById("form");
 
 function sendEmail() {
-
-    const dataURL = canvas.toDataURL("image/png"); // base64 image
     const bodyMsg = `<b><h4>Name</h3></b> ${fullName.value} <br> <b><h4>Email</h3></b> ${email.value} <br> <b><h4>Message</h4></b> ${msg.value}`;
 
     Email.send({
@@ -32,13 +39,7 @@ function sendEmail() {
         To: 'byteclub@pp.balbharati.org',
         From: "byteclub@pp.balbharati.org",
         Subject: `${fullName.value} would like to contact you`,
-        Body: bodyMsg,
-        Attachments: [
-            {
-                name: "drawing.png",
-                data: dataURL
-            }
-        ]
+        Body: bodyMsg
     }).then(
         message => {
             alert(`${fullName.value} your message was sent successfully!`)
@@ -113,170 +114,3 @@ function navMenuClick() {
     }
 }
 
-
-// painting ----------
-const canvas = document.getElementById("drawCanvas");
-const container = document.getElementById("canvasContainer");
-
-// Set internal canvas size to match container size
-canvas.width = container.clientWidth;
-canvas.height = container.clientHeight;
-
-const ctx = canvas.getContext("2d");
-let drawing = false;
-
-const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
-grad.addColorStop(0.0, '#FEE140');
-grad.addColorStop(0.5, '#FA709A');
-grad.addColorStop(1.0, '#FEC163');
-
-ctx.strokeStyle = grad;
-ctx.lineWidth = 5;
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
-ctx.shadowColor = "#FF5F6D";
-ctx.shadowBlur = 8;
-
-let isDrawing = false;
-let lastX = 0;
-let lastY = 0;
-
-canvas.addEventListener("mousedown", (e) => {
-    isDrawing = true;
-    [lastX, lastY] = [e.offsetX, e.offsetY];
-});
-
-canvas.addEventListener('mouseleave', () => {
-    isDrawing = false;
-});
-
-canvas.addEventListener("mouseup", () => {
-    isDrawing = false;
-    ctx.beginPath();
-});
-canvas.addEventListener("mouseout", () => drawing = false);
-
-canvas.addEventListener("mousemove", (e) => {
-    if (!isDrawing) return;
-
-    const x = e.offsetX;
-    const y = e.offsetY;
-
-    const dx = x - lastX;
-    const dy = y - lastY;
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    const steps = Math.ceil(distance / 2); // Smoothness vs performance
-    for (let i = 1; i <= steps; i++) {
-        const t = i / steps;
-        const ix = lastX + dx * t;
-        const iy = lastY + dy * t;
-
-        ctx.beginPath();
-        ctx.moveTo(lastX + dx * ((i - 1) / steps), lastY + dy * ((i - 1) / steps));
-        ctx.lineTo(ix, iy);
-        ctx.stroke();
-    }
-
-    [lastX, lastY] = [x, y]; // ✅ Only update once after drawing
-});
-
-
-window.addEventListener('DOMContentLoaded', () => {
-    const input = document.getElementById('input');
-    const span = document.getElementById('text-measurer');
-
-    function resizeInput(withBuffer = true) {
-        if (!(withBuffer) && (input.value == '')) {
-            input.value = "Your Name"
-            span.textContent
-        }
-        span.textContent = input.value || ' ';
-        const width = span.offsetWidth;
-        input.style.width = (width + (withBuffer ? 16 : 0)) + 'px'; // 1px buffer if desired
-    }
-
-    function removeDefault() {
-        if (input.value === "Your Name") {
-            input.value = '';
-            resizeInput(true);
-        }
-    }
-
-    document.fonts.ready.then(() => resizeInput(false));
-    input.addEventListener('input', () => resizeInput(true));
-    input.addEventListener('focus', () => resizeInput(true));
-    input.addEventListener('blur', () => resizeInput(false));
-    input.addEventListener('click', () => removeDefault());
-});
-
-function socialFlyHover(e) {
-    let socialFly = e.querySelector(".socialFly");
-    socialFly.style.transition = "all 500ms cubic-bezier(.42,-0.59,0,1.04)"
-    socialFly.style.transform = "rotate(225deg) translateY(100px)"
-    setTimeout(() => {
-        socialFly.style.transition = "all 0ms cubic-bezier(.42,-0.59,0,1.04)"
-        socialFly.style.transform = "rotate(225deg) translateY(-100px)"
-    }, 500);
-    setTimeout(() => {
-        socialFly.style.transition = "all 500ms cubic-bezier(.42,-0.59,0,1.04)"
-        socialFly.style.transform = "rotate(225deg)"
-    }, 550);
-}
-
-const letsChat = document.getElementsByClassName("letsChatLetter")
-
-window.onscroll = function () {
-
-    scroll = window.scrollY
-    var height = 0
-    if ((isMobile())) {
-        height = window.innerHeight / 2
-    } else {
-        height = window.innerHeight
-    }
-    if (scroll <= 100) {
-        for (let i = 0; i < letsChat.length; i++) {
-            const e = letsChat[i];
-            e.classList.remove("letsChatAnimate")
-        }
-    } else {
-        for (let i = 0; i < letsChat.length; i++) {
-            const e = letsChat[i];
-            e.classList.add("letsChatAnimate")
-        }
-    }
-}
-
-const welcomeMsgspans = document.querySelectorAll('.welcomeMsg > div > span');
-welcomeMsgspans.forEach((span, index) => {
-    const delay = (index * 0.005 + 3).toFixed(2);
-    span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
-});
-
-const welcomeMsgAspans = document.querySelectorAll('.welcomeMsg > div > a > span');
-welcomeMsgAspans.forEach((span, index) => {
-    const delay = (index * 0.005 + 3.18).toFixed(2);
-    span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
-});
-
-const quotespans = document.querySelectorAll('.quote > span');
-quotespans.forEach((span, index) => {
-    const delay = (index * 0.005 + 3).toFixed(2);
-    span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
-});
-
-const namespans = document.querySelectorAll('.name > span');
-namespans.forEach((span, index) => {
-    const delay = (index * 0.015 + 3.31).toFixed(2);
-    span.style.animation = `email 0.25s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275) ${delay}s`;
-});
-
-const main = document.getElementById("main")
-const footer = document.getElementById("footer")
-
-
-setTimeout(function () {
-    main.style.overflow = "visible"
-    footer.style.display = "flex"
-}, 2000);

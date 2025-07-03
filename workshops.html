@@ -1,0 +1,217 @@
+ <!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join skills</title>
+  <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+  <link rel="stylesheet" href="assets/css/join.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://kit.fontawesome.com/3a881cfccc.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+</head>
+
+<body>
+  <div class="container1">
+    <div class="rectangle rectangle-left"></div>
+    <div class="rectangle rectangle-right"></div>
+    <div class="rectangle rectangle-top"></div>
+    <div class="rectangle rectangle-nav"></div>
+
+    <section id="bigNav" class="center bigNav">
+      <div class="left">
+        <div>
+          <span onclick="navMenuClick()" id="span1" onmouseover="rotateNumbers(this)"
+            onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+            </div>
+            <a href="/#spanA">ABOUT</a>
+          </span>
+        </div>
+        <div>
+          <span id="span2" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="team">TEAM</a>
+          </span>
+        </div>
+        <div>
+          <span id="span3" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="resources">RESOURCES</a>
+          </span>
+        </div>
+        <div>
+          <span id="span4" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+            <div class="numbers">
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+              <div class="number"></div>
+            </div>
+            <a href="byteit">BYTE.IT</a>
+          </span>
+        </div>
+      </div>
+      <div class="right">
+        <span onmouseover="document.getElementById('spanContact').style.width='100%'"
+          onmouseout="document.getElementById('spanContact').style.width='0%'">
+          <a href="contact">Contact</a>
+          <span id="spanContact"></span>
+        </span>
+        <span onmouseover="document.getElementById('spanCredits').style.width='100%'"
+          onmouseout="document.getElementById('spanCredits').style.width='0%'">
+          <a href="credits">Credits</a>
+          <span id="spanCredits"></span>
+        </span>
+      </div>
+    </section>
+
+    <div class="nav">
+      <span id="navByte" onclick="window.location = '/';" class="navByte">byte.</span>
+      <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
+        <img id="circle1" class="circle1" src="assets/icons/circle1.svg" alt="">
+        <img id="circle2" class="circle2" src="assets/icons/circle2.svg" alt="">
+        <div class="lines">
+          <div id="line1" class="line1"></div>
+          <div id="line2" class="line2"></div>
+        </div>
+      </span>
+    </div>
+    <div class="main">
+      <div class="heading-placeholder"></div>
+      <div class="heading">
+        <div id="keyboard" class="keyboard">
+          <canvas id="canvas3d"></canvas>
+        </div>
+        <div class="fWord">
+          <span>join</span>
+        </div>
+        <div class="sWord">
+          <span>workshops</span>
+        </div>
+        <div class="smallWord">
+          <span></span> 
+        </div>
+      </div>
+      <div class="formCont">
+        <div class="mobileHeading">
+          Join The Club 
+           Join Workshops
+        </div>
+<div class="workshopss">
+  <div class="idkman">
+    <div class="workshopnames">
+      Programming
+      <img class="lineSvg" src="assets/icons/Line.svg" alt="">
+    </div>
+    <div class="workshoptakers">
+      <span>Parin Khurana ‎ ‎</span>
+      <span>Ekansh Gupta</span>
+    </div>
+  </div>
+  <br><br><br>
+
+  <div class="idkman">
+    <div class="workshopnames">
+      Graphic Designing
+      <img class="lineSvg" src="assets/icons/Line.svg" alt="">
+    </div>
+    <div class="workshoptakers">
+      <span>Pranav Kapur‎ ‎</span>
+      <span>Neil Gandhi</span>
+    </div>
+  </div>
+  <br><br><br>
+
+  <div class="idkman">
+    <div class="workshopnames">
+      Web Development
+      <img class="lineSvg" src="assets/icons/Line.svg" alt="">
+    </div>
+    <div class="workshoptakers">
+      <span>Ekansh Gupta‎ ‎</span>
+      <span>Parin Khurana</span>
+    </div>
+  </div>
+  <br><br><br>
+
+  <div class="idkman">
+    <div class="workshopnames">
+      Pitching
+      <img class="lineSvg" src="assets/icons/Line.svg" alt="">
+    </div>
+    <div class="workshoptakers">
+      <span>Parnika Sharma‎ ‎</span>
+      <span>Parnika Sharma‎ ‎</span>
+      <span>Aayan Sardana</span>
+    </div>
+  </div>
+  <br><br><br>
+
+  <div class="idkman">
+    <div class="workshopnames">
+      Photography
+      <img class="lineSvg" src="assets/icons/Line.svg" alt="">
+    </div>
+    <div class="workshoptakers">
+      <span>Divaksh Vir‎ ‎</span>
+      <span>Namish Oberoi</span>
+    </div>
+  </div>
+  <br><br><br>
+
+  <div class="idkman">
+    <div class="workshopnames">
+      Film Making
+      <img class="lineSvg" src="assets/icons/Line.svg" alt="">
+    </div>
+    <div class="workshoptakers">
+      <span>Tvisha Nangia‎ ‎</span>
+      <span>Divaksh Vir</span>
+    </div>
+  </div>
+  <br><br><br>
+  <div class="idkman">
+    <div class="workshopnames">
+      3D Modelling
+      <img class="lineSvg" src="assets/icons/Line.svg" alt="">
+    </div>
+    <div class="workshoptakers">
+      <span>Parin Khurana ‎ ‎</span>
+      <span>Jaskirat Singh</span>
+    </div>
+  </div>
+  <br><br><br>
+  <div class="idkman">
+    <div class="workshopnames">
+      Design Thinking
+      <img class="lineSvg" src="assets/icons/Line.svg" alt="">
+    </div>
+    <div class="workshoptakers">
+      <span>Amaan Singh‎ ‎</span>
+      <span>Abhay Mangla</span>
+    </div>
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+<script src="assets/js/firebase.js"></script>
+<script src="assets/js/join.js"></script>
+
+</html>

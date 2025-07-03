@@ -10,46 +10,13 @@ function socialFlyHover(e) {
         socialFly.style.transition = "all 500ms cubic-bezier(.42,-0.59,0,1.04)"
         socialFly.style.transform = "rotate(225deg)"
     }, 550);
-}
+}   
 
 const svg = document.getElementById("svg")
 const keyboard = document.getElementById("keyboard")
 const byteHead1 = document.getElementById("byteHead1")
 var canvasImg = document.getElementById("canvas3dImg")
-var canvas = document.getElementById("canvas3dFake")
-var canvasOriginal = document.getElementById("canvas3d")
-let loaded = false
-let mystring;
-
-window.addEventListener('keydown', function (e) {
-    keys += e.key
-    mystring = keys.replace(//g, "");
-    mystring = mystring.toLowerCase()
-})
-
-const loadKeyboardScript = () => {
-    if (loaded) return;
-    loaded = true;
-
-    import('./keyboardLayout.js')
-        .catch((err) => {
-            console.error('Failed to load keyboardLayout.js:', err);
-        });
-    import('./keyboard.js')
-        .catch((err) => {
-            console.error('Failed to load keyboard.js:', err);
-        });
-
-    canvas.remove()
-    canvasOriginal.style.opacity = "0.9"
-
-    window.removeEventListener('mousemove', loadKeyboardScript);
-    window.removeEventListener('keydown', loadKeyboardScript);
-};
-
-window.addEventListener('mousemove', loadKeyboardScript, { once: true });
-window.addEventListener('keydown', loadKeyboardScript, { once: true });
-
+var canvas = document.getElementById("canvas3d")
 
 // Function to detect mobile devices
 function isMobile() {
@@ -68,18 +35,33 @@ if (!(isMobile())) {
         element.remove()
     }
 
-    // document.addEventListener('mousemove', (event) => {
-    //     if (!loaded) {
-    //         loaded = true
-    //         var keyboardJs = document.createElement('script');
-    //         keyboardJs.src = 'assets/js/keyboard.js';
-    //         keyboardJs.async = true;
-    //         keyboardJs.type = "module";
-    //         document.head.appendChild(keyboardJs);
-    //         canvas.remove()
-    //         canvasOriginal.style.opacity = "0.9"
-    //     }
-    // });
+    setTimeout(() => {
+
+        let marginTopVal = canvas.style.marginTop
+        let leftVal = canvas.style.left
+        let webkitFilterVal = canvas.style.webkitFilter
+        let transformVal = canvas.style.transform
+        canvas.remove()
+
+        var canvas3d = document.createElement('canvas');
+        canvas3d.id = "canvas3d"
+        canvas3d.height = "652"
+        canvas3d.width = "1232"
+        document.body.appendChild(canvas3d);
+        canvas = document.getElementById("canvas3d")
+
+        var keyboardJs = document.createElement('script');
+        keyboardJs.src = 'assets/js/keyboard.js';
+        keyboardJs.async = true;
+        keyboardJs.type = "module";
+        document.head.appendChild(keyboardJs);
+
+
+        canvas.style.marginTop = marginTopVal
+        canvas.style.left = leftVal
+        canvas.style.webkitFilter = webkitFilterVal
+        canvas.style.transform = transformVal
+    }, 3000);
 
 } else {
     var realScript = document.createElement('script');
@@ -98,6 +80,8 @@ if (!(isMobile())) {
             loop: false
         });
     };
+    document.querySelector('.brr').innerHTML += '<br>';
+
 
 }
 
@@ -218,7 +202,7 @@ mobileByte.classList.add("mobileByte")
 
 var n
 
-if (false) {
+if (!(sessionStorage.getItem('hasVisited'))) {
 
     if ((isMobile())) {
         n = 2000
@@ -264,6 +248,7 @@ function yourFunction() {
 }
 yourFunction();
 const keyClick = new Audio("assets/audios/keyPress.mp3");
+const radarPing = new Audio("radarPing.mp3");
 
 let speedX = 2;
 let speedY = 2;
@@ -314,14 +299,10 @@ window.onscroll = function () {
 
     if (scroll <= height) {
         canvas.style.marginTop = scroll + 'px'
-        canvasOriginal.style.marginTop = scroll + 'px'
         canvas.style.left = 50 - 40 * (scroll / height) + '%'
-        canvasOriginal.style.left = 50 - 40 * (scroll / height) + '%'
         opacity = (0.9 - 0.4 * (scroll / height))
         canvas.style.webkitFilter = 'blur(' + 3 * (scroll / height) + 'px)'
-        canvasOriginal.style.webkitFilter = 'blur(' + 3 * (scroll / height) + 'px)'
         canvas.style.transform = 'translateX(' + (-50 + 50 * (scroll / height)) + '%)' + ' translateY(-50%) rotate(-7deg)';
-        canvasOriginal.style.transform = 'translateX(' + (-50 + 50 * (scroll / height)) + '%)' + ' translateY(-50%) rotate(-7deg)';
         svg.style.right = "7vw"
         for (let i = 0; i < letsChat.length; i++) {
             const e = letsChat[i];

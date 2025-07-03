@@ -1,4 +1,4 @@
-const sponsors = document.getElementById("sponsors")
+    const sponsors = document.getElementById("sponsors")
     const alumni = document.getElementById("alumni")
     const jamboree = document.getElementById("jamboree")
     const kurious = document.getElementById("kurious")
