@@ -15,8 +15,8 @@ footer {
     width: 100vw;
     background: linear-gradient(to bottom, transparent 0vh, var(--bg) 20vh 100%);
     display: none;
-    box-sizing: border-box;
     padding: 10vh 7vh 0 7vh;
+    box-sizing: border-box;
     flex-wrap: wrap;
 }
 
@@ -146,7 +146,7 @@ footer {
 .letsChat>.heading {
     font-size: 70px;
     font-weight: 800;
-    color: white;
+    color: white !important;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -299,7 +299,7 @@ a {
     }
 
     .navigation {
-        display: none;
+        display: none !important;
     }
 
     .letsChat {
