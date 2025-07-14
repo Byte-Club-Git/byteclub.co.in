@@ -1,0 +1,69 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #e9f5ff;
+  text-align: center;
+  padding: 20px;
+}
+
+.form-container {
+  margin-bottom: 20px;
+}
+
+input {
+  margin: 5px;
+  padding: 10px;
+  width: 200px;
+  font-size: 16px;
+}
+.text.name,
+.text.class,
+.text.event {
+  font-family: 'Montserrat', sans-serif;
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.certificate-area {
+  position: relative;
+  display: inline-block;
+}
+
+.certificate-area img {
+  width: 1000px;
+  height: auto;
+}
+
+.text {
+  position: absolute;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  color: #000;
+  white-space: nowrap;
+  text-shadow: 1px 1px 2px #fff;
+}
+
+.name {
+  top: 308px;   /* aligned on "awarded to ____" line */
+  left: 600px;
+  font-size: 26px;
+}
+
+.class {
+  top: 355px;   /* aligned after "of ____" */
+  left: 260px;
+  font-size: 22px;
+}
+
+.event {
+  top: 400px;   /* aligned after "event ____ in Byte.IT" */
+  left: 320px;
+  font-size: 22px;
+  color: #0253c6;
+}
