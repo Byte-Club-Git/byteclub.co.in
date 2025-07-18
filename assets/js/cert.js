@@ -4,7 +4,7 @@ function generateCertificate() {
   // const event = document.getElementById("event").value;
 
   document.getElementById("cert-name").textContent = name;
-  document.getElementById("cert-class").textContent = `Class ${className}`;
+  document.getElementById("cert-class").textContent = `${className}`;
   // document.getElementById("cert-event").textContent = event;
 }
 function updateCertificateTemplate() {
