@@ -196,8 +196,43 @@ document.getElementById("form").addEventListener("submit", function (e) {
                     })
                     .catch(error => {
                         console.error("Registration error:", error);
-                        alert("Password may have been reset. Try logging in at byteclub.co.in/joinlogin. If not, an unexpected error occurred.");
-                    });
+
+                        // alert("Password may have been reset. Try logging in at byteclub.co.in/joinlogin. If not, an unexpected error occurred.");
+                        const resetPassword = prompt("Password may have been reset.\nPlease enter your new password to continue registration.\nOr visit byteclub.co.in/joinlogin if you’re stuck.");
+                        // Ask user for their reset password
+                        console.log("Reset password entered:", resetPassword);
+                    if (resetPassword) {
+                        firebase.auth().signInWithEmailAndPassword(email, resetPassword)
+                            .then(() => {
+                                membersRef.orderByChild('email').equalTo(email).once('value', snapshot => {
+                        if (snapshot.exists()) {
+                            const key = Object.keys(snapshot.val())[0];
+                            membersRef.child(key).update({
+                                fname,
+                                lname,
+                                discordID,
+                                class: classVal,
+                                section,
+                                skills,
+                                points
+                            }).then(() => {
+                                sendWebhookAndRedirect(`${date}\n${payloadContent}\n(Updated existing member with reset password)`, `Updated the entry of ${email} successfully!`);
+                            });
+                        } else {
+                            alert("Email exists in Auth but not in database. Contact support.");
+                        }});
+                            })
+                            .then(() => {
+                                sendWebhookAndRedirect(`${date}\n${payloadContent}`, `Registered successfully with reset password!`);
+                            })
+                            .catch(err => {
+                                console.error("Retry with reset password failed:", err);
+                                alert("Still couldn't register. If you forgot your password, please visit byteclub.co.in/joinlogin to reset \nor contact at byteclub.co.in/contact.");
+                            });
+                    } else {
+                        alert("No password entered. Registration aborted.");
+                    }                   
+                });
             } else {
                 console.error("Auth error:", error);
                 alert("Authentication error. Please try again.");
@@ -226,3 +261,4 @@ document.getElementById("form").addEventListener("submit", function (e) {
         window.location.href = "https://discord.com/invite/Cr2j38SQM7";
     }
 });
+
