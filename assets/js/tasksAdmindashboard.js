@@ -105,8 +105,8 @@ document.querySelector("form").addEventListener("submit", async function (e) {
             } else if (skill == "Photographer") {
                 webhookURL = "https://l.webhook.party/hook/1RnAzk1myXLFgcUbACpjJNqOKiGGVqOsK6H%2BhtnDYUBERiE4ZjPjtOG40od1c%2FfaAj%2BLYOu9IN6VsQpWGKQc6aObEnHzHc%2BxLOJFEKiRKbYtEdHTlCvHfrWFfqVNGYCDNLp4ptr6VQ%2By%2FMsHqAiiBX73qoa9A%2BuYXsCy0pZWf5WB9fc7eV9%2BANElKRzjjFQQlCFcnRhMlDxiHVFiBsKkbBIzo5HGqouOohr8vjT2g38zJKGHpLStNFzFknB01C8lAGgARUfUQpCgxIEBqVwPvvNT1JGkCkEy2lV2eue3GZLxBznM6aiou0IRa63qSFs4hcKMDfVCO1Uu1n%2BwaC%2BxvPR%2FULChKzPs2BA4gsKkqhh%2F5bvEkbRcugcKmG6GSBuy9Cw89qX5qxs%3D/QlAUSkpHJJD26khI"
 
-            } else if (skill == "Group Discussion") {
-                webhookURL = "https://l.webhook.party/hook/tduBogS37EROddVRvgaW6PNHQ0ErAKMlz%2Bwj5QThw5gkVeRzbUxrsvEMclEGcnKiaMf6r8BU5X%2FY951d9znPgTCnR%2F64G%2FBwXc7aJzuX0rCAlh2ez56jLeNWlGvJJkxGhIIVdbhoCzvUwhqlEjRy%2BL3BxLntK%2BcP%2FP20pf2i9aA395pSZAfyyK0x9Grsz1BbskNe2WF0KjPV2xLEYMx5emxvwYsSY0ULVA2jm9ZKqTV1916NPryh%2Fv3Aj9cjMfkqdNIHq33EdHPXgxSnO1MRsLNKNE5y03r%2B0%2FPIbKUxaYr5y7hOhUy1GkwsN2BMdNsJkwWE0nrRDVM%2BnxiIethU0h1w1ZCZyrTiJIJIB1629BUgzmAgVAzwyjnqUMJG4jVbQ1choJJgsPw%3D/CJ6nD%2F78tb%2BdtC0k"
+            } else if (skill == "Cubing") {
+                webhookURL = "https://l.webhook.party/hook/apaDys%2FFvh9Ilvm3Df3WU7drX1qRemVzPw2tApteH3KlCdo5EfKQXNgUSL3N2%2F6eJtHfYzKUTxS20SGBGr5VJKjVWUarNrRkqWNj8xB0ranjeW5jSo2BsNvLdPNWr5HGW2SuNHviMvKQA6JORkXAf9ll%2F7FNQwvJSow%2FRHUEw8wNC2opFAUPrC4eRxfwWgHF%2BCTglw%2FcAJYLeRO0F5QihGmeBWP7IWXB94YQPTNFLRk8YvqiC3jdW08VDxrDiaIxnqGiPv8tkPleeYeZ%2Bdhyo42THqoR2payBi5ZbGdOK20ctX7Ave76r0nzTqJ4n2Q3ovXXc1FqHnS7FcS5n3G9caToGzbGSXySrH1c7z1EMyzatADQf0M%2FBLIFG%2BV0QsKEW3NdIOzzmqS42Xdx/nZvA67BZp7Zq2THW"
 
             } else if (skill == "Quizzer") {
                 webhookURL = "https://l.webhook.party/hook/lzhHhZiDZMzxtLQSyI%2FwvaXgW0mlXd553Q%2BetZhBOt2%2BcrL%2BPl%2FaoaQ0MLXkWeLL12aeLPaKST3C5eal%2FnrUz%2FP5QUV91utkOVFnREZUavcYylqPc4H%2BqeRJ6Nv6ji3l3tcbZpnW%2BQhIm%2BtWzguRN%2B9NDzqya3KzDkDnpGtN02cWjJA4y53Yue5Dwkkypii2slH6IL54bpfX6bpLZEgf0j7mie0KQUx%2Bl4Lfns%2F4KnYdgQBYayvZq9rFdU9T8a2lFfBR5hFPA%2FYs4vnLQ%2BGD7sSMwIVqYfgOsNzRT8iDl7QffsswvM4afhPmb7htAH1mTZA%2B4XBfL%2F0wOIOrVNNejZaqlW4ZDm%2BdInRsonD4IXCDSV9WaUivokP1o43TukHU1zSNL6Hk4a4%3D/i0P7moAMCv5I6L5I"
@@ -114,7 +114,7 @@ document.querySelector("form").addEventListener("submit", async function (e) {
             } else if (skill == "Game developer") {
                 webhookURL = "https://l.webhook.party/hook/ijPUJl3K8u3wLsTHqjC4fEKioPRld5SV3O1Nl982SyAi89UcTZ0fsYQTBlMH3ppm7bRN%2Baoh52baTu%2B54zuOzu8GxNvmi160DejP50Bb0MES59N6WHwbj1cvX9eZpm8xFtKDs6kabgF4ym5SqsggZUSwG%2Bq2B2IUsPH5agOgF7hij9H2bPPvcBc6r4EbxTpt5aDCYhCXoCkf9vzRTFZHelITo18YFY2FKGUMzCwBH%2BE5SB3z5NDI6qDd5RVg%2B4P7yxrFxZdxu7cqne743UsIJPA7hefdXaKkTDGbzIzvKDul8eBtUWjwGaRxDUuph%2FlWNZeaIGXBMpJj8XWJUOYh1DNK0nYsDh9AEo64aTirTv%2B8YZxLnLNJ0jQaZTI%2BKTRh6ShaLij3AKI%3D/rx7UCgkToMtG2weF"
 
-            } else if (skill == "Entrepreneurship") {
+            } else if (skill == "Pitching") {
                 webhookURL = "https://l.webhook.party/hook/6RAQUkHofbLcjHBR3TisvrC94V4GQupO%2FD10iM8QjY9w1kDmJtLFlmM2v8ByGAoV1vBAQFiSPqJ6JmzpZD7Eqa2g8eMTfQG46G%2Faga6VLHn6g13PfO%2Fdg7432%2FkF1VFMEYK5aqPCyyuGHZMa4BBoKfu5B6Ne0ySFCkWtvmKclV%2BaNdTz2qxwMIYw22a3Pd5dUKtZUtuY5LQ%2FBstkPkN2CVTqgQE0UnuN4cS2PAbul5WoKMCrrwB9Li2laB7QXIOoAE9NftK48G3OXEpFrduSBH9nT86K71xWLZdkXh211Spjjh9YeV1j%2FJczpKJ%2FRqyNjooIxpyk8K35zNQ220Jm9tRlCJ%2BUkVKkDEvrDLmtuwV8YHm5isPxPhUk8cXFSJ7DGQfgzkJEoWE%3D/%2FW0GP20lvAKhIe40"
 
             } else if (skill == "Video Editor") {
