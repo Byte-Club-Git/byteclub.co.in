@@ -220,8 +220,8 @@ const previousTasksContainer = document.getElementById("previousTasks");
 
 const skills = [
     "Programming", "Web Development", "Motion Design", "Graphic Design",
-    "Cryptic", "Photographer", "Group Discussion", "Quizzer",
-    "Game developer", "Entrepreneurship", "Video Editor", "Gamer",
+    "Cryptic", "Photographer", "Cubing", "Quizzer",
+    "Game developer", "Pitching", "Video Editor", "Gamer",
     "3D design", "Robotics", "Film Making", "Acting", "Not Sure"
 ];
 
