@@ -1,8 +1,8 @@
 const sponsors = document.getElementById("sponsors")
 const alumni = document.getElementById("alumni")
-const jamboree = document.getElementById("jamboree")
-const kurious = document.getElementById("kurious")
-const vns = document.getElementById("vns")
+const dcb = document.getElementById("dcb")
+const unstop = document.getElementById("unstop")
+const xyz = document.getElementById("xyz")
 const sponsorsHeading = document.getElementById("sponsorsHeading")
 const sponsorsList = document.getElementsByClassName("sponsor")
 
@@ -10,9 +10,9 @@ const sponsorsList = document.getElementsByClassName("sponsor")
 const height = window.innerHeight
 const width = sponsors.offsetWidth
 const alumniWidth = (47 / width) * 100
-const jamboreeWidth = (177 / width) * 100
-const kuriousWidth = (112 / width) * 100
-const vnsWidth = (106 / width) * 100
+const dcbWidth = (110 / width) * 100
+const unstopWidth = (112 / width) * 100
+const xyzWidth = (106 / width) * 100
 
 
 
@@ -20,7 +20,7 @@ const vnsWidth = (106 / width) * 100
 window.onscroll = function () {
     console.log(height)
 
-    if (alumniWidth == 0 || jamboreeWidth == 0 || kuriousWidth == 0 || vnsWidth == 0) {
+    if (alumniWidth == 0 || dcbWidth == 0 || unstopWidth == 0 || xyzWidth == 0) {
         location.reload();
     }
 
@@ -49,17 +49,17 @@ window.onscroll = function () {
         alumni.style.height = '40px';
         alumni.style.margin = '0 0';
 
-        jamboree.style.width = 'auto';
-        jamboree.style.height = '40px';
-        jamboree.style.margin = '0 0';
+        dcb.style.width = 'auto';
+        dcb.style.height = '40px';
+        dcb.style.margin = '0 0';
 
-        kurious.style.width = 'auto';
-        kurious.style.height = '40px';
-        kurious.style.margin = '0 0';
+        unstop.style.width = 'auto';
+        unstop.style.height = '40px';
+        unstop.style.margin = '0 0';
 
-        vns.style.width = 'auto';
-        vns.style.height = '40px';
-        vns.style.margin = '0 0';
+        xyz.style.width = 'auto';
+        xyz.style.height = '40px';
+        xyz.style.margin = '0 0';
     } else {
 
         sponsorsHeading.style.top = -5 + 108.5 * (scroll / height) + "%"
@@ -77,20 +77,20 @@ window.onscroll = function () {
         alumni.style.margin = '0 ' + 0 + 2.5 * (scroll / height) + '%'
         alumni.style.filter = 'grayscale(' + (100 - 100 * (scroll / height)) + '%)'
 
-        jamboree.style.height = 'auto';
-        jamboree.style.width = jamboreeWidth + (19 - jamboreeWidth) * (scroll / height) + '%';
-        jamboree.style.margin = '0 ' + 0 + 2.5 * (scroll / height) + '%'
-        jamboree.style.filter = 'grayscale(' + (100 - 100 * (scroll / height)) + '%)'
+        dcb.style.height = 'auto';
+        dcb.style.width = dcbWidth + (19 - dcbWidth) * (scroll / height) + '%';
+        dcb.style.margin = '0 ' + 0 + 2.5 * (scroll / height) + '%'
+        dcb.style.filter = 'grayscale(' + (100 - 100 * (scroll / height)) + '%)'
 
-        kurious.style.height = 'auto';
-        kurious.style.width = kuriousWidth + (19 - kuriousWidth) * (scroll / height) + '%';
-        kurious.style.margin = '0 ' + 0 + 2.5 * (scroll / height) + '%'
-        kurious.style.filter = 'grayscale(' + (100 - 100 * (scroll / height)) + '%)'
+        unstop.style.height = 'auto';
+        unstop.style.width = unstopWidth + (19 - unstopWidth) * (scroll / height) + '%';
+        unstop.style.margin = '0 ' + 0 + 2.5 * (scroll / height) + '%'
+        unstop.style.filter = 'grayscale(' + (100 - 100 * (scroll / height)) + '%)'
 
-        vns.style.height = 'auto';
-        vns.style.width = vnsWidth + (19 - vnsWidth) * (scroll / height) + '%';
-        vns.style.margin = '0 ' + 0 + 2.5 * (scroll / height) + '%'
-        vns.style.filter = 'grayscale(' + (100 - 100 * (scroll / height)) + '%)'
+        xyz.style.height = 'auto';
+        xyz.style.width = xyzWidth + (19 - xyzWidth) * (scroll / height) + '%';
+        xyz.style.margin = '0 ' + 0 + 2.5 * (scroll / height) + '%'
+        xyz.style.filter = 'grayscale(' + (100 - 100 * (scroll / height)) + '%)'
     }
 
 
