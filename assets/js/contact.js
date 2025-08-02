@@ -28,7 +28,7 @@ function sendEmail() {
     const bodyMsg = `<b><h4>Name</h3></b> ${fullName.value} <br> <b><h4>Email</h3></b> ${email.value} <br> <b><h4>Message</h4></b> ${msg.value}`;
 
     Email.send({
-        SecureToken: '64186b92-3ea1-473f-8e1b-0d3fe443d519',
+        SecureToken: '2b601dbb-97d5-41a0-8720-931413dc04d8',
         To: 'byteclub@pp.balbharati.org',
         From: "byteclub@pp.balbharati.org",
         Subject: `${fullName.value} would like to contact you`,
