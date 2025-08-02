@@ -273,10 +273,8 @@ namespans.forEach((span, index) => {
 });
 
 const main = document.getElementById("main")
-const footer = document.getElementById("footer")
 
 
 setTimeout(function () {
     main.style.overflow = "visible"
-    footer.style.display = "flex"
 }, 2000);
