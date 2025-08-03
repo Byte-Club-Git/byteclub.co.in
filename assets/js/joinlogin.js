@@ -1,4 +1,5 @@
 
+
 function skillClicked(e) {
 
     if (e.classList.contains("clicked")) {
@@ -99,55 +100,117 @@ function navMenuClick() {
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
-document.getElementById("form").addEventListener("submit", function (e) {
-    e.preventDefault();
+// document.getElementById("form").addEventListener("submit", function (e) {
+//     e.preventDefault();
 
-    const email = document.querySelector(".email").value + document.querySelector(".emailPlaceholder").textContent;
-    const pwd = document.getElementById("pwd").value;
+    // const email = document.querySelector(".email").value + document.querySelector(".emailPlaceholder").textContent;
+    // const pwd = document.getElementById("pwd").value;
 
-    firebase.auth().signInWithEmailAndPassword(email, pwd)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            const uid = user.uid;
+    // firebase.auth().signInWithEmailAndPassword(email, pwd)
+    //     .then((userCredential) => {
+    //         const user = userCredential.user;
+    //         const uid = user.uid;
 
-            return firebase.database().ref('members').orderByChild('email').equalTo(email).once('value');
-        })
+    //         return firebase.database().ref('members').orderByChild('email').equalTo(email).once('value');
+    //     })
+    //     .then(snapshot => {
+    //         if (snapshot.exists()) {
+    //             const userData = Object.values(snapshot.val())[0]; // get first matched user
+    //             const fullName = `${userData.fname} ${userData.lname}`;
+    //             alert(`Successfully logged in, ${fullName}!`);
+    //             firebase.auth().currentUser.getIdTokenResult()
+    //                 .then((idTokenResult) => {
+    //                     if (idTokenResult.claims.admin) {
+    //                         window.location.href = "/tasks/admindashboard.html";
+    //                     } else {
+    //                         window.location.href = "/tasks/dashboard.html";
+    //                     }
+    //                 })
+    //                 .catch((error) => {
+    //                     console.error("Error checking admin claim:", error);
+    //                     window.location.href = "/tasks/dashboard.html"; // fallback
+    //                 });
+    //         } else {
+    //             alert("Logged in, but user data not found!");
+    //         }
+    //     })
+    //     .catch(error => {
+    //         if (error.code === "auth/internal-error") {
+    //             if (confirm("Invalid credentials. Do you want to reset your password?")) {
+    //                 firebase.auth().sendPasswordResetEmail(email)
+    //                     .then(() => {
+    //                         alert("Password reset email sent! Check your inbox.");
+    //                     })
+    //                     .catch(err => {
+    //                         console.error(err);
+    //                         alert("Failed to send password reset email: " + err.message);
+    //                     });
+    //             }
+    //         } else {
+    //             console.error(error);
+    //             alert("An unexpected error occurred: " + error.message);
+    //         }
+    //     });
+
+
+   const provider = new firebase.auth.GoogleAuthProvider();
+
+document.getElementById("login-google").addEventListener("click", function (e) {
+  firebase.auth().signInWithPopup(provider)
+    .then((result) => {
+      const user = result.user;
+
+      // Email domain check: only allow emails ending with '.pp.balbharati.org'
+      if (!user.email.endsWith('pp.balbharati.org')) {
+        console.error("Sign-in error: Email does not end with .pp.balbharati.org");
+        alert("Sign in with school email.");
+
+        // Sign out unauthorized user immediately
+        firebase.auth().signOut()
+          .catch((signOutError) => {
+            console.error("Error signing out user:", signOutError);
+          });
+
+        return; // Stop further processing
+      }
+
+      // User email domain is valid, now check user in 'members' database
+      firebase.database().ref('members').orderByChild('email').equalTo(user.email).once('value')
         .then(snapshot => {
-            if (snapshot.exists()) {
-                const userData = Object.values(snapshot.val())[0]; // get first matched user
-                const fullName = `${userData.fname} ${userData.lname}`;
-                alert(`Successfully logged in, ${fullName}!`);
-                firebase.auth().currentUser.getIdTokenResult()
-                    .then((idTokenResult) => {
-                        if (idTokenResult.claims.admin) {
-                            window.location.href = "/tasks/admindashboard.html";
-                        } else {
-                            window.location.href = "/tasks/dashboard.html";
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error checking admin claim:", error);
-                        window.location.href = "/tasks/dashboard.html"; // fallback
-                    });
-            } else {
-                alert("Logged in, but user data not found!");
-            }
-        })
-        .catch(error => {
-            if (error.code === "auth/internal-error") {
-                if (confirm("Invalid credentials. Do you want to reset your password?")) {
-                    firebase.auth().sendPasswordResetEmail(email)
-                        .then(() => {
-                            alert("Password reset email sent! Check your inbox.");
-                        })
-                        .catch(err => {
-                            console.error(err);
-                            alert("Failed to send password reset email: " + err.message);
-                        });
+          if (snapshot.exists()) {
+            const userData = Object.values(snapshot.val())[0];
+            const fullName = `${userData.fname} ${userData.lname}`;
+            alert(`Successfully logged in, ${fullName}!`);
+
+            // Check for admin claim to redirect appropriately
+            firebase.auth().currentUser.getIdTokenResult()
+              .then((idTokenResult) => {
+                if (idTokenResult.claims.admin) {
+                  window.location.href = "/tasks/admindashboard.html";
+                } else {
+                  window.location.href = "/tasks/dashboard.html";
                 }
-            } else {
-                console.error(error);
-                alert("An unexpected error occurred: " + error.message);
-            }
+              })
+              .catch((tokenError) => {
+                console.error("Error retrieving token claims:", tokenError);
+                alert("Login failed due to token error.");
+              });
+          } else {
+            alert("Logged in, but user data not found!");
+            // Optional: Sign out the user if data not found
+            firebase.auth().signOut()
+              .catch(s => console.error("Sign out failed:", s));
+          }
+        })
+        .catch(dbError => {
+          console.error("Database error:", dbError);
+          alert("Error accessing user data. Please try again.");
         });
+    })
+    .catch((error) => {
+      alert("Google Sign-in failed: " + error.message);
+    });
 });
+
+
+// });
