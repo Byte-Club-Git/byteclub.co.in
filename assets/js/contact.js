@@ -28,7 +28,7 @@ function sendEmail() {
     const bodyMsg = `<b><h4>Name</h3></b> ${fullName.value} <br> <b><h4>Email</h3></b> ${email.value} <br> <b><h4>Message</h4></b> ${msg.value}`;
 
     Email.send({
-        SecureToken: '64186b92-3ea1-473f-8e1b-0d3fe443d519',
+        SecureToken: 'bc0696e9-6788-4b67-9886-b518005683c9',
         To: 'byteclub@pp.balbharati.org',
         From: "byteclub@pp.balbharati.org",
         Subject: `${fullName.value} would like to contact you`,
@@ -273,10 +273,8 @@ namespans.forEach((span, index) => {
 });
 
 const main = document.getElementById("main")
-const footer = document.getElementById("footer")
 
 
 setTimeout(function () {
     main.style.overflow = "visible"
-    footer.style.display = "flex"
 }, 2000);
