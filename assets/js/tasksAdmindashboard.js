@@ -108,7 +108,7 @@ document.querySelector("form").addEventListener("submit", async function (e) {
             } else if (skill == "Cubing") {
                 webhookURL = "https://l.webhook.party/hook/qesk7zq%2BpDR6rOK7HcxpwUXkR8NlCmJdcmcVXGC%2Fl9SXLEQERObdDLbR4%2FCBIxhTo0VN77i0scf%2FzModtCPZIS%2Bm4JqnMPyVi2uNvGBDfFJKNHMUx0TWUYgKJ82horOJpZfnj4znXmcKYPSs7cVqf4TLOBZyGkzU%2BDLEftnkVTfXMSQJ17UDO3ktuP9wNFNknHaiu46k1IQs8Qs4FvC3jC1al4k3vLmadkzFqcabb8t3LzrFpIBplRdhfoaT4slpHEVa9wX3BK0Q72NhqAU1AveycACda%2FEGJt6jqFZJf4otqXfiNl9I2vS%2BN%2BpxoNUSSLUfTKjqTpuRXDa%2B8fLlDrnaWZOnh3S6GS3hoURR5iYSPfqbQGCyQWdBpcfzrCHayCx%2F9o0lHxMz%2FlrY/i8VYmianehZS8zvY"
 
-            } else if (skill == "Quizzer") {
+            } else if (skill == "Quizzing") {
                 webhookURL = "https://l.webhook.party/hook/BEn%2FaZNSTH3f3x%2BjtgzX4YaYoFpDFYAB6ZgN%2BTJeiosShH4rW1p%2FO1A6%2BiAoc%2FiCijPgNHNEFrBtQEdbyKf2MKI88Fi4c3Qh7DMZlJi7rBEYeitOYfK3KwGBSnKCqFtJ%2B1a4z%2FG1xwriXdh0xPEADkULSG2QjB18dwl8OdJSJVcGmGIA6tKAmN7W4HhlMxwmC9%2BJQ53nbJs%2B3jkqtbUqas8SOMcioWI%2BYUdXvON6Lur%2BZBaaJc1478Ae8QqjdIHZLcmW3MwFik6AVLM1LEHKB4PowmKFTDxLQTf%2B8b3kDvLWuETy4oDl%2BFutUAw7ObfLyFtJLyaUTCa8C7YzsqMAh4etwvNYjp9EXE%2Fn5BCRc%2FGvZFc0S%2FSAEJsiRTi%2FJ5iHfpfP07ToeICgYlqL/yY4sKDmfns%2BMdc5A"
 
             } else if (skill == "Game developer") {
