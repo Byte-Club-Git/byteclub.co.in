@@ -571,3 +571,66 @@ button:active{
     background: var(--text-2) !important;
     color: var(--bg) !important;
 }
+
+.cardss{
+gap: 4vw;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    margin-top: 3rem;
+}
+.eventcard {
+    background: #232323;
+    border-radius: 12px;
+    width: 20vw;              /* Adjust as needed */
+    height: 170px;             /* Adjust as needed */
+    color: #fff;
+    position: relative;
+    padding: 26px 28px 28px 28px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.eventcard h3 {
+   
+    margin: 0;
+     margin-bottom: 1rem;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+}
+
+.eventcard .competition-date,
+.eventcard .competition-description {
+    color: #bebebe;
+    font-size: 14px;
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+.eventcard .competition-date {
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.eventcard .competition-description {
+    margin-top: 6px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.eventcard .event-actions {
+    position: absolute;
+    bottom: 22px;
+    right: 30px;
+    font-size: 72px;
+    font-weight: 700;
+    color: #7ee7c2;
+    line-height: 1;
+    pointer-events: none;
+}

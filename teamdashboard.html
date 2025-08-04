@@ -53,7 +53,7 @@
 
         <div class="flexibleSpace"></div>
 
-        <div class="navItem logout" title="Log Out" onclick="logoutFirebase()">
+        <div class="navItem logout" title="Log Out" onclick="signOut()">
             <i class="bi bi-box-arrow-right"></i>
         </div>
 
@@ -101,16 +101,16 @@
         <div class="tasks">
             <div class="tasksHeading">
                 <div class="heading" onclick="headingSelect(0)">
-                    Future Events
+                    Registered
                 </div>
                 <div class="heading" onclick="headingSelect('calc(15ch + 2vw)')">
-                    Previous Events
+                    Upcoming
                 </div>
                 <div id="activeHeading" class="activeHeading"></div>
             </div>
-            <div class="currentTasks" id="currentTasks">
+            <div  class="currentTasks cardss" id="currentTasks">
             </div>
-            <div class="previousTasks" id="previousTasks">
+            <div class="previousTasks cardss" id="previousTasks">
             </div>
         </div>
     </main>
@@ -119,8 +119,8 @@
 
     function headingSelect(left){
         activeHeading = document.getElementById("activeHeading")
-        currentTasks = document.getElementById("currentTasks")
-        previousTasks = document.getElementById("previousTasks")
+        previousTasks = document.getElementById("currentTasks")
+        currentTasks = document.getElementById("previousTasks")
         activeHeading.style.left = left
 
         if (left == 0) {

@@ -108,11 +108,13 @@ async function loadRegisteredCompetitions(eventIds) {
                 const eventDiv = document.createElement('div');
                 eventDiv.className = 'registered-event-card';
                 eventDiv.innerHTML = `
-                    <h3>${comp.title}</h3>
-                    <p class="competition-date">${formatDate(comp.date)}</p>
-                    <p class="competition-description">${comp.description.substring(0, 100)}...</p>
+                <div class="eventcard">
+                    <h3> ${comp.title}</h3>
+                    <p class="competition-description">Event :</p>
+                    <p class="competition-date">Date : ${formatDate(comp.date)}</p>
+                    
                     <div class="event-actions">
-                        <button onclick="showCompetitionDetails('${eventId}')" class="btn-primary">View Details</button>
+                    </div>
                     </div>
                 `;
                 registeredEventsContainer.appendChild(eventDiv);

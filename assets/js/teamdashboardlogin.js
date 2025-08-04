@@ -249,7 +249,7 @@ function setupAuthListener() {
         } else {
             const currentPath = window.location.pathname;
             if (dashboardPages.some(page => currentPath.includes(page))) {
-                window.location.href = 'index.html';
+                window.location.href = 'teamdashboard.html';
             }
         }
     });
@@ -320,7 +320,7 @@ async function verifyDashboardAccess(user) {
             redirectToDashboard('user');
         }
     } catch (error) {
-        window.location.href = 'index.html';
+        window.location.href = 'teamlogin.html';
     }
 }
 
@@ -349,7 +349,7 @@ function redirectToDashboard(role) {
 
 async function signOut() {
     await auth.signOut();
-    window.location.href = 'index.html';
+    window.location.href = 'teamlogin.html';
 }
 
 function requireAuth(callback) {
@@ -358,7 +358,7 @@ function requireAuth(callback) {
             callback(user);
             unsubscribe();
         } else {
-            window.location.href = 'index.html';
+            window.location.href = 'teamlogin.html';
         }
     });
 }
