@@ -223,8 +223,27 @@ document.getElementById("form").addEventListener("submit", function (e) {
                                     sendWebhookAndRedirect(`${date}\n${payloadContent}\n(Updated existing member with Google Sign-In)`, `Updated the entry of ${email} successfully!`);
                                 });
                             } else {
-                                alert("Email exists in Auth but not in database. Contact support.");
+                                // Entry missing in database: Create it fresh!
+                                membersRef.push({
+                                    fname,
+                                    lname,
+                                    email,
+                                    discordID,
+                                    class: classVal,
+                                    section,
+                                    skills,
+                                    points
+                                }).then(() => {
+                                    sendWebhookAndRedirect(
+                                        `${date}\n${payloadContent}\n(Created missing db entry for Auth user)`,
+                                        `Registration completed! A new database entry was created for your account.`
+                                    );
+                                }).catch((error) => {
+                                    console.error("Error creating db entry for Auth user:", error);
+                                    alert("Could not create your database entry. Please try again or contact support.");
+                                });
                             }
+
                         });
                     })
                     .catch((err) => {
