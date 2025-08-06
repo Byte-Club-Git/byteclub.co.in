@@ -1,3 +1,4 @@
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 function skillClicked(e) {
 
@@ -198,40 +199,39 @@ document.getElementById("form").addEventListener("submit", function (e) {
                         console.error("Registration error:", error);
 
                         // alert("Password may have been reset. Try logging in at byteclub.co.in/joinlogin. If not, an unexpected error occurred.");
-                        const resetPassword = prompt("Password may have been reset.\nPlease enter your new password to continue registration.\nOr visit byteclub.co.in/joinlogin if you’re stuck.");
-                        // Ask user for their reset password
-                        console.log("Reset password entered:", resetPassword);
-                    if (resetPassword) {
-                        firebase.auth().signInWithEmailAndPassword(email, resetPassword)
-                            .then(() => {
-                                membersRef.orderByChild('email').equalTo(email).once('value', snapshot => {
-                        if (snapshot.exists()) {
-                            const key = Object.keys(snapshot.val())[0];
-                            membersRef.child(key).update({
-                                fname,
-                                lname,
-                                discordID,
-                                class: classVal,
-                                section,
-                                skills,
-                                points
-                            }).then(() => {
-                                sendWebhookAndRedirect(`${date}\n${payloadContent}\n(Updated existing member with reset password)`, `Updated the entry of ${email} successfully!`);
-                            });
-                        } else {
-                            alert("Email exists in Auth but not in database. Contact support.");
-                        }});
-                            })
-                            .then(() => {
-                                sendWebhookAndRedirect(`${date}\n${payloadContent}`, `Registered successfully with reset password!`);
-                            })
-                            .catch(err => {
-                                console.error("Retry with reset password failed:", err);
-                                alert("Still couldn't register. If you forgot your password, please visit byteclub.co.in/joinlogin to reset \nor contact at byteclub.co.in/contact.");
-                            });
-                    } else {
-                        alert("No password entered. Registration aborted.");
-                    }                   
+                    firebase.auth().signInWithPopup(googleProvider)
+                    .then((result) => {
+                        // Successful Google sign-in
+                        const user = result.user;
+                        if (user.email !== email) {
+                            alert("The Google account used does not match the registration email. Please use the right account or contact support.");
+                            return;
+                        }
+                        // Now update the user's database entry as usual
+                        membersRef.orderByChild('email').equalTo(email).once('value', snapshot => {
+                            if (snapshot.exists()) {
+                                const key = Object.keys(snapshot.val())[0];
+                                membersRef.child(key).update({
+                                    fname,
+                                    lname,
+                                    discordID,
+                                    class: classVal,
+                                    section,
+                                    skills,
+                                    points
+                                }).then(() => {
+                                    sendWebhookAndRedirect(`${date}\n${payloadContent}\n(Updated existing member with Google Sign-In)`, `Updated the entry of ${email} successfully!`);
+                                });
+                            } else {
+                                alert("Email exists in Auth but not in database. Contact support.");
+                            }
+                        });
+                    })
+                    .catch((err) => {
+                        console.error("Google Sign-In failed:", err);
+                        alert("Google Sign-In failed. Please try again or contact support.");
+                    });
+                   
                 });
             } else {
                 console.error("Auth error:", error);
