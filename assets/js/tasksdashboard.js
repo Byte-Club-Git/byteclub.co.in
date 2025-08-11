@@ -107,7 +107,7 @@ async function loadUserTasks(skills, email) {
         const footer = document.createElement("div");
         footer.className = "taskFooter";
 
-        if (task.userSubmission || task.deadline < today) {
+        if (task.userSubmission || task.deadline > today) {
             // Previous Task
             footer.innerHTML = `
                 <span class='deadlineDate' title='Deadline'>${formatDate(task.deadline)}</span>
@@ -147,6 +147,7 @@ async function loadUserTasks(skills, email) {
 async function submitTask(skill, taskId, email) {
     const submissionURL = prompt("Enter your submission link (e.g., GitHub, CodePen, etc.):");
     if (!submissionURL || !submissionURL.startsWith("http")) {
+        console.error("Invalid submission URL:", submissionURL);
         alert("Invalid link. Please submit a valid URL.");
         return;
     }
@@ -177,9 +178,9 @@ async function submitTask(skill, taskId, email) {
         alert("Submission successful!");
         window.location.reload();
     }).catch(err => {
-        console.error("Error submitting task:", err);
-        alert("Error submitting task. Please try again.");
-    });
+    console.error("Error submitting task:", err.message);
+    alert("Error submitting task. Please try again. " + err.message);
+});
 }
 
 

@@ -229,7 +229,7 @@ async function fetchTasksForUser() {
     currentTasksContainer.innerHTML = "";
     previousTasksContainer.innerHTML = "";
 
-    const today = new Date();
+    const today = new Date() ;
     const tasks = [];
 
     for (const skill of skills) {
@@ -249,7 +249,7 @@ async function fetchTasksForUser() {
                     ...task,
                     id: taskId,
                     deadlineDate,
-                    isUpcoming: deadlineDate >= today,
+                    isUpcoming: deadlineDate < today,
                     skill: skill
                 });
             });
