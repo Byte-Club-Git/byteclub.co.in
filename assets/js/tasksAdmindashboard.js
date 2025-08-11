@@ -249,7 +249,7 @@ async function fetchTasksForUser() {
                     ...task,
                     id: taskId,
                     deadlineDate,
-                    isUpcoming: deadlineDate < today,
+                    isUpcoming: deadlineDate >= today,
                     skill: skill
                 });
             });

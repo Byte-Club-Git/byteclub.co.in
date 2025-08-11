@@ -106,8 +106,8 @@ async function loadUserTasks(skills, email) {
 
         const footer = document.createElement("div");
         footer.className = "taskFooter";
-
-        if (task.userSubmission || task.deadline > today) {
+        console.log(task.deadline, today);
+        if (task.userSubmission || task.deadline < today) {
             // Previous Task
             footer.innerHTML = `
                 <span class='deadlineDate' title='Deadline'>${formatDate(task.deadline)}</span>
