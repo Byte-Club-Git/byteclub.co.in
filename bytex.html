@@ -127,17 +127,21 @@
 
     // If user cancels or leaves empty
     if (!email) {
-      document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:20%'>Access Denied</h2>";
+      alert("Access Denied");
+      window.location.href = "https://byteclub.co.in";
       return;
     }
 
-    // Check if email contains required domain
+    // Case-insensitive check
+    email = email.toLowerCase();
+
     if (!email.includes("pp.balbharati")) {
-      document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:20%'>Access Denied<br>Use official school email</h2>";
+      alert("Access Denied");
+      window.location.href = "https://byteclub.co.in";
       return;
     }
 
-    // If valid → allow page (do nothing)
+    // If valid → allow page
   });
 </script>
 </html>
