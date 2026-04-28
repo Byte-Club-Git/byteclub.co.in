@@ -113,6 +113,7 @@
                 </div>
             </div>
             <div class="resources">
+                <span><span onclick="window.open('https://bit.ly/bytexwa')" class="span1">Whatsapp Group(prompt)</span></span>
                 <span><span onclick="window.open('https://unstop.com/o/8D9qprJ?utm_medium=Share&utm_source=byteclu98167&utm_campaign=Competitions')" class="span2">Registration</span></span>
                 
             </div>
@@ -120,4 +121,23 @@
     </div>
 </body>
 <script src="assets/js/prompts.js"></script>
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let email = prompt("Enter your official school email ID:");
+
+    // If user cancels or leaves empty
+    if (!email) {
+      document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:20%'>Access Denied</h2>";
+      return;
+    }
+
+    // Check if email contains required domain
+    if (!email.includes("pp.balbharati")) {
+      document.body.innerHTML = "<h2 style='color:white;text-align:center;margin-top:20%'>Access Denied<br>Use official school email</h2>";
+      return;
+    }
+
+    // If valid → allow page (do nothing)
+  });
+</script>
 </html>
