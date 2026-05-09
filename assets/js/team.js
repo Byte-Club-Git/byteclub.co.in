@@ -22,11 +22,12 @@ const teamMembers = [
   { email: 'kabirdhingra001@gmail.com', firstName: 'Kabir', lastName: 'Dhingra', post: 'Member', hasHover: true, social: { linkedin: 'www.linkedin.com/in/kabir-dhingra-745704361', github: 'https://github.com/KabirDhingra' } },
   { email: 'anvisaluja24@gmail.com', firstName: 'Anvi', lastName: 'Saluja', post: 'Member', hasHover: true, social: {} },
   { email: 'shriyankalra26@gmail.com', firstName: 'Shriyan', lastName: 'Kalra', post: 'Member', hasHover: true, social: { github: 'http://github.com/botbean-pro' } },
+  { email: 'artistgupta0309@gmail.com', firstName: 'Aarav', lastName: 'Gupta', post: 'Member', hasHover: true, social: {  }},
   { email: 'banpreet.rekhi@gmail.com', firstName: 'Banpreet', lastName: 'Singh Rikhi', post: 'Member', hasHover: true, social: {} },
   { email: 'arora08viraj@gmail.com', firstName: 'Viraj', lastName: 'Arora', post: 'Member', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/viraj-arora/' } },
   
   // Junior Members
-  { email: '@gmail.com', firstName: 'Inesh', lastName: 'Khosla', post: 'Junior Member', hasHover: true, social: {} },
+  { email: '@gmail.com', firstName: 'Inesh', lastName: 'Khosla', post: 'Member', hasHover: true, social: {} },
   { email: 'raunakpahwa2010@gmail.com', firstName: 'Raunak', lastName: 'Pahwa', post: 'Junior Member', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/raunak-pahwa-059458260' } },
   { email: 'contact.kashika@gmail.com', firstName: 'Kashika', lastName: 'Arora', post: 'Junior Member', hasHover: true, social: {} },
   { email: 'naksalujapro11@gmail.com', firstName: 'Naksh', lastName: 'Saluja', post: 'Junior Member', hasHover: true, social: { website: 'https://www.bribooks.com/author/naksh-saluja', linkedin: 'https://www.linkedin.com/in/naksh-saluja-13098736b/', github: 'https://github.com/nakshtheking12' } },
