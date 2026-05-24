@@ -1,0 +1,15 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Ensure HTML, CSS, and JS files are counted properly
+
+*.html linguist-detectable=true
+*.css linguist-detectable=true
+*.js linguist-detectable=true
+
+*.css linguist-vendored=false
+*.js linguist-vendored=false
+*.html linguist-vendored=false
+
+assets/js/keyboard.js linguist-generated=true
+assets/js/keyboardLayout.js linguist-generated=false

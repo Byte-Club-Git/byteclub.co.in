@@ -1,0 +1,573 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --bg: #1C1C1C;
+    --lines: #282828;
+    --accent-1: #86CA9B;
+    --accent-2: #2F2F2F;
+    --accent-2-hover: #2a2a2a;
+    --text-1: #F0F0F0;
+    --text-2: #C5C5C5;
+    --text-3: #7f7f7f;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    font-family: poppins;
+    color: var(--text-1);
+
+}
+
+body {
+    background: var(--bg);
+}
+
+
+header {
+    background: var(--bg);
+    height: 5vh;
+    width: 100vw;
+    border-bottom: 1px solid var(--lines);
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+    padding-left: 6vw;
+    padding-right: 1vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+.navbar {
+    height: 100vh;
+    width: 4vw;
+    border-right: 1px solid var(--lines);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 101;
+    background-color: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.personalInfo {
+    font-size: 0.8rem;
+}
+
+.slash {
+    color: var(--text-3);
+    margin: 0 0.75vw;
+    font-weight: 100;
+    font-size: 0.75rem;
+}
+
+.headerOptions {
+    display: flex;
+    font-size: 0.8rem;
+}
+
+.contact,
+.discord {
+    width: max-content;
+    padding: 0 0.85vw;
+    background: var(--accent-2);
+    border-radius: 5px;
+    height: 3vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0.25vw;
+    border: 1px solid var(--lines);
+    cursor: pointer;
+}
+
+.contact>span {
+    margin-left: 0.5vw;
+}
+
+.contact>.bi{
+    color: var(--text-3);
+    font-size: 0.9rem;
+}
+
+.discord>.bi {
+    color: var(--text-2);
+    font-size: 1rem;
+}
+
+.profile{
+    width: 3vh;
+    background: var(--accent-2);
+    border-radius: 500px;
+    height: 3vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0.25vw;
+    border: 1px solid var(--text-3);
+    cursor: pointer;
+    font-weight: 200;
+    position: relative;
+}
+
+.logo {
+    min-height: 5vh;
+    max-height: 5vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5vh;
+}
+
+.navbar>.logo>img {
+    height: 60%;
+    width: auto;
+    transform: translate(-5%);
+}
+
+.navItem {
+    width: 80%;
+    border-radius: 5px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    margin: 0.5vh 0;
+    cursor: pointer;
+    transition: all 100ms ease-in-out;
+}
+
+.active {
+    background: var(--accent-2);
+}
+
+.navItem:not(.active):hover {
+    background-color: var(--accent-2-hover);
+}
+
+.navItem>.bi {
+    color: var(--text-3);
+}
+
+.divider {
+    width: 80%;
+    height: 2px;
+    background: var(--lines);
+    margin: 0.5vh 0;
+
+}
+
+.flexibleSpace {
+    height: 100%;
+    width: 100%;
+}
+
+.logout>.bi {
+    color: #dc3545;
+}
+
+main {
+    width: 96vw;
+    height: 95vh;
+    box-sizing: border-box;
+    margin-top: 5vh;
+    margin-left: 4vw;
+    padding: 5%;
+}
+
+.greeting {
+    width: 100%;
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-bottom: 7vh;
+}
+
+.stats {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10vh;
+}
+
+.statBox, .taskBox {
+    height: 30vh;
+    width: 20vw;
+    background: #232323;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 2vh 2vw;
+    position: relative;
+}
+
+.statHeading {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    color: var(--text-2);
+    font-size: 1.2rem;
+    position: relative;
+}
+
+.statHeading > .deleteIconUser {
+    color: var(--accent-1);
+}
+
+.deleteIcon, .deleteIconUser{
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
+
+.statIcon, .deleteIcon, .deleteIconUser {
+    height: 2rem;
+    width: 2rem;
+    background: #313131;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1vw;
+    border-radius: 5px;
+}
+
+
+.deleteIcon{
+    background: #dc3545;
+    margin-right: 0;
+}
+
+.deleteIconUser{
+    background: none;
+    width: max-content;
+}
+
+
+.statHeading>.deleteIcon>.bi{
+    color: var(--text-2);
+}
+
+.statHeading>.statIcon>.bi{
+    font-size: 1.25rem;
+    color: var(--text-3);
+}
+
+.statSubheading,
+.taskLink {
+    padding: 2.5vh 0 1vh;
+    color: var(--text-3);
+    border-bottom: 1px solid var(--text-3);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.value {
+    color: var(--accent-1);
+    font-weight: 1000;
+    font-size: 5rem;
+    position: absolute;
+    bottom: 0;
+    right: 2vw;
+}
+
+.skillSack {
+    height: max-content;
+    width: 100%;
+    margin-top: 1vh;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+}
+
+.skill {
+    background: #313131;
+    width: max-content;
+    font-size: 0.75rem;
+    height: 2rem;
+    padding: 0 0.75vw;
+    border-radius: 5px;
+    margin: 0.1vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tasks {
+    width: 100%;
+    height: max-content;
+}
+
+.tasksHeading {
+    display: flex;
+    margin-bottom: 2vh;
+    position: relative;
+}
+
+.heading {
+    font-size: 1.2rem;
+    margin-right: 2vw;
+    width: 15ch;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2.5rem;
+    cursor: pointer;
+}
+
+.activeHeading{
+    font-size: 1.2rem;
+    width: 15ch;
+    height: 2.5rem;
+    background: var(--accent-2);
+    border-radius: 5px;
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    transition: all 150ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+
+.currentTasks, .previousTasks {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.previousTasks{
+    display: none;
+}
+
+.taskLink {
+    color: #0d6efd;
+    cursor: pointer;
+}
+
+.taskFooter{
+    width: 100%;
+    min-height: 1rem;
+    max-height: 1rem;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1vh;
+}
+
+#date{
+    color: var(--text-3);
+}
+
+.submitTask{
+    max-height: 1.5rem;
+    padding: 0 0.5vw;
+    border-radius: 5px;
+    background: var(--accent-1);
+    color: var(--bg);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 100ms ease-in-out;
+    border: 1px solid transparent;
+}
+
+.submitTask:hover{
+    background: #639472;
+}
+
+.submitTask:active{
+    border: 1px solid var(--accent-1);
+    background: rgba(134, 202, 155, 0.15);
+}
+
+.taskBox{
+    height: max-content;
+    margin-bottom: 2vh;
+    margin-right: 2vw;
+}
+
+.taskBox:nth-child(4n){
+    margin-right: 0;
+}
+
+.previousTaskFooter{
+    min-height: 1rem;
+    max-height: 1rem;
+}
+
+.previousTasks > .taskBox > .previousTaskLink1{
+    border-bottom: none;
+}
+
+.previousTasks > .taskBox > .previousTaskLink > span{
+    color: var(--text-3);
+}
+
+.previousTasks > .taskBox > .previousTaskLink2{
+    padding: 0vh 0 1vh;
+}
+
+a{
+    color: inherit;
+    font-size: inherit;
+    text-decoration: none;
+}
+
+.addTask{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(15px);
+    background: rgba(28, 28, 28, 0.75);
+    display: flex;
+    opacity: 0;
+    pointer-events: none;
+    justify-content: center;
+    align-items: center;
+    transition: all 150ms ease-in-out;
+}
+
+.formContainer{
+    width: 50%;
+    height: 65%;
+    background: var(--bg);
+    border: 1px solid var(--text-3);
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 2vh 2vw;
+}
+
+form{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.formHeading, .promptLink{
+    width: 100%;
+    display: flex;
+}
+
+.formIcon{
+    background: var(--lines);
+    height: 4rem;
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0.5vw;
+    border-radius: 5px;
+    margin-right: 2vw;
+}
+
+.formIcon > .bi{
+    color: var(--text-3);
+    font-size: 2.5rem;
+}
+
+.formTaskHeading{
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: end;
+}
+
+.taskname, .dateInput{
+    min-width: 100%;
+    border: none;
+    background: transparent;
+    border-bottom: 2px solid var(--accent-2);
+    font-size: 2rem;
+}
+
+textarea:focus,
+input:focus {
+    outline: none;
+}
+
+.formTaskHeading-skills{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: center;
+}
+
+button{
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0 1vw;
+    font-size: 1.3rem;
+    height: 3rem;
+    margin: 0 auto;
+    border-radius: 5px;
+    background: var(--accent-1);
+    color: var(--bg);
+    transition: all 100ms ease-in-out;
+}
+
+button:hover{
+    background: #639472;
+}
+
+button:active{
+    border: 1px solid var(--accent-1);
+    background: rgba(134, 202, 155, 0.15);
+}
+
+.formSkill{
+    cursor: pointer;
+}
+
+.dateInput{
+    position: relative;
+}
+
+.dateInput::after{
+    content: "<- Deadline Date";
+    position: absolute;
+    right: 0;
+    color: var(--text-3);
+}
+
+.taskSkill{
+    margin-top: 1vh;
+}
+
+.scoreInp{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--text-3);
+    margin-left: 2.5%;
+}
+
+.scoreBox{
+    display: flex;
+    width: 100%;
+}
+
+.deadlineDate{
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.clicked{
+    background: var(--text-2) !important;
+    color: var(--bg) !important;
+}

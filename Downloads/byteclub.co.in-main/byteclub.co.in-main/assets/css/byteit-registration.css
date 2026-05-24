@@ -1,0 +1,474 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #e6e3db;
+  --lines: #d0cdc8;
+  --accent-1: #2b4e6b;
+  --accent-2: #b9d7d9;
+  --ink: #171717;
+  --muted: #585858;
+  --panel: rgba(230, 227, 219, 0.82);
+  --danger: #8f2f2f;
+  --success: #2f6846;
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "roslindale";
+  src: url("../fonts/RoslindaleVariable-VF[Display]-Testing.ttf");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "cheguevaratext";
+  src: url("../fonts/CheGuevaraText-Serif.ttf");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: "Irish Grover";
+  src: url("../fonts/IrishGrover.ttf");
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Poppins, Inter, sans-serif;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+}
+
+.rectangle {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.rectangle-left {
+  left: 7vh;
+  border-left: 1px solid var(--lines);
+}
+
+.rectangle-right {
+  right: 7vh;
+  border-right: 1px solid var(--lines);
+}
+
+.rectangle-top {
+  top: 7vh;
+  height: calc(100vh - 7vh - 1px);
+  border-top: 1px solid var(--lines);
+}
+
+.rectangle-nav {
+  top: 14vh;
+  height: 36vh;
+  border-top: 1px solid var(--lines);
+}
+
+.byteit-nav {
+  position: fixed;
+  top: 7vh;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 7vh;
+  padding: 0 7vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.byteit-brand {
+  font-family: roslindale, serif;
+  font-size: 50px;
+  letter-spacing: -2px;
+  text-decoration: none;
+}
+
+.byteit-links {
+  display: flex;
+  gap: 1.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.byteit-shell {
+  width: min(1180px, calc(100vw - 14vh));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 20vh 0 8vh;
+}
+
+.auth-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: clamp(2rem, 7vw, 6rem);
+  align-items: center;
+}
+
+.byteit-kicker {
+  color: var(--accent-1);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.byteit-title {
+  margin-top: 1rem;
+  font-family: cheguevaratext, serif;
+  color: var(--muted);
+  font-size: clamp(4.2rem, 12vw, 10rem);
+  font-weight: 400;
+  line-height: 0.8;
+  letter-spacing: -2px;
+}
+
+.byteit-copy {
+  max-width: 44rem;
+  margin-top: 2rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.auth-card,
+.event-card,
+.dashboard-panel,
+.byteit-modal__panel {
+  border: 1px solid var(--lines);
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+}
+
+.auth-card {
+  padding: clamp(1.4rem, 4vw, 2.3rem);
+  border-radius: 8px;
+}
+
+.auth-card h1,
+.dashboard-panel h1 {
+  font-size: clamp(1.9rem, 4vw, 3.2rem);
+  line-height: 1;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.auth-card p,
+.dashboard-panel p,
+.byteit-muted {
+  color: var(--muted);
+}
+
+.byteit-form {
+  display: grid;
+  gap: 1.35rem;
+  margin-top: 2rem;
+}
+
+.byteit-form label {
+  display: grid;
+  gap: 0.5rem;
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.byteit-form input {
+  width: 100%;
+  height: 2.8rem;
+  border: 0;
+  border-bottom: 1px solid #807e7b;
+  background: transparent;
+  color: var(--ink);
+  font: 500 1rem Poppins, sans-serif;
+}
+
+.byteit-form input:focus {
+  outline: none;
+  border-bottom-color: var(--accent-1);
+}
+
+.byteit-button {
+  width: max-content;
+  min-height: 2.8rem;
+  padding: 0.4rem 1.25rem;
+  border: 1px solid var(--accent-1);
+  border-radius: 5px;
+  background: var(--accent-1);
+  color: #fff;
+  cursor: pointer;
+  font-family: "Irish Grover", Poppins, sans-serif;
+  font-size: 1.35rem;
+  letter-spacing: 0;
+}
+
+.byteit-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.byteit-link-row {
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.byteit-status {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--lines);
+  border-radius: 5px;
+  color: var(--accent-1);
+  font-size: 0.92rem;
+}
+
+.byteit-status[data-type="error"] {
+  color: var(--danger);
+  border-color: rgba(143, 47, 47, 0.32);
+}
+
+.byteit-status[data-type="success"] {
+  color: var(--success);
+  border-color: rgba(47, 104, 70, 0.32);
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: end;
+}
+
+.dashboard-panel {
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 8px;
+}
+
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.stat-box {
+  min-height: 7rem;
+  padding: 1.1rem;
+  border: 1px solid var(--lines);
+  border-radius: 5px;
+}
+
+.stat-box span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.stat-box strong {
+  display: block;
+  margin-top: 0.7rem;
+  font-size: 2rem;
+}
+
+.event-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.event-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  min-height: 18rem;
+  padding: 1.2rem;
+  border-radius: 8px;
+}
+
+.event-card__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.event-card h2 {
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.event-card p {
+  margin-top: 0.55rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.event-card__teams {
+  display: grid;
+  gap: 0.65rem;
+  flex: 1;
+}
+
+.mode-badge {
+  align-self: start;
+  border: 1px solid var(--accent-1);
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  color: var(--accent-1);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.mode-badge--online {
+  border-color: #3f6f49;
+  color: #3f6f49;
+}
+
+.mode-badge--offline {
+  border-color: #8f5d2f;
+  color: #8f5d2f;
+}
+
+.team-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem;
+  border: 1px solid var(--lines);
+  border-radius: 5px;
+}
+
+.team-row span {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.team-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.team-actions button,
+.modal-close,
+.ghost-button {
+  border: 1px solid var(--lines);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0.35rem 0.65rem;
+}
+
+.byteit-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.byteit-modal[hidden] {
+  display: none;
+}
+
+.byteit-modal__panel {
+  width: min(780px, 100%);
+  max-height: min(88vh, 900px);
+  overflow: auto;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border-radius: 8px;
+}
+
+.byteit-modal__top {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.participant-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.participant-fieldset {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  padding: 1rem;
+  border: 1px solid var(--lines);
+  border-radius: 5px;
+}
+
+.participant-fieldset legend {
+  padding: 0 0.35rem;
+  color: var(--accent-1);
+  font-weight: 700;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 860px) {
+  .byteit-nav {
+    top: 3vh;
+    height: auto;
+    padding: 0 1rem;
+  }
+
+  .byteit-brand {
+    font-size: 36px;
+  }
+
+  .byteit-shell {
+    width: min(100% - 2rem, 680px);
+    padding-top: 8rem;
+  }
+
+  .auth-grid,
+  .event-list,
+  .dashboard-stats,
+  .participant-fieldset {
+    grid-template-columns: 1fr;
+  }
+
+  .byteit-title {
+    font-size: clamp(4rem, 24vw, 7rem);
+  }
+
+  .dashboard-header,
+  .event-card__header,
+  .team-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

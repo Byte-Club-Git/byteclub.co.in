@@ -1,0 +1,351 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --bg: #E6E3DB;
+    --lines: #D0CDC8;
+    --accent-1: #2B4E6B;
+    --accent-2: #B9D7D9;
+    --text: #D9D9D9;
+    --footerLines: #D0CDC8;
+}
+
+
+footer {
+    height: 55vh;
+    width: 100vw;
+    background: linear-gradient(to bottom, transparent 0vh, var(--bg) 20vh 100%);
+    display: none;
+    padding: 10vh 7vh 0 7vh;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+}
+
+.navigation {
+    width: 50%;
+    height: 25vh;
+    margin-top: 10vh;
+    justify-content: start;
+    display: flex;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+    font-family: inter;
+    border: 1px solid var(--footerLines);
+    position: relative;
+}
+
+.logo {
+    width: 10vh;
+    height: calc(10vh - 1px);
+    right: -1px;
+    top: 0;
+    position: absolute;
+    transform: translateY(-100%);
+    border: 1px solid var(--footerLines);
+}
+
+.logo>img {
+    width: 80%;
+    height: auto;
+    filter: brightness(0) saturate(100%) invert(10%) sepia(0%) saturate(0%) hue-rotate(183deg) brightness(100%) contrast(92%);
+}
+
+.section1,
+.section2 {
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+    justify-content: center;
+    align-items: start;
+    width: 50%;
+    position: relative;
+}
+
+.section1::after {
+    content: "";
+    width: 1px;
+    height: 25vh;
+    position: absolute;
+    right: 0;
+    background-color: var(--footerLines);
+}
+
+.navigation>div>a {
+    position: relative;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    padding: 0 10%;
+    transition: all 300ms ease-out;
+    overflow: hidden;
+}
+
+
+.navigation>div>a:hover {
+    padding: 0 16%;
+}
+
+.navigation>div>a:hover:after {
+    width: 5px !important;
+    background-color: black !important;
+}
+
+.navigation>div>a:hover>.hoverLink {
+    left: 15%;
+}
+
+.chatBox>.smallBox:hover>.hoverLink {
+    left: 9%;
+}
+
+.social>.smallBox:hover>.hoverLink {
+    left: 20%;
+}
+
+.active::after {
+    width: 5px !important;
+}
+
+.navigation>div>a::after {
+    content: " ";
+    width: 0px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    background-color: black;
+    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.navigation>div:hover>a:not(:hover) {
+    color: var(--footerLines) !important;
+}
+
+.hoverLink {
+    font-size: 200%;
+    position: absolute;
+    left: 0;
+    transform: translateX(-100%);
+    transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.letsChat {
+    width: 50%;
+    background-color: #151515;
+    height: 35vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+    font-family: inter;
+}
+
+.letsChat>.heading {
+    font-size: 70px;
+    font-weight: 800;
+    color: white !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.letsChat>.heading>span{
+    cursor: pointer;
+    overflow: hidden;
+}
+.letsChat>.heading>span>span{
+    display: block;
+    transform: translateY(100%);
+    transition: all 300ms cubic-bezier(.32,.76,.55,1.3);
+}
+
+.letsChat>.heading>span:nth-child(1)>.letsChatAnimate{
+    animation: bouncUp 300ms 0ms cubic-bezier(.32,.76,.55,1.3) forwards;
+}
+.letsChat>.heading>span:nth-child(2)>.letsChatAnimate{
+    animation: bouncUp 300ms 50ms cubic-bezier(.32,.76,.55,1.3) forwards;
+}
+.letsChat>.heading>span:nth-child(3)>.letsChatAnimate{
+    animation: bouncUp 300ms 100ms cubic-bezier(.32,.76,.55,1.3) forwards;
+}
+.letsChat>.heading>span:nth-child(4)>.letsChatAnimate{
+    animation: bouncUp 300ms 150ms cubic-bezier(.32,.76,.55,1.3) forwards;
+}
+.letsChat>.heading>span:nth-child(5)>.letsChatAnimate{
+    animation: bouncUp 300ms 200ms cubic-bezier(.32,.76,.55,1.3) forwards;
+}
+.letsChat>.heading>span:nth-child(6)>.letsChatAnimate{
+    animation: bouncUp 300ms 250ms cubic-bezier(.32,.76,.55,1.3) forwards;
+}
+.letsChat>.heading>span:nth-child(7)>.letsChatAnimate{
+    animation: bouncUp 300ms 300ms cubic-bezier(.32,.76,.55,1.3) forwards;
+}
+.letsChat>.heading>span:nth-child(8)>.letsChatAnimate{
+    animation: bouncUp 300ms 350ms cubic-bezier(.32,.76,.55,1.3) forwards;
+}
+
+@keyframes bouncUp {
+    0%{
+        transform: translateY(100%);
+    }100%{
+        transform: translateY(0%);
+    }
+}
+
+.letsChat>.chatBox {
+    width: 80%;
+    height: 10vh;
+    background: rgb(62, 62, 62);
+}
+
+.letsChat>.chatBox>.smallBox {
+    width: 100%;
+    height: 100%;
+    background: white;
+    justify-content: start;
+    box-sizing: border-box;
+    padding: 0 5%;
+    transition: all 150ms ease-out;
+    cursor: pointer;
+    position: relative;
+}
+
+.contactSend {
+    font-size: 150%;
+    position: absolute;
+    right: 10%;
+    transition: all 1s cubic-bezier(.42, -0.59, 0, 1.04);
+    transform: rotate(45deg);
+}
+
+.letsChat>.chatBox>.smallBox:hover {
+    transform: translateY(-10px) translateX(10px);
+    padding: 0 9%;
+
+}
+
+.letsChat>.chatBox>.smallBox:hover>.contactSend {
+    transform: rotate(45deg) translateX(70px) translateY(-70px);
+}
+
+
+.socials {
+    width: 100%;
+    height: 10vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: inter;
+    border-right: 0.5px solid var(--footerLines);
+    border-left: 0.5px solid var(--footerLines);
+}
+
+.social {
+    width: 20%;
+    height: 100%;
+    background-color: #212121;
+    margin-top: -1px;
+}
+
+.social>.smallBox {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    box-sizing: border-box;
+    transition: all 150ms ease-out;
+    padding: 0 10%;
+    cursor: pointer;
+    border: 0.5px solid var(--footerLines);
+    overflow: hidden;
+    background-color: var(--bg);
+    position: relative;
+    text-decoration: inherit;
+    color: inherit;
+}
+
+a {
+    text-decoration: inherit;
+    color: inherit;
+}
+
+.social>.smallBox:hover {
+    transform: translateY(-10px) translateX(10px);
+    padding: 0 20%;
+}
+
+.socialFly {
+    height: 25px;
+    width: auto;
+    position: absolute;
+    right: 15%;
+    transform: rotate(225deg);
+}
+
+.socialIcon {
+    font-size: 125%;
+    margin-right: 0.5vw;
+}
+
+@media (max-width: 599px) {
+    footer {
+        height: 45vh;
+        width: 100vw;
+        padding: 0 1vh;
+    }
+
+    .navigation {
+        display: none !important;
+    }
+
+    .letsChat {
+        width: 100%;
+        height: 35vh;
+    }
+
+    .letsChat>.heading {
+        font-size: 60px;
+        letter-spacing: 2px;
+        font-weight: 800;
+    }
+
+    .letsChat>.chatBox {
+        width: 90%;
+        height: 10vh;
+    }
+
+    .letsChat>.chatBox>.smallBox {
+        width: 100%;
+        height: 100%;
+        background: white;
+        padding: 0 5%;
+    }
+
+    .chatBox>.smallBox>.hoverLink {
+        display: none !important;
+    }
+
+    .socials {
+        width: 100%;
+        height: 45vh;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .social {
+        width: 100%;
+        height: 100%;
+        background-color: #212121;
+        margin-top: -1px;
+    }
+    .socialIcon {
+        font-size: 125%;
+        margin-right: 2.5vw;
+    }
+}

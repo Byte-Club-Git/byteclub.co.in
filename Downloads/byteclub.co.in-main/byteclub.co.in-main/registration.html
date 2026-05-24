@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Byte.IT Registration</title>
+  <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+  <link rel="stylesheet" href="assets/css/byteit-registration.css">
+</head>
+
+<body data-page="register">
+  <div class="rectangle rectangle-left"></div>
+  <div class="rectangle rectangle-right"></div>
+  <div class="rectangle rectangle-top"></div>
+  <div class="rectangle rectangle-nav"></div>
+
+  <nav class="byteit-nav">
+    <a class="byteit-brand" href="/">byte.</a>
+    <div class="byteit-links">
+      <a href="login.html">Login</a>
+      <a href="byteit.html">Byte.IT</a>
+    </div>
+  </nav>
+
+  <main class="byteit-shell auth-grid">
+    <section>
+      <span class="byteit-kicker">School registration</span>
+      <h1 class="byteit-title">Byte.IT</h1>
+      <p class="byteit-copy">Create your school account once. Supabase will handle the auth email, then your team can log in and manage event registrations.</p>
+    </section>
+
+    <section class="auth-card">
+      <h1>Register</h1>
+      <p>Use an official school email address.</p>
+      <form class="byteit-form" data-auth-form>
+        <label>School name
+          <input type="text" name="schoolName" autocomplete="organization" required>
+        </label>
+        <label>School email
+          <input type="email" name="schoolEmail" autocomplete="email" required>
+        </label>
+        <label>Password
+          <input type="password" name="password" autocomplete="new-password" minlength="8" required>
+        </label>
+        <label>Confirm password
+          <input type="password" name="confirmPassword" autocomplete="new-password" minlength="8" required>
+        </label>
+        <button class="byteit-button" type="submit">create account</button>
+      </form>
+      <div class="byteit-status" data-status hidden></div>
+      <p class="byteit-link-row">Already registered? <a href="login.html">Log in to the dashboard</a>.</p>
+    </section>
+  </main>
+
+  <script src="assets/js/byteit-supabase-config.js"></script>
+  <script type="module" src="assets/js/byteit-auth.js"></script>
+</body>
+
+</html>
