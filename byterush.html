@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteRush</title>
+    <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+    <link rel="stylesheet" href="assets/css/gameStyle.css">
+</head>
+
+<body>
+    <div id="authContainer" class="authContainer">
+        <div class="box">
+            <div id="greeting" class="greeting">
+                You're In!
+            </div>
+            <form class="disappear" onsubmit="handleSubmit(event)">
+                <input id="name" placeholder="Username" class="name disappear" type="text" minlength="3" maxlength="20" pattern="[a-zA-Z0-9_.]+" required oninvalid="this.setCustomValidity('Not Valid')" onchange="try{setCustomValidity('')}catch(e){}">
+                <input id="password" placeholder="Password" class="password disappear" type="password" required>
+                <button type="submit" class="disappear" id="submitBtn">GO</button>
+            </form>
+            <div id="info" class="info">
+                Tap the highlighted number between 00-99 before time runs out to score points. The higher your score, the higher you rank on the leaderboard!
+            </div>
+            <div id="loader" class="loader"></div>
+            <div class="leaderboard" id="leaderboard"></div>
+        </div>
+    </div>
+    <div id="container" class="container"></div>
+    <div class="left" id="left"></div>
+    <div class="right" id="right"></div>
+    <div class="top" id="top"></div>
+    <div class="bottom" id="bottom"></div>
+    <div class="window" id="window"></div>
+    <div id="scoreDiv" class="score">Score: &nbsp; <span id="score"></span></div>
+    <div id="startDesc" class="startDesc">Press <span>SPACEBAR</span> to start</div>
+    <div class="notification" id="notification">Notification</div>
+    <div class="mobile">
+        <div class="welcome">
+            Welcome To ByteRush
+        </div>
+        <div class="description">
+            This is a fast-paced reflex game where you need to quickly click on the correct shapes to score points. <br> <br> The game is designed for desktop play only, so please switch to a desktop or laptop to start playing.
+        </div>
+    </div>
+</body>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+<!-- Realtime Database SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script src="assets/js/gameJava.js"></script>
+</html>

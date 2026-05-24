@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get in Touch</title>
+  <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+  <link rel="stylesheet" href="assets/css/footer.css">
+  <link rel="stylesheet" href="assets/css/contact.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://kit.fontawesome.com/3a881cfccc.js" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+  <script src="https://smtpjs.com/v3/smtp.js"></script>
+</head>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://byteclub.co.in"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Contact",
+      "item": "https://byteclub.co.in/contact"
+    }
+  ]
+}
+</script>
+
+<body>
+  <div class="container1">
+    <div class="rectangle rectangle-left"></div>
+    <div class="rectangle rectangle-right"></div>
+    <div class="rectangle rectangle-top"></div>
+    <div class="rectangle rectangle-nav"></div>
+  </div>
+  <section id="bigNav" class="center bigNav">
+    <div class="left">
+      <div>
+        <span onclick="navMenuClick()" id="span1" onmouseover="rotateNumbers(this)"
+          onmouseout="stopRotateNumbers(this)">
+          <div class="numbers">
+            <div class="number"></div>
+          </div>
+          <a href="/#spanA">ABOUT</a>
+        </span>
+      </div>
+      <div>
+        <span id="span2" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+          <div class="numbers">
+            <div class="number"></div>
+            <div class="number"></div>
+          </div>
+          <a href="team">TEAM</a>
+        </span>
+      </div>
+      <div>
+        <span id="span3" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+          <div class="numbers">
+            <div class="number"></div>
+            <div class="number"></div>
+            <div class="number"></div>
+          </div>
+          <a href="resources">RESOURCES</a>
+        </span>
+      </div>
+      <div>
+        <span id="span4" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+          <div class="numbers">
+            <div class="number"></div>
+            <div class="number"></div>
+            <div class="number"></div>
+            <div class="number"></div>
+          </div>
+          <a href="byteit">BYTE.IT</a>
+        </span>
+      </div>
+    </div>
+    <div class="right">
+      <span onmouseover="document.getElementById('spanContact').style.width='100%'"
+        onmouseout="document.getElementById('spanContact').style.width='0%'">
+        <a href="contact">Contact</a>
+        <span id="spanContact"></span>
+      </span>
+      <span onmouseover="document.getElementById('spanCredits').style.width='100%'"
+        onmouseout="document.getElementById('spanCredits').style.width='0%'">
+        <a href="credits">Credits</a>
+        <span id="spanCredits"></span>
+      </span>
+    </div>
+  </section>
+
+  <div class="nav">
+    <span id="navByte" onclick="window.location = '/';" class="navByte">byte.</span>
+    <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
+      <img id="circle1" class="circle1" src="assets/icons/circle1.svg" alt="">
+      <img id="circle2" class="circle2" src="assets/icons/circle2.svg" alt="">
+      <div class="lines">
+        <div id="line1" class="line1"></div>
+        <div id="line2" class="line2"></div>
+      </div>
+    </span>
+  </div>
+  <div class="main" id="main">
+    <form id="form">
+      <div class="formBox">
+        <div class="border"></div>
+        <div class="message">
+          <div class="welcomeMsg">
+            <div>
+              <span>P</span>
+              <span>l</span>
+              <span>e</span>
+              <span>a</span>
+              <span>s</span>
+              <span>e</span>
+              &nbsp;
+              <span>t</span>
+              <span>y</span>
+              <span>p</span>
+              <span>e</span>
+              &nbsp;
+              <span>y</span>
+              <span>o</span>
+              <span>u</span>
+              <span>r</span>
+              &nbsp;
+              <span>m</span>
+              <span>e</span>
+              <span>s</span>
+              <span>s</span>
+              <span>a</span>
+              <span>g</span>
+              <span>e</span>
+              &nbsp;
+              <span>b</span>
+              <span>e</span>
+              <span>l</span>
+              <span>o</span>
+              <span>w</span>
+              &nbsp;
+              <span>o</span>
+              <span>r</span>
+              &nbsp;
+              <span>m</span>
+              <span>a</span>
+              <span>i</span>
+              <span>l</span>
+              &nbsp;
+              <span>u</span>
+              <span>s</span>
+              &nbsp;
+            </div>
+            <div>
+              <span>a</span>
+              <span>t</span>
+              &nbsp;
+              <a class="byteMail" href="mailto:byteclub@pp.balbharati.org">
+                <span>b</span>
+                <span>y</span>
+                <span>t</span>
+                <span>e</span>
+                <span>c</span>
+                <span>l</span>
+                <span>u</span>
+                <span>b</span>
+                <span>@</span>
+                <span>p</span>
+                <span>p</span>
+                <span>.</span>
+                <span>b</span>
+                <span>a</span>
+                <span>l</span>
+                <span>b</span>
+                <span>h</span>
+                <span>a</span>
+                <span>r</span>
+                <span>a</span>
+                <span>t</span>
+                <span>i</span>
+                <span>.</span>
+                <span>o</span>
+                <span>r</span>
+                <span>g</span>
+              </a>
+            </div>
+
+            <span id="text-measurer"></span>
+          </div>
+          <div class="name" onclick="document.getElementById('input').focus()">
+            <span>Y</span>
+            <span>o</span>
+            <span>u</span>
+            &nbsp;
+            <span>c</span>
+            <span>a</span>
+            <span>n</span>
+            &nbsp;
+            <span>c</span>
+            <span>a</span>
+            <span>l</span>
+            <span>l</span>
+            &nbsp;
+            <span>m</span>
+            <span>e</span>
+            &nbsp;
+            <span>b</span>
+            <span>y</span>
+            &nbsp;
+            <span>[<input autocomplete="off" type="text" class="nameInp" id="input" value="Your Name"
+                name="searchTerm">]</span>
+          </div>
+          <textarea name="message" id="formTextarea" required placeholder="Message..."></textarea>
+        </div>
+        <div class="painting" id="canvasContainer">
+          <div class="quote">
+            <span>P</span>
+            <span>u</span>
+            <span>s</span>
+            <span>h</span>
+            &nbsp;
+            <span>b</span>
+            <span>o</span>
+            <span>u</span>
+            <span>n</span>
+            <span>d</span>
+            <span>a</span>
+            <span>r</span>
+            <span>i</span>
+            <span>e</span>
+            <span>s</span>
+            <span>,</span>
+            &nbsp;
+            <span>s</span>
+            <span>k</span>
+            <span>e</span>
+            <span>t</span>
+            <span>c</span>
+            <span>h</span>
+            &nbsp;
+            <span>y</span>
+            <span>o</span>
+            <span>u</span>
+            <span>r</span>
+            &nbsp;
+            <span>t</span>
+            <span>h</span>
+            <span>o</span>
+            <span>u</span>
+            <span>g</span>
+            <span>h</span>
+            <span>t</span>
+            <span>s</span>
+            &nbsp;
+            <span>b</span>
+            <span>e</span>
+            <span>c</span>
+            <span>a</span>
+            <span>u</span>
+            <span>s</span>
+            <span>e</span>
+            &nbsp;
+            <span>a</span>
+            <span>t</span>
+            &nbsp;
+            <span>B</span>
+            <span>y</span>
+            <span>t</span>
+            <span>e</span>
+            <span>,</span>
+            &nbsp;
+            <span>e</span>
+            <span>v</span>
+            <span>e</span>
+            <span>n</span>
+            &nbsp;
+            <span>m</span>
+            <span>e</span>
+            <span>s</span>
+            <span>s</span>
+            <span>a</span>
+            <span>g</span>
+            <span>e</span>
+            <span>s</span>
+            &nbsp;
+            <span>d</span>
+            <span>e</span>
+            <span>s</span>
+            <span>e</span>
+            <span>r</span>
+            <span>v</span>
+            <span>e</span>
+            &nbsp;
+            <span>s</span>
+            <span>t</span>
+            <span>y</span>
+            <span>l</span>
+            <span>e</span>
+            <span>.</span>
+          </div>
+          <canvas id="drawCanvas"></canvas>
+        </div>
+      </div>
+      <div class="details">
+        <input type="email" required class="email" name="email" id="email" placeholder="Your Email">
+        <button type="submit" class="submitBtn">Send Message</button>
+      </div>
+    </form>
+  </div>
+</body>
+<script src="assets/js/contact.js"></script>
+
+</html>

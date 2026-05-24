@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Team</title>
+    <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+    <link rel="apple-touch-icon" href="assets/icons/logoBlue.webp">
+    <link rel="stylesheet" href="assets/css/team.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <link rel="canonical" href="https://byteclub.co.in/team">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-jQCMdG2+1lJtZxFnNldA3HdUVJgDxM03XgOmiHcoH6bLWxzNWh2sqkRZKlzDqmwEG9NGSkI0Sz3d6GDUZQ6sJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="description" content="Meet the Team of Byte Club present at Bal Bharati Public School Pitampura.">
+    <meta name="keywords"
+        content="Byte Club, Meet the Team,tech club, Byteclub, BBPS, Bal Bharati Public School ,technology, programming, workshops, events, resources">
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://byteclub.co.in"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Team",
+      "item": "https://byteclub.co.in/team"
+    }
+  ]
+}
+</script>
+
+</head>
+
+<body>
+    <div class="container1" id="container">
+        <div class="rectangle rectangle-left"></div>
+        <div class="rectangle rectangle-right"></div>
+        <div class="rectangle rectangle-top"></div>
+        <div class="rectangle rectangle-nav"></div>
+        <div class="rectangle rectangle-bottom"></div>
+
+        <section id="bigNav" class="center bigNav">
+            <div class="left">
+                <div>
+                    <span onclick="navMenuClick()" id="span1" onmouseover="rotateNumbers(this)"
+                        onmouseout="stopRotateNumbers(this)">
+                        <div class="numbers">
+                            <div class="number"></div>
+                        </div>
+                        <a href="/#spanA">ABOUT</a>
+                    </span>
+                </div>
+                <div>
+                    <span id="span2" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+                        <div class="numbers">
+                            <div class="number"></div>
+                            <div class="number"></div>
+                        </div>
+                        <a href="team">TEAM</a>
+                    </span>
+                </div>
+                <div>
+                    <span id="span3" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+                        <div class="numbers">
+                            <div class="number"></div>
+                            <div class="number"></div>
+                            <div class="number"></div>
+                        </div>
+                        <a href="resources">RESOURCES</a>
+                    </span>
+                </div>
+                <div>
+                    <span id="span4" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+                        <div class="numbers">
+                            <div class="number"></div>
+                            <div class="number"></div>
+                            <div class="number"></div>
+                            <div class="number"></div>
+                        </div>
+                        <a href="byteit">BYTE.IT</a>
+                    </span>
+                </div>
+            </div>
+            <div class="right">
+                <span onmouseover="document.getElementById('spanContact').style.width='100%'"
+                    onmouseout="document.getElementById('spanContact').style.width='0%'">
+                    <a href="contact">Contact</a>
+                    <span id="spanContact"></span>
+                </span>
+                <span onmouseover="document.getElementById('spanCredits').style.width='100%'"
+                    onmouseout="document.getElementById('spanCredits').style.width='0%'">
+                    <a href="credits">Credits</a>
+                    <span id="spanCredits"></span>
+                </span>
+
+            </div>
+        </section>
+
+        <div class="nav">
+            <span id="navByte" onclick="window.location = '/';" class="navByte">byte.</span>
+            <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
+                <img id="circle1" class="circle1" src="assets/icons/circle1.svg" alt="nav-circle1">
+                <img id="circle2" class="circle2" src="assets/icons/circle2.svg" alt="nav-circle2">
+                <div class="lines">
+                    <div id="line1" class="line1"></div>
+                    <div id="line2" class="line2"></div>
+                </div>
+            </span>
+        </div>
+
+        <div class="center headDiv">
+            <div id="leftDiv" class="left center">
+                <p>
+                    <span><span class="pSpan1">A team of designers, <br></span></span>
+                    <span><span class="pSpan2">developers, gamers, quizzers, <br></span></span>
+                    <span><span class="pSpan3">photographers, filmmakers.</span></span>
+                </p>
+            </div>
+            <div class="right">
+                <div>
+                    <div id="keyboard" class="keyboard">
+                        <img id="canvas3d" height="200" class="canvas3dImg" src="assets/images/keyboard.webp"
+                            alt="keyboard">
+                        <!-- <canvas id="canvas3d"></canvas> -->
+                    </div>
+                    <div class="Fword"><span>The</span></div>
+                    <div class="Sword"><span>
+                            <h1>Team</h1>
+                        </span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="center option">
+            <div id="memberOpt" onclick="member()" class="members current">members</div>
+            <div id="alumOpt" onclick="alumni()" class="alumni">alumni</div>
+        </div>
+
+        <div id="cardsContainer" class="cardsContainer">
+            <div id="memberCards" class="memberCards">
+                <!-- Cards will be generated by JavaScript -->
+            </div>
+            <div id="alumni" class="memberCards">
+                <!-- Alumni cards will be generated by JavaScript -->
+            </div>
+        </div>
+
+</body>
+<script src="assets/js/team.js"></script>
+
+</html>
