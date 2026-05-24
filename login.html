@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Byte.IT Login</title>
+  <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+  <link rel="stylesheet" href="assets/css/byteit-registration.css">
+</head>
+
+<body data-page="login">
+  <div class="rectangle rectangle-left"></div>
+  <div class="rectangle rectangle-right"></div>
+  <div class="rectangle rectangle-top"></div>
+  <div class="rectangle rectangle-nav"></div>
+
+  <nav class="byteit-nav">
+    <a class="byteit-brand" href="/">byte.</a>
+    <div class="byteit-links">
+      <a href="registration.html">Register</a>
+      <a href="byteit.html">Byte.IT</a>
+    </div>
+  </nav>
+
+  <main class="byteit-shell auth-grid">
+    <section>
+      <span class="byteit-kicker">School dashboard</span>
+      <h1 class="byteit-title">Login</h1>
+      <p class="byteit-copy">Enter the school email and generated password sent during registration.</p>
+    </section>
+
+    <section class="auth-card">
+      <h1>Continue</h1>
+      <p>Manage your teams and participants.</p>
+      <form class="byteit-form" data-auth-form>
+        <label>School email
+          <input type="email" name="schoolEmail" autocomplete="email" required>
+        </label>
+        <label>Password
+          <input type="password" name="password" autocomplete="current-password" required>
+        </label>
+        <button class="byteit-button" type="submit">login</button>
+      </form>
+      <div class="byteit-status" data-status hidden></div>
+      <p class="byteit-link-row">Need an account? <a href="registration.html">Register your school</a>.</p>
+    </section>
+  </main>
+
+  <script src="assets/js/byteit-supabase-config.js"></script>
+  <script type="module" src="assets/js/byteit-auth.js"></script>
+</body>
+
+</html>

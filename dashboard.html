@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Byte.IT Dashboard</title>
+  <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+  <link rel="stylesheet" href="assets/css/byteit-registration.css">
+</head>
+
+<body>
+  <div class="rectangle rectangle-left"></div>
+  <div class="rectangle rectangle-right"></div>
+  <div class="rectangle rectangle-top"></div>
+  <div class="rectangle rectangle-nav"></div>
+
+  <nav class="byteit-nav">
+    <a class="byteit-brand" href="/">byte.</a>
+    <div class="byteit-links">
+      <a href="byteit.html">Byte.IT</a>
+      <button class="ghost-button" type="button" data-logout>Logout</button>
+    </div>
+  </nav>
+
+  <main class="byteit-shell">
+    <section class="dashboard-header">
+      <div>
+        <span class="byteit-kicker">School dashboard</span>
+        <h1 class="byteit-title">Events</h1>
+      </div>
+      <div class="auth-card">
+        <strong data-school-name>School</strong>
+        <p data-school-email>school@example.com</p>
+      </div>
+    </section>
+
+    <div class="byteit-status" data-status hidden></div>
+
+    <section class="dashboard-panel">
+      <h1>Registration overview</h1>
+      <div class="dashboard-stats">
+        <div class="stat-box">
+          <span>Registered teams</span>
+          <strong data-registered-count>0</strong>
+        </div>
+        <div class="stat-box">
+          <span>Available events</span>
+          <strong data-available-count>11</strong>
+        </div>
+        <div class="stat-box">
+          <span>Account</span>
+          <strong>Active</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="event-list" data-event-list></section>
+  </main>
+
+  <div class="byteit-modal" data-registration-modal hidden>
+    <section class="byteit-modal__panel">
+      <div class="byteit-modal__top">
+        <div>
+          <h2 data-modal-title>Register Team</h2>
+          <p class="byteit-muted" data-modal-meta></p>
+        </div>
+        <button class="modal-close" type="button" data-close-modal>close</button>
+      </div>
+
+      <form class="byteit-form" data-team-form>
+        <input type="hidden" name="registrationId">
+        <label>Team name
+          <input type="text" name="teamName" required>
+        </label>
+        <div class="participant-grid" data-participants></div>
+        <div class="modal-actions">
+          <button class="ghost-button" type="button" data-close-modal>cancel</button>
+          <button class="byteit-button" type="submit">save team</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script src="assets/js/byteit-supabase-config.js"></script>
+  <script type="module" src="assets/js/byteit-dashboard.js"></script>
+</body>
+
+</html>
