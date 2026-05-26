@@ -89,7 +89,7 @@ async function registerSchool(form, statusBox) {
 
   if (error) throw error;
 
-  setStatus(statusBox, "Account created. Check the school email for the Supabase confirmation link, then log in.", "success");
+  setStatus(statusBox, "Account created. You can log in now. If Supabase email confirmation is enabled, confirm the email first.", "success");
   form.reset();
 }
 

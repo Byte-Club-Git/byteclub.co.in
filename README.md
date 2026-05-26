@@ -28,7 +28,7 @@ This award highlights Byte Club’s commitment to simplicity and great UX design
 
 ## Byte.IT Registration Setup
 
-This repo is a static HTML/CSS/JS site. The registration system uses Supabase directly from the browser with the public publishable key. Schools choose their own password, and Supabase Auth handles confirmation/reset emails.
+This repo is a static HTML/CSS/JS site. The registration system uses Supabase directly from the browser with the public publishable key. Schools choose their own password and then log in to manage event registrations.
 
 ### Files
 
@@ -68,14 +68,15 @@ window.BYTEIT_SUPABASE_CONFIG = {
 
 The anon key is safe to use in frontend code. Never add the Supabase service role key to any frontend file.
 
-### Auth email setup
+### Auth setup
 
-No Resend or custom Edge Function is required for the active flow. In Supabase, configure Auth email settings:
+No Resend or custom Edge Function is required for the active flow. In Supabase, configure Auth settings:
 
 1. Go to Authentication > Providers and make sure Email is enabled.
-2. Go to Authentication > URL Configuration.
-3. Add your local and production site URLs, for example `http://127.0.0.1:8000` and your GitHub Pages URL.
-4. For production, configure Supabase SMTP later if you want branded email delivery. The default Supabase Auth emails are enough to test.
+2. If you do not have custom SMTP and want to avoid Supabase's built-in email rate limit, turn email confirmation off for signups.
+3. Go to Authentication > URL Configuration.
+4. Add your local and production site URLs, for example `http://127.0.0.1:8000` and your GitHub Pages URL.
+5. For production email confirmation/reset emails, configure custom SMTP later.
 
 ### Run locally
 
