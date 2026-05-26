@@ -13,6 +13,7 @@ import {
 } from "./byteit-firebase.js";
 
 const forms = document.querySelectorAll("[data-auth-form]");
+const resetPasswordButton = document.querySelector("[data-reset-password]");
 const page = document.body.dataset.page;
 
 function getStatusBox(form) {
@@ -66,6 +67,32 @@ forms.forEach((form) => {
       setLoading(form, false);
     }
   });
+});
+
+resetPasswordButton?.addEventListener("click", async () => {
+  const form = resetPasswordButton.closest(".auth-card")?.querySelector("[data-auth-form]");
+  const statusBox = getStatusBox(form);
+  const email = String(new FormData(form).get("schoolEmail") || "").trim().toLowerCase();
+
+  if (!email) {
+    setStatus(statusBox, "Enter the school email first, then request the setup link.", "error");
+    return;
+  }
+
+  resetPasswordButton.disabled = true;
+  resetPasswordButton.dataset.originalText ||= resetPasswordButton.textContent;
+  resetPasswordButton.textContent = "sending...";
+
+  try {
+    const { auth } = requireFirebase();
+    await sendPasswordResetEmail(auth, email);
+    setStatus(statusBox, "Password setup link sent. Please check inbox and spam.", "success");
+  } catch (error) {
+    setStatus(statusBox, error.message || "Could not send the setup link.", "error");
+  } finally {
+    resetPasswordButton.disabled = false;
+    resetPasswordButton.textContent = resetPasswordButton.dataset.originalText;
+  }
 });
 
 async function registerSchool(form, statusBox) {
