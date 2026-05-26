@@ -14,8 +14,8 @@
 body {
     background-color: var(--bg);
     overflow-x: hidden;
-    min-height: 200vh;
-    max-height: 200vh;
+    /* min-height: 200vh;
+    max-height: 200vh; */
 }
 
 html {

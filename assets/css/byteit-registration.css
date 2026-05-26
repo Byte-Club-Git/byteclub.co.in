@@ -106,7 +106,7 @@ a {
 }
 
 .byteit-shell {
-  width: min(1180px, calc(100vw - 14vh));
+  width: min(1400px, calc(100vw - 14vh));
   min-height: 100vh;
   margin: 0 auto;
   padding: 20vh 0 8vh;
@@ -114,7 +114,7 @@ a {
 
 .auth-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  grid-template-columns: 0.95fr 1.05fr;
   gap: clamp(2rem, 7vw, 6rem);
   align-items: center;
 }
@@ -129,8 +129,8 @@ a {
 
 .byteit-title {
   margin-top: 1rem;
-  font-family: cheguevaratext, serif;
-  color: var(--muted);
+  font-family: Denver;
+  color:black;
   font-size: clamp(4.2rem, 12vw, 10rem);
   font-weight: 400;
   line-height: 0.8;
@@ -171,7 +171,7 @@ a {
 }
 
 .auth-card {
-  padding: clamp(1.4rem, 4vw, 2.3rem);
+  padding: clamp(0.8rem, 1.5vw, 1rem);
   border-radius: 8px;
 }
 
@@ -216,16 +216,19 @@ a {
   display: grid;
   gap: 1.35rem;
   margin-top: 2rem;
+  width: 100%;
 }
 
 .byteit-form label {
   display: grid;
+  width: 100%;
   gap: 0.5rem;
   color: var(--muted);
   font-size: 0.84rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  min-width: 30vw;
 }
 
 .byteit-form input {
