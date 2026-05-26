@@ -1,4 +1,10 @@
-import { hasSupabaseConfig, requireSupabase, supabase } from "./byteit-supabase.js";
+import {
+  hasFirebaseConfig,
+  httpsCallable,
+  onAuthStateChanged,
+  requireFirebase,
+  signInWithEmailAndPassword
+} from "./byteit-firebase.js";
 
 const forms = document.querySelectorAll("[data-auth-form]");
 const page = document.body.dataset.page;
@@ -22,15 +28,16 @@ function setLoading(form, isLoading) {
   submitButton.textContent = isLoading ? "please wait" : submitButton.dataset.originalText;
 }
 
-if (!hasSupabaseConfig()) {
+if (!hasFirebaseConfig()) {
   forms.forEach((form) => {
-    setStatus(getStatusBox(form), "Supabase is not configured yet. Update assets/js/byteit-supabase-config.js.", "error");
+    setStatus(getStatusBox(form), "Firebase is not configured yet. Update assets/js/byteit-firebase-config.js.", "error");
   });
 }
 
-if (page === "login" && supabase) {
-  supabase.auth.getSession().then(({ data }) => {
-    if (data.session) window.location.href = "dashboard.html";
+if (page === "login" && hasFirebaseConfig()) {
+  const { auth } = requireFirebase();
+  onAuthStateChanged(auth, (user) => {
+    if (user) window.location.href = "dashboard.html";
   });
 }
 
@@ -56,51 +63,29 @@ forms.forEach((form) => {
 });
 
 async function registerSchool(form, statusBox) {
-  const client = requireSupabase();
+  const { functions } = requireFirebase();
   const formData = new FormData(form);
   const schoolName = String(formData.get("schoolName") || "").trim();
   const schoolEmail = String(formData.get("schoolEmail") || "").trim().toLowerCase();
-  const password = String(formData.get("password") || "");
-  const confirmPassword = String(formData.get("confirmPassword") || "");
 
-  if (!schoolName || !schoolEmail || !password) {
-    throw new Error("Please enter the school name, email, and password.");
+  if (!schoolName || !schoolEmail) {
+    throw new Error("Please enter the school name and email.");
   }
 
-  if (password.length < 8) {
-    throw new Error("Password must be at least 8 characters.");
-  }
+  const registerSchoolFunction = httpsCallable(functions, "registerSchool");
+  await registerSchoolFunction({ schoolName, schoolEmail });
 
-  if (password !== confirmPassword) {
-    throw new Error("Passwords do not match.");
-  }
-
-  const { error } = await client.auth.signUp({
-    email: schoolEmail,
-    password,
-    options: {
-      data: {
-        school_name: schoolName,
-        school_email: schoolEmail
-      },
-      emailRedirectTo: `${window.location.origin}${window.location.pathname.replace(/(registration|byteITRegister)\.html$/, "login.html")}`
-    }
-  });
-
-  if (error) throw error;
-
-  setStatus(statusBox, "Account created. You can log in now. If Supabase email confirmation is enabled, confirm the email first.", "success");
+  setStatus(statusBox, "School account created. A unique password has been sent to the school email.", "success");
   form.reset();
 }
 
 async function loginSchool(form, statusBox) {
-  const client = requireSupabase();
+  const { auth } = requireFirebase();
   const formData = new FormData(form);
   const email = String(formData.get("schoolEmail") || "").trim().toLowerCase();
   const password = String(formData.get("password") || "");
 
-  const { error } = await client.auth.signInWithPassword({ email, password });
-  if (error) throw error;
+  await signInWithEmailAndPassword(auth, email, password);
 
   setStatus(statusBox, "Logged in. Opening dashboard...", "success");
   window.location.href = "dashboard.html";

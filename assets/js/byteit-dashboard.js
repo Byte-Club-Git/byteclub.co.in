@@ -1,5 +1,18 @@
 import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js";
-import { getCurrentSchool, requireSupabase, supabase } from "./byteit-supabase.js";
+import {
+  collection,
+  db,
+  doc,
+  getDoc,
+  getDocs,
+  hasFirebaseConfig,
+  httpsCallable,
+  onAuthStateChanged,
+  query,
+  requireFirebase,
+  signOut,
+  where
+} from "./byteit-firebase.js";
 
 const eventList = document.querySelector("[data-event-list]");
 const schoolName = document.querySelector("[data-school-name]");
@@ -35,19 +48,36 @@ function byName(a, b) {
   return a.name.localeCompare(b.name);
 }
 
+function waitForUser(auth) {
+  return new Promise((resolve) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe();
+      resolve(user);
+    });
+  });
+}
+
 async function init() {
-  if (!supabase) {
-    setStatus("Supabase is not configured yet. Update assets/js/byteit-supabase-config.js.", "error");
+  if (!hasFirebaseConfig()) {
+    setStatus("Firebase is not configured yet. Update assets/js/byteit-firebase-config.js.", "error");
     return;
   }
 
   try {
-    schoolContext = await getCurrentSchool();
-    if (!schoolContext) {
+    const { auth } = requireFirebase();
+    const user = await waitForUser(auth);
+    if (!user) {
       window.location.href = "login.html";
       return;
     }
 
+    const schoolSnapshot = await getDoc(doc(db, "schools", user.uid));
+    if (!schoolSnapshot.exists()) {
+      setStatus("School profile was not found. Please contact Byte Club.", "error");
+      return;
+    }
+
+    schoolContext = { user, school: { id: user.uid, ...schoolSnapshot.data() } };
     schoolName.textContent = schoolContext.school.name;
     schoolEmail.textContent = schoolContext.school.email;
     await loadRegistrations();
@@ -58,15 +88,15 @@ async function init() {
 }
 
 async function loadRegistrations() {
-  const client = requireSupabase();
-  const { data, error } = await client
-    .from("event_registrations")
-    .select("*, event:events(*), participants(*)")
-    .eq("school_id", schoolContext.school.id)
-    .order("created_at", { ascending: true });
-
-  if (error) throw error;
-  registrations = data || [];
+  const registrationsQuery = query(
+    collection(db, "event_registrations"),
+    where("schoolId", "==", schoolContext.school.id)
+  );
+  const snapshot = await getDocs(registrationsQuery);
+  registrations = snapshot.docs.map((registrationDoc) => ({
+    id: registrationDoc.id,
+    ...registrationDoc.data()
+  })).sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
 }
 
 function renderEvents() {
@@ -78,7 +108,7 @@ function renderEvents() {
     .slice()
     .sort(byName)
     .map((event) => {
-      const eventRegistrations = registrations.filter((item) => item.event_id === event.id);
+      const eventRegistrations = registrations.filter((item) => item.eventId === event.id);
       const limitReached = event.teamsPerInstitution !== null && eventRegistrations.length >= event.teamsPerInstitution;
       const registeredMarkup = eventRegistrations.length
         ? eventRegistrations.map(registrationCard).join("")
@@ -107,13 +137,13 @@ function renderEvents() {
 
 function registrationCard(registration) {
   const participantNames = (registration.participants || [])
-    .map((participant) => `${participant.name} (${participant.class_label})`)
+    .map((participant) => `${participant.name} (${participant.classLabel})`)
     .join(", ");
 
   return `
     <div class="team-row">
       <div>
-        <strong>${registration.team_name}</strong>
+        <strong>${registration.teamName}</strong>
         <span>${participantNames}</span>
       </div>
       <div class="team-actions">
@@ -132,7 +162,7 @@ eventList?.addEventListener("click", async (event) => {
   if (registerId) openTeamModal(events.find((item) => item.id === registerId));
   if (editId) {
     const registration = registrations.find((item) => item.id === editId);
-    openTeamModal(events.find((item) => item.id === registration.event_id), registration);
+    openTeamModal(events.find((item) => item.id === registration.eventId), registration);
   }
   if (deleteId) await deleteRegistration(deleteId);
 });
@@ -152,7 +182,7 @@ function openTeamModal(event, registration = null) {
   modal.hidden = false;
   modalTitle.textContent = registration ? `Edit ${event.name}` : `Register ${event.name}`;
   modalMeta.textContent = `${event.mode} · ${participantLabel(event)} · Class ${event.classRange}`;
-  form.teamName.value = registration?.team_name || `${event.name} Team`;
+  form.teamName.value = registration?.teamName || `${event.name} Team`;
   form.registrationId.value = registration?.id || "";
   renderParticipantFields(registration?.participants || []);
 }
@@ -174,7 +204,7 @@ function renderParticipantFields(existingParticipants) {
       <fieldset class="participant-fieldset">
         <legend>Participant ${index + 1}${required ? "" : " (optional)"}</legend>
         <label>Name <input name="participantName" value="${participant.name || ""}" ${required}></label>
-        <label>Class <input name="participantClass" value="${participant.class_label || ""}" ${required} placeholder="IX"></label>
+        <label>Class <input name="participantClass" value="${participant.classLabel || ""}" ${required} placeholder="IX"></label>
         <label>Email / Phone <input name="participantContact" value="${participant.contact || ""}" ${required}></label>
       </fieldset>
     `;
@@ -195,7 +225,7 @@ form?.addEventListener("submit", async (event) => {
 });
 
 async function saveRegistration() {
-  const client = requireSupabase();
+  const { functions } = requireFirebase();
   const formData = new FormData(form);
   const teamName = String(formData.get("teamName") || "").trim();
   const names = formData.getAll("participantName");
@@ -205,49 +235,43 @@ async function saveRegistration() {
   const participants = names
     .map((name, index) => ({
       name: String(name || "").trim(),
-      class_label: String(classes[index] || "").trim().toUpperCase(),
+      classLabel: String(classes[index] || "").trim().toUpperCase(),
       contact: String(contacts[index] || "").trim()
     }))
-    .filter((participant) => participant.name || participant.class_label || participant.contact);
+    .filter((participant) => participant.name || participant.classLabel || participant.contact);
 
   if (!teamName) throw new Error("Please name the team.");
   if (participants.length < activeEvent.minParticipants || participants.length > activeEvent.maxParticipants) {
     throw new Error(`${activeEvent.name} needs ${participantLabel(activeEvent)}.`);
   }
 
-  const ineligible = participants.find((participant) => !isClassEligible(participant.class_label, activeEvent));
+  const ineligible = participants.find((participant) => !isClassEligible(participant.classLabel, activeEvent));
   if (ineligible) {
     throw new Error(`${ineligible.name || "A participant"} is not eligible for Class ${activeEvent.classRange}.`);
   }
 
   if (!activeRegistration) {
-    const existingForEvent = registrations.filter((item) => item.event_id === activeEvent.id).length;
+    const existingForEvent = registrations.filter((item) => item.eventId === activeEvent.id).length;
     if (activeEvent.teamsPerInstitution !== null && existingForEvent >= activeEvent.teamsPerInstitution) {
       throw new Error(`${activeEvent.name} has reached the team limit for your school.`);
     }
   }
 
-  const { error } = await client.rpc("save_event_registration", {
-    p_registration_id: activeRegistration?.id || null,
-    p_school_id: schoolContext.school.id,
-    p_event_id: activeEvent.id,
-    p_team_name: teamName,
-    p_participants: participants
+  const saveEventRegistration = httpsCallable(functions, "saveEventRegistration");
+  await saveEventRegistration({
+    registrationId: activeRegistration?.id || null,
+    eventId: activeEvent.id,
+    teamName,
+    participants
   });
-
-  if (error) throw error;
 }
 
 async function deleteRegistration(registrationId) {
   if (!window.confirm("Delete this team registration?")) return;
   try {
-    const client = requireSupabase();
-    const { error } = await client
-      .from("event_registrations")
-      .delete()
-      .eq("id", registrationId);
-    if (error) throw error;
-
+    const { functions } = requireFirebase();
+    const deleteEventRegistration = httpsCallable(functions, "deleteEventRegistration");
+    await deleteEventRegistration({ registrationId });
     await loadRegistrations();
     renderEvents();
     setStatus("Registration deleted.", "success");
@@ -257,7 +281,8 @@ async function deleteRegistration(registrationId) {
 }
 
 logoutButton?.addEventListener("click", async () => {
-  await requireSupabase().auth.signOut();
+  const { auth } = requireFirebase();
+  await signOut(auth);
   window.location.href = "login.html";
 });
 

@@ -88,7 +88,7 @@
     <section>
       <span class="byteit-kicker">School registration</span>
       <h1 class="byteit-title">Register</h1>
-      <p class="byteit-copy">Create your school account once, then log in with the same email and password to manage event registrations.</p>
+      <p class="byteit-copy">Create your school account once. A unique generated password will be sent to the school email.</p>
     </section>
 
     <section class="auth-card">
@@ -101,20 +101,14 @@
         <label>School email
           <input type="email" name="schoolEmail" autocomplete="email" required>
         </label>
-        <label>Password
-          <input type="password" name="password" autocomplete="new-password" minlength="8" required>
-        </label>
-        <label>Confirm password
-          <input type="password" name="confirmPassword" autocomplete="new-password" minlength="8" required>
-        </label>
-        <button class="byteit-button" type="submit">create account</button>
+        <button class="byteit-button" type="submit">send password</button>
       </form>
       <div class="byteit-status" data-status hidden></div>
       <p class="byteit-link-row">Already registered? <a href="login.html">Log in to the dashboard</a>.</p>
     </section>
   </main>
 
-  <script src="assets/js/byteit-supabase-config.js"></script>
+  <script src="assets/js/byteit-firebase-config.js"></script>
   <script type="module" src="assets/js/byteit-auth.js"></script>
   <script src="assets/js/resources.js"></script>
 </body>

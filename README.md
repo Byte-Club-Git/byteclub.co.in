@@ -28,56 +28,71 @@ This award highlights Byte Club’s commitment to simplicity and great UX design
 
 ## Byte.IT Registration Setup
 
-This repo is a static HTML/CSS/JS site. The registration system uses Supabase directly from the browser with the public publishable key. Schools choose their own password and then log in to manage event registrations.
+This repo is a static HTML/CSS/JS site. The registration system uses Firebase Auth, Firestore, and Firebase Cloud Functions. Schools register with their name and email; a Cloud Function generates a unique password, creates the Firebase Auth account, and queues a password email.
 
 ### Files
 
 - `registration.html` - school registration form
 - `login.html` - school login form
 - `dashboard.html` - event registration dashboard
-- `assets/js/byteit-supabase-config.js` - public Supabase browser config
-- `supabase/schema.sql` - tables, RLS policies, event seed data, validation triggers, and save RPC
-- `supabase/functions/register-school/index.ts` - legacy generated-password function, not needed for the current Supabase Auth flow
+- `assets/js/byteit-firebase-config.js` - public Firebase browser config
+- `assets/js/byteit-firebase.js` - shared Firebase browser helpers
+- `functions/index.js` - Firebase Cloud Functions for school creation and registration mutations
+- `firestore.rules` - Firestore security rules
+- `firebase.json` / `.firebaserc` - Firebase deploy config
 
-### Supabase SQL
+### Firebase setup
 
-1. Create a Supabase project.
-2. Open Supabase SQL Editor.
-3. Run `supabase/schema.sql`.
+1. In Firebase Console, use project `byteclub-cc7ac`.
+2. Enable Authentication > Sign-in method > Email/Password.
+3. Create Firestore Database.
+4. Install the Firebase "Trigger Email" extension and configure it to watch the `mail` collection.
+5. Configure the extension's SMTP/email provider. The app does not store email API keys in frontend code.
 
-The schema creates:
+The app uses these Firestore collections:
 
 - `schools`
-- `events`
 - `event_registrations`
-- `participants`
+- `mail` (used by the Trigger Email extension)
 
-It also seeds all 11 events and enables RLS so logged-in schools can only see and manage their own registrations.
+Event rules are kept in frontend and Cloud Function code so limits are enforced both in the UI and server-side.
 
 ### Frontend config
 
-Update `assets/js/byteit-supabase-config.js`:
+Firebase browser config lives in `assets/js/byteit-firebase-config.js`:
 
 ```js
-window.BYTEIT_SUPABASE_CONFIG = {
-  url: "https://YOUR_PROJECT_REF.supabase.co",
-  anonKey: "YOUR_SUPABASE_ANON_PUBLIC_KEY",
-  registrationFunctionUrl: "https://YOUR_PROJECT_REF.functions.supabase.co/register-school"
+window.BYTEIT_FIREBASE_CONFIG = {
+  apiKey: "...",
+  authDomain: "byteclub-cc7ac.firebaseapp.com",
+  projectId: "byteclub-cc7ac",
+  storageBucket: "byteclub-cc7ac.firebasestorage.app",
+  messagingSenderId: "...",
+  appId: "...",
+  measurementId: "..."
 };
 ```
 
-The anon key is safe to use in frontend code. Never add the Supabase service role key to any frontend file.
+Firebase web config is safe to use in frontend code. Firestore rules and Cloud Functions protect private data and writes.
 
-### Auth setup
+### Deploy Firebase backend
 
-No Resend or custom Edge Function is required for the active flow. In Supabase, configure Auth settings:
+Install Firebase CLI, log in, then deploy from the repo root:
 
-1. Go to Authentication > Providers and make sure Email is enabled.
-2. If you do not have custom SMTP and want to avoid Supabase's built-in email rate limit, turn email confirmation off for signups.
-3. Go to Authentication > URL Configuration.
-4. Add your local and production site URLs, for example `http://127.0.0.1:8000` and your GitHub Pages URL.
-5. For production email confirmation/reset emails, configure custom SMTP later.
+```bash
+firebase login
+firebase use byteclub-cc7ac
+firebase deploy --only functions,firestore:rules
+```
+
+The website itself can still be deployed on GitHub Pages.
 
 ### Run locally
 
-Because this is a static site, open `index.html`, `byteit.html`, `registration.html`, `login.html`, or `dashboard.html` in a browser, or serve the folder with any static server. No Node/npm install is required for the website.
+Because browser modules need HTTP, serve the folder with any static server:
+
+```bash
+python -m http.server 8000
+```
+
+Then open `http://127.0.0.1:8000/registration.html`.
