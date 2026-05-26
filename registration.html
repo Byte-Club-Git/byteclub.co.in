@@ -88,7 +88,7 @@
     <section>
       <span class="byteit-kicker">School registration</span>
       <h1 class="byteit-title">Register</h1>
-      <p class="byteit-copy">Create your school account once. A password setup link will be sent to the school email.</p>
+      <p class="byteit-copy">Create your school account once. A unique password will be generated for your dashboard login.</p>
     </section>
 
     <section class="auth-card">
@@ -101,16 +101,21 @@
         <label>School email
           <input type="email" name="schoolEmail" autocomplete="email" required>
         </label>
-        <button class="byteit-button" type="submit">send setup link</button>
+        <button class="byteit-button" type="submit">create account</button>
       </form>
       <div class="byteit-status" data-status hidden></div>
+      <div class="password-result" data-password-result hidden>
+        <span>Generated password</span>
+        <strong data-generated-password></strong>
+        <button class="text-button" type="button" data-copy-password>Copy password</button>
+      </div>
       <p class="byteit-link-row">Already registered? <a href="login.html">Log in to the dashboard</a>.</p>
     </section>
   </main>
 
   <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
-  <script src="assets/js/byteit-firebase-config.js?v=20260527"></script>
-  <script type="module" src="assets/js/byteit-auth.js?v=20260527"></script>
+  <script src="assets/js/byteit-firebase-config.js?v=20260527-password"></script>
+  <script type="module" src="assets/js/byteit-auth.js?v=20260527-password"></script>
   <script src="assets/js/resources.js"></script>
 </body>
 

@@ -4,7 +4,6 @@ import {
   hasFirebaseConfig,
   onAuthStateChanged,
   requireFirebase,
-  sendPasswordResetEmail,
   serverTimestamp,
   setDoc,
   signInWithEmailAndPassword,
@@ -14,6 +13,9 @@ import {
 
 const forms = document.querySelectorAll("[data-auth-form]");
 const resetPasswordButton = document.querySelector("[data-reset-password]");
+const passwordResult = document.querySelector("[data-password-result]");
+const generatedPassword = document.querySelector("[data-generated-password]");
+const copyPasswordButton = document.querySelector("[data-copy-password]");
 const page = document.body.dataset.page;
 
 function getStatusBox(form) {
@@ -39,6 +41,12 @@ if (!hasFirebaseConfig()) {
   forms.forEach((form) => {
     setStatus(getStatusBox(form), "Firebase is not configured yet. Update assets/js/byteit-firebase-config.js.", "error");
   });
+}
+
+function showGeneratedPassword(password) {
+  if (!passwordResult || !generatedPassword) return;
+  generatedPassword.textContent = password;
+  passwordResult.hidden = false;
 }
 
 if (page === "login" && hasFirebaseConfig()) {
@@ -85,14 +93,22 @@ resetPasswordButton?.addEventListener("click", async () => {
 
   try {
     const { auth } = requireFirebase();
+    const { sendPasswordResetEmail } = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js");
     await sendPasswordResetEmail(auth, email);
-    setStatus(statusBox, "Password setup link sent. Please check inbox and spam.", "success");
+    setStatus(statusBox, "Password setup link requested. Please check inbox and spam.", "success");
   } catch (error) {
-    setStatus(statusBox, error.message || "Could not send the setup link.", "error");
+    setStatus(statusBox, error.message || "Could not request the setup link.", "error");
   } finally {
     resetPasswordButton.disabled = false;
     resetPasswordButton.textContent = resetPasswordButton.dataset.originalText;
   }
+});
+
+copyPasswordButton?.addEventListener("click", async () => {
+  const password = generatedPassword?.textContent || "";
+  if (!password) return;
+  await navigator.clipboard.writeText(password);
+  copyPasswordButton.textContent = "Copied";
 });
 
 async function registerSchool(form, statusBox) {
@@ -105,27 +121,20 @@ async function registerSchool(form, statusBox) {
     throw new Error("Please enter the school name and email.");
   }
 
-  try {
-    const tempPassword = generateTemporaryPassword();
-    const credential = await createUserWithEmailAndPassword(auth, schoolEmail, tempPassword);
-    await updateProfile(credential.user, { displayName: schoolName });
-    await setDoc(doc(db, "schools", credential.user.uid), {
-      name: schoolName,
-      email: schoolEmail,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp()
-    });
-    await sendPasswordResetEmail(auth, schoolEmail);
-    await signOut(auth);
-  } catch (error) {
-    if (error.code !== "auth/email-already-in-use") {
-      throw error;
-    }
+  const tempPassword = generateTemporaryPassword();
+  const credential = await createUserWithEmailAndPassword(auth, schoolEmail, tempPassword);
+  await updateProfile(credential.user, { displayName: schoolName });
+  await setDoc(doc(db, "schools", credential.user.uid), {
+    name: schoolName,
+    email: schoolEmail,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  });
+  await signOut(auth);
 
-    await sendPasswordResetEmail(auth, schoolEmail);
-  }
+  showGeneratedPassword(tempPassword);
+  setStatus(statusBox, "School account created. Save this password now; it is shown only once.", "success");
 
-  setStatus(statusBox, "A password setup link has been sent to the school email.", "success");
   form.reset();
 }
 

@@ -225,9 +225,16 @@ function renderParticipantFields(existingParticipants) {
 form?.addEventListener("submit", async (event) => {
   event.preventDefault();
   try {
-    await saveRegistration();
+    const wasEditing = Boolean(activeRegistration?.id);
+    const savedRegistration = await saveRegistration();
     closeTeamModal();
-    await loadRegistrations();
+    if (wasEditing) {
+      registrations = registrations.map((registration) =>
+        registration.id === savedRegistration.id ? savedRegistration : registration
+      );
+    } else {
+      registrations = [...registrations, savedRegistration];
+    }
     renderEvents();
     setStatus("Registration saved.", "success");
   } catch (error) {
@@ -281,11 +288,22 @@ async function saveRegistration() {
 
   if (activeRegistration?.id) {
     await setDoc(doc(db, "event_registrations", activeRegistration.id), payload, { merge: true });
+    return {
+      ...activeRegistration,
+      ...payload,
+      updatedAt: { seconds: Math.floor(Date.now() / 1000) }
+    };
   } else {
-    await addDoc(collection(db, "event_registrations"), {
+    const registrationRef = await addDoc(collection(db, "event_registrations"), {
       ...payload,
       createdAt: serverTimestamp()
     });
+    return {
+      ...payload,
+      id: registrationRef.id,
+      createdAt: { seconds: Math.floor(Date.now() / 1000) },
+      updatedAt: { seconds: Math.floor(Date.now() / 1000) }
+    };
   }
 }
 
@@ -293,7 +311,7 @@ async function deleteRegistration(registrationId) {
   if (!window.confirm("Delete this team registration?")) return;
   try {
     await deleteDoc(doc(db, "event_registrations", registrationId));
-    await loadRegistrations();
+    registrations = registrations.filter((registration) => registration.id !== registrationId);
     renderEvents();
     setStatus("Registration deleted.", "success");
   } catch (error) {

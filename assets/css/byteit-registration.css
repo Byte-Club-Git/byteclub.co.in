@@ -322,6 +322,31 @@ a {
   border-color: rgba(47, 104, 70, 0.32);
 }
 
+.password-result {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--accent-1);
+  border-radius: 5px;
+  background: rgba(47, 104, 70, 0.06);
+}
+
+.password-result[hidden] {
+  display: none;
+}
+
+.password-result span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.password-result strong {
+  overflow-wrap: anywhere;
+  color: var(--accent-1);
+  font: 600 1.1rem Poppins, sans-serif;
+}
+
 .dashboard-header {
   display: flex;
   justify-content: space-between;
