@@ -1,17 +1,21 @@
 import { hasSupabaseConfig, requireSupabase, supabase } from "./byteit-supabase.js";
 
-const form = document.querySelector("[data-auth-form]");
-const statusBox = document.querySelector("[data-status]");
-const submitButton = form?.querySelector("button[type='submit']");
+const forms = document.querySelectorAll("[data-auth-form]");
+const page = document.body.dataset.page;
 
-function setStatus(message, type = "info") {
+function getStatusBox(form) {
+  return form.closest(".auth-card")?.querySelector("[data-status]") || document.querySelector("[data-status]");
+}
+
+function setStatus(statusBox, message, type = "info") {
   if (!statusBox) return;
   statusBox.textContent = message;
   statusBox.dataset.type = type;
   statusBox.hidden = false;
 }
 
-function setLoading(isLoading) {
+function setLoading(form, isLoading) {
+  const submitButton = form?.querySelector("button[type='submit']");
   if (!submitButton) return;
   submitButton.disabled = isLoading;
   submitButton.dataset.originalText ||= submitButton.textContent;
@@ -19,10 +23,10 @@ function setLoading(isLoading) {
 }
 
 if (!hasSupabaseConfig()) {
-  setStatus("Supabase is not configured yet. Update assets/js/byteit-supabase-config.js.", "error");
+  forms.forEach((form) => {
+    setStatus(getStatusBox(form), "Supabase is not configured yet. Update assets/js/byteit-supabase-config.js.", "error");
+  });
 }
-
-const page = document.body.dataset.page;
 
 if (page === "login" && supabase) {
   supabase.auth.getSession().then(({ data }) => {
@@ -30,27 +34,30 @@ if (page === "login" && supabase) {
   });
 }
 
-if (form) {
+forms.forEach((form) => {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    setLoading(true);
+    const statusBox = getStatusBox(form);
+    const mode = form.dataset.authMode || page;
+    setLoading(form, true);
 
     try {
-      if (page === "register") {
-        await registerSchool(new FormData(form));
+      if (mode === "register") {
+        await registerSchool(form, statusBox);
       } else {
-        await loginSchool(new FormData(form));
+        await loginSchool(form, statusBox);
       }
     } catch (error) {
-      setStatus(error.message || "Something went wrong. Please try again.", "error");
+      setStatus(statusBox, error.message || "Something went wrong. Please try again.", "error");
     } finally {
-      setLoading(false);
+      setLoading(form, false);
     }
   });
-}
+});
 
-async function registerSchool(formData) {
+async function registerSchool(form, statusBox) {
   const client = requireSupabase();
+  const formData = new FormData(form);
   const schoolName = String(formData.get("schoolName") || "").trim();
   const schoolEmail = String(formData.get("schoolEmail") || "").trim().toLowerCase();
   const password = String(formData.get("password") || "");
@@ -76,24 +83,25 @@ async function registerSchool(formData) {
         school_name: schoolName,
         school_email: schoolEmail
       },
-      emailRedirectTo: `${window.location.origin}${window.location.pathname.replace(/registration\.html$/, "login.html")}`
+      emailRedirectTo: `${window.location.origin}${window.location.pathname.replace(/(registration|byteITRegister)\.html$/, "login.html")}`
     }
   });
 
   if (error) throw error;
 
-  setStatus("Account created. Check the school email for the Supabase confirmation link, then log in.", "success");
+  setStatus(statusBox, "Account created. Check the school email for the Supabase confirmation link, then log in.", "success");
   form.reset();
 }
 
-async function loginSchool(formData) {
+async function loginSchool(form, statusBox) {
   const client = requireSupabase();
+  const formData = new FormData(form);
   const email = String(formData.get("schoolEmail") || "").trim().toLowerCase();
   const password = String(formData.get("password") || "");
 
   const { error } = await client.auth.signInWithPassword({ email, password });
   if (error) throw error;
 
-  setStatus("Logged in. Opening dashboard...", "success");
+  setStatus(statusBox, "Logged in. Opening dashboard...", "success");
   window.location.href = "dashboard.html";
 }
