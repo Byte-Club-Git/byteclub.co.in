@@ -74,13 +74,21 @@ async function init() {
       return;
     }
 
-    const schoolSnapshot = await getDoc(doc(db, "schools", user.uid));
+    const schoolRef = doc(db, "schools", user.uid);
+    const schoolSnapshot = await getDoc(schoolRef);
+    let schoolData = schoolSnapshot.data();
+
     if (!schoolSnapshot.exists()) {
-      setStatus("School profile was not found. Please contact Byte Club.", "error");
-      return;
+      schoolData = {
+        name: user.displayName || user.email?.split("@")[0] || "School",
+        email: user.email,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      };
+      await setDoc(schoolRef, schoolData);
     }
 
-    schoolContext = { user, school: { id: user.uid, ...schoolSnapshot.data() } };
+    schoolContext = { user, school: { id: user.uid, ...schoolData } };
     schoolName.textContent = schoolContext.school.name;
     schoolEmail.textContent = schoolContext.school.email;
     await loadRegistrations();

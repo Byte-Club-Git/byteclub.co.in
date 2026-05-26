@@ -78,19 +78,27 @@ async function registerSchool(form, statusBox) {
     throw new Error("Please enter the school name and email.");
   }
 
-  const tempPassword = generateTemporaryPassword();
-  const credential = await createUserWithEmailAndPassword(auth, schoolEmail, tempPassword);
-  await updateProfile(credential.user, { displayName: schoolName });
-  await setDoc(doc(db, "schools", credential.user.uid), {
-    name: schoolName,
-    email: schoolEmail,
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp()
-  });
-  await sendPasswordResetEmail(auth, schoolEmail);
-  await signOut(auth);
+  try {
+    const tempPassword = generateTemporaryPassword();
+    const credential = await createUserWithEmailAndPassword(auth, schoolEmail, tempPassword);
+    await updateProfile(credential.user, { displayName: schoolName });
+    await setDoc(doc(db, "schools", credential.user.uid), {
+      name: schoolName,
+      email: schoolEmail,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+    await sendPasswordResetEmail(auth, schoolEmail);
+    await signOut(auth);
+  } catch (error) {
+    if (error.code !== "auth/email-already-in-use") {
+      throw error;
+    }
 
-  setStatus(statusBox, "School account created. A password setup link has been sent to the school email.", "success");
+    await sendPasswordResetEmail(auth, schoolEmail);
+  }
+
+  setStatus(statusBox, "A password setup link has been sent to the school email.", "success");
   form.reset();
 }
 
