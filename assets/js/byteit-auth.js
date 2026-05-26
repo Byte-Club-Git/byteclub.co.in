@@ -1,9 +1,15 @@
 import {
+  createUserWithEmailAndPassword,
+  doc,
   hasFirebaseConfig,
-  httpsCallable,
   onAuthStateChanged,
   requireFirebase,
-  signInWithEmailAndPassword
+  sendPasswordResetEmail,
+  serverTimestamp,
+  setDoc,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile
 } from "./byteit-firebase.js";
 
 const forms = document.querySelectorAll("[data-auth-form]");
@@ -63,7 +69,7 @@ forms.forEach((form) => {
 });
 
 async function registerSchool(form, statusBox) {
-  const { functions } = requireFirebase();
+  const { auth, db } = requireFirebase();
   const formData = new FormData(form);
   const schoolName = String(formData.get("schoolName") || "").trim();
   const schoolEmail = String(formData.get("schoolEmail") || "").trim().toLowerCase();
@@ -72,11 +78,26 @@ async function registerSchool(form, statusBox) {
     throw new Error("Please enter the school name and email.");
   }
 
-  const registerSchoolFunction = httpsCallable(functions, "registerSchool");
-  await registerSchoolFunction({ schoolName, schoolEmail });
+  const tempPassword = generateTemporaryPassword();
+  const credential = await createUserWithEmailAndPassword(auth, schoolEmail, tempPassword);
+  await updateProfile(credential.user, { displayName: schoolName });
+  await setDoc(doc(db, "schools", credential.user.uid), {
+    name: schoolName,
+    email: schoolEmail,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  });
+  await sendPasswordResetEmail(auth, schoolEmail);
+  await signOut(auth);
 
-  setStatus(statusBox, "School account created. A unique password has been sent to the school email.", "success");
+  setStatus(statusBox, "School account created. A password setup link has been sent to the school email.", "success");
   form.reset();
+}
+
+function generateTemporaryPassword() {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%";
+  const bytes = crypto.getRandomValues(new Uint8Array(18));
+  return Array.from(bytes, (byte) => alphabet[byte % alphabet.length]).join("");
 }
 
 async function loginSchool(form, statusBox) {

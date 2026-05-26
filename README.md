@@ -28,7 +28,7 @@ This award highlights Byte Club’s commitment to simplicity and great UX design
 
 ## Byte.IT Registration Setup
 
-This repo is a static HTML/CSS/JS site. The registration system uses Firebase Auth, Firestore, and Firebase Cloud Functions. Schools register with their name and email; a Cloud Function generates a unique password, creates the Firebase Auth account, and queues a password email.
+This repo is a static HTML/CSS/JS site. The registration system uses Firebase Auth and Firestore. Schools register with their name and email; the browser creates the Firebase Auth account with a unique temporary password, then Firebase Auth sends a password setup/reset email so the school can set its own password.
 
 ### Files
 
@@ -37,7 +37,6 @@ This repo is a static HTML/CSS/JS site. The registration system uses Firebase Au
 - `dashboard.html` - event registration dashboard
 - `assets/js/byteit-firebase-config.js` - public Firebase browser config
 - `assets/js/byteit-firebase.js` - shared Firebase browser helpers
-- `functions/index.js` - Firebase Cloud Functions for school creation and registration mutations
 - `firestore.rules` - Firestore security rules
 - `firebase.json` / `.firebaserc` - Firebase deploy config
 
@@ -46,16 +45,14 @@ This repo is a static HTML/CSS/JS site. The registration system uses Firebase Au
 1. In Firebase Console, use project `byteclub-cc7ac`.
 2. Enable Authentication > Sign-in method > Email/Password.
 3. Create Firestore Database.
-4. Install the Firebase "Trigger Email" extension and configure it to watch the `mail` collection.
-5. Configure the extension's SMTP/email provider. The app does not store email API keys in frontend code.
+4. Make sure password reset emails are enabled in Authentication email templates.
 
 The app uses these Firestore collections:
 
 - `schools`
 - `event_registrations`
-- `mail` (used by the Trigger Email extension)
 
-Event rules are kept in frontend and Cloud Function code so limits are enforced both in the UI and server-side.
+Event rules are kept in frontend code and guarded by Firestore owner-only rules. For stronger server-side event limit enforcement later, upgrade to Firebase Cloud Functions on the Blaze plan.
 
 ### Frontend config
 
@@ -75,14 +72,14 @@ window.BYTEIT_FIREBASE_CONFIG = {
 
 Firebase web config is safe to use in frontend code. Firestore rules and Cloud Functions protect private data and writes.
 
-### Deploy Firebase backend
+### Deploy Firebase rules
 
 Install Firebase CLI, log in, then deploy from the repo root:
 
 ```bash
 firebase login
 firebase use byteclub-cc7ac
-firebase deploy --only functions,firestore:rules
+firebase deploy --only firestore:rules
 ```
 
 The website itself can still be deployed on GitHub Pages.

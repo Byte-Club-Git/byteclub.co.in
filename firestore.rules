@@ -12,12 +12,29 @@ service cloud.firestore {
 
     match /schools/{schoolId} {
       allow read: if ownsSchool(schoolId);
-      allow write: if false;
+      allow create: if ownsSchool(schoolId)
+        && request.resource.data.email is string
+        && request.resource.data.name is string;
+      allow update: if ownsSchool(schoolId)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'email', 'updatedAt']);
+      allow delete: if false;
     }
 
     match /event_registrations/{registrationId} {
       allow read: if ownsSchool(resource.data.schoolId);
-      allow write: if false;
+      allow create: if ownsSchool(request.resource.data.schoolId)
+        && request.resource.data.eventId is string
+        && request.resource.data.teamName is string
+        && request.resource.data.participants is list
+        && request.resource.data.participants.size() >= 1
+        && request.resource.data.participants.size() <= 6;
+      allow update: if ownsSchool(resource.data.schoolId)
+        && request.resource.data.schoolId == resource.data.schoolId
+        && request.resource.data.eventId == resource.data.eventId
+        && request.resource.data.participants is list
+        && request.resource.data.participants.size() >= 1
+        && request.resource.data.participants.size() <= 6;
+      allow delete: if ownsSchool(resource.data.schoolId);
     }
 
     match /events/{eventId} {

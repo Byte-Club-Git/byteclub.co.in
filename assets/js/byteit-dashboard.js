@@ -1,15 +1,18 @@
 import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js";
 import {
+  addDoc,
   collection,
   db,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   hasFirebaseConfig,
-  httpsCallable,
   onAuthStateChanged,
   query,
   requireFirebase,
+  serverTimestamp,
+  setDoc,
   signOut,
   where
 } from "./byteit-firebase.js";
@@ -225,7 +228,6 @@ form?.addEventListener("submit", async (event) => {
 });
 
 async function saveRegistration() {
-  const { functions } = requireFirebase();
   const formData = new FormData(form);
   const teamName = String(formData.get("teamName") || "").trim();
   const names = formData.getAll("participantName");
@@ -257,21 +259,32 @@ async function saveRegistration() {
     }
   }
 
-  const saveEventRegistration = httpsCallable(functions, "saveEventRegistration");
-  await saveEventRegistration({
-    registrationId: activeRegistration?.id || null,
+  const payload = {
+    schoolId: schoolContext.school.id,
     eventId: activeEvent.id,
+    eventName: activeEvent.name,
     teamName,
-    participants
-  });
+    participants,
+    participantCount: participants.length,
+    mode: activeEvent.mode,
+    classRange: activeEvent.classRange,
+    updatedAt: serverTimestamp()
+  };
+
+  if (activeRegistration?.id) {
+    await setDoc(doc(db, "event_registrations", activeRegistration.id), payload, { merge: true });
+  } else {
+    await addDoc(collection(db, "event_registrations"), {
+      ...payload,
+      createdAt: serverTimestamp()
+    });
+  }
 }
 
 async function deleteRegistration(registrationId) {
   if (!window.confirm("Delete this team registration?")) return;
   try {
-    const { functions } = requireFirebase();
-    const deleteEventRegistration = httpsCallable(functions, "deleteEventRegistration");
-    await deleteEventRegistration({ registrationId });
+    await deleteDoc(doc(db, "event_registrations", registrationId));
     await loadRegistrations();
     renderEvents();
     setStatus("Registration deleted.", "success");
