@@ -3,21 +3,21 @@ import {
   doc,
   hasFirebaseConfig,
   onAuthStateChanged,
+  reload,
   requireFirebase,
-  sendPasswordResetEmail,
+  sendEmailVerification,
   serverTimestamp,
   setDoc,
   signInWithEmailAndPassword,
   signOut,
+  updatePassword,
   updateProfile
-} from "./byteit-firebase.js";
+} from "./byteit-firebase.js?v=20260527-setpass2";
 
 const forms = document.querySelectorAll("[data-auth-form]");
-const forgotPasswordButton = document.querySelector("[data-forgot-password]");
-const passwordResult = document.querySelector("[data-password-result]");
-const generatedPassword = document.querySelector("[data-generated-password]");
-const copyPasswordButton = document.querySelector("[data-copy-password]");
 const page = document.body.dataset.page;
+const loginParams = new URLSearchParams(window.location.search);
+const isPasswordSetupMode = page === "login" && loginParams.get("verified");
 
 function getStatusBox(form) {
   return form.closest(".auth-card")?.querySelector("[data-status]") || document.querySelector("[data-status]");
@@ -38,22 +38,49 @@ function setLoading(form, isLoading) {
   submitButton.textContent = isLoading ? "please wait" : submitButton.dataset.originalText;
 }
 
+function authErrorMessage(error) {
+  if (error.code === "auth/too-many-requests") {
+    return "Kindly verify your email first. If you already verified it, please wait a few minutes and try again.";
+  }
+  return error.message || "Something went wrong. Please try again.";
+}
+
 if (!hasFirebaseConfig()) {
   forms.forEach((form) => {
     setStatus(getStatusBox(form), "Firebase is not configured yet. Update assets/js/byteit-firebase-config.js.", "error");
   });
 }
 
-function showGeneratedPassword(password) {
-  if (!passwordResult || !generatedPassword) return;
-  generatedPassword.textContent = password;
-  passwordResult.hidden = false;
+if (page === "login" && loginParams.get("verify")) {
+  const statusBox = document.querySelector("[data-status]");
+  setStatus(statusBox, "Kindly verify your email first, then set your password.", "error");
+}
+
+if (isPasswordSetupMode) {
+  const form = document.querySelector("[data-auth-form]");
+  const email = loginParams.get("email") || "";
+  if (form?.schoolEmail && email) form.schoolEmail.value = email;
+  if (form?.password) {
+    form.password.autocomplete = "new-password";
+    form.password.placeholder = "Create password";
+  }
+  form?.querySelector("button[type='submit']")?.replaceChildren(document.createTextNode("set password"));
+  form?.setAttribute("data-auth-mode", "set-password");
+  setStatus(document.querySelector("[data-status]"), "Email verified. Enter a new password to open the dashboard.", "success");
 }
 
 if (page === "login" && hasFirebaseConfig()) {
   const { auth } = requireFirebase();
-  onAuthStateChanged(auth, (user) => {
-    if (user) window.location.href = "dashboard.html";
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) return;
+    if (isPasswordSetupMode) return;
+    if (user.emailVerified) {
+      window.location.href = "dashboard.html";
+      return;
+    }
+
+    const statusBox = document.querySelector("[data-status]");
+    setStatus(statusBox, "Kindly verify your email first, then set your password.", "error");
   });
 }
 
@@ -67,48 +94,17 @@ forms.forEach((form) => {
     try {
       if (mode === "register") {
         await registerSchool(form, statusBox);
+      } else if (mode === "set-password") {
+        await setVerifiedPassword(form, statusBox);
       } else {
         await loginSchool(form, statusBox);
       }
     } catch (error) {
-      setStatus(statusBox, error.message || "Something went wrong. Please try again.", "error");
+      setStatus(statusBox, authErrorMessage(error), "error");
     } finally {
       setLoading(form, false);
     }
   });
-});
-
-forgotPasswordButton?.addEventListener("click", async () => {
-  const form = forgotPasswordButton.closest(".auth-card")?.querySelector("[data-auth-form]");
-  const statusBox = getStatusBox(form);
-  const email = String(new FormData(form).get("schoolEmail") || "").trim().toLowerCase();
-
-  if (!email) {
-    setStatus(statusBox, "Enter the school email first, then request a password reset.", "error");
-    return;
-  }
-
-  forgotPasswordButton.disabled = true;
-  forgotPasswordButton.dataset.originalText ||= forgotPasswordButton.textContent;
-  forgotPasswordButton.textContent = "sending...";
-
-  try {
-    const { auth } = requireFirebase();
-    await sendPasswordResetEmail(auth, email);
-    setStatus(statusBox, "Password reset email requested. Please check inbox and spam.", "success");
-  } catch (error) {
-    setStatus(statusBox, error.message || "Could not request the password reset email.", "error");
-  } finally {
-    forgotPasswordButton.disabled = false;
-    forgotPasswordButton.textContent = forgotPasswordButton.dataset.originalText;
-  }
-});
-
-copyPasswordButton?.addEventListener("click", async () => {
-  const password = generatedPassword?.textContent || "";
-  if (!password) return;
-  await navigator.clipboard.writeText(password);
-  copyPasswordButton.textContent = "Copied";
 });
 
 async function registerSchool(form, statusBox) {
@@ -130,12 +126,35 @@ async function registerSchool(form, statusBox) {
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
   });
-  await signOut(auth);
+  await sendEmailVerification(credential.user, {
+    url: `${window.location.origin}${window.location.pathname.replace(/registration\.html$/, "login.html")}?verified=1&email=${encodeURIComponent(schoolEmail)}`
+  });
 
-  showGeneratedPassword(tempPassword);
-  setStatus(statusBox, "School account created. Save this password now; it is shown only once.", "success");
+  setStatus(statusBox, "School account created. Verify the email from Firebase, then set your password from the login page.", "success");
 
   form.reset();
+}
+
+async function setVerifiedPassword(form, statusBox) {
+  const { auth } = requireFirebase();
+  const password = String(new FormData(form).get("password") || "");
+
+  if (!auth.currentUser) {
+    throw new Error("Please open the verification link in the same browser used for registration.");
+  }
+
+  await reload(auth.currentUser);
+  if (!auth.currentUser.emailVerified) {
+    throw new Error("Kindly verify your email before setting a password.");
+  }
+
+  if (password.length < 6) {
+    throw new Error("Password must be at least 6 characters.");
+  }
+
+  await updatePassword(auth.currentUser, password);
+  setStatus(statusBox, "Password set. Opening dashboard...", "success");
+  window.location.href = "dashboard.html";
 }
 
 function generateTemporaryPassword() {
@@ -151,6 +170,11 @@ async function loginSchool(form, statusBox) {
   const password = String(formData.get("password") || "");
 
   await signInWithEmailAndPassword(auth, email, password);
+  if (!auth.currentUser.emailVerified) {
+    await signOut(auth);
+    setStatus(statusBox, "Kindly verify your email first, then set your password.", "error");
+    return;
+  }
 
   setStatus(statusBox, "Logged in. Opening dashboard...", "success");
   window.location.href = "dashboard.html";

@@ -10,12 +10,13 @@ import {
   hasFirebaseConfig,
   onAuthStateChanged,
   query,
+  reload,
   requireFirebase,
   serverTimestamp,
   setDoc,
   signOut,
   where
-} from "./byteit-firebase.js";
+} from "./byteit-firebase.js?v=20260527-setpass2";
 
 const eventList = document.querySelector("[data-event-list]");
 const schoolName = document.querySelector("[data-school-name]");
@@ -71,6 +72,12 @@ async function init() {
     const user = await waitForUser(auth);
     if (!user) {
       window.location.href = "login.html";
+      return;
+    }
+    await reload(user);
+
+    if (!user.emailVerified) {
+      window.location.href = "login.html?verify=1";
       return;
     }
 

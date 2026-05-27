@@ -3,9 +3,11 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
-  sendPasswordResetEmail,
+  reload,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
+  updatePassword,
   updateProfile
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import {
@@ -44,11 +46,13 @@ export {
   onAuthStateChanged,
   orderBy,
   query,
-  sendPasswordResetEmail,
+  reload,
+  sendEmailVerification,
   serverTimestamp,
   setDoc,
   signInWithEmailAndPassword,
   signOut,
+  updatePassword,
   updateProfile,
   where
 };
