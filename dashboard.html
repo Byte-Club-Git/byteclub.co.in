@@ -7,7 +7,7 @@
   <title>Byte.IT Dashboard</title>
   <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
   <link rel="stylesheet" href="assets/css/workshop.css">
-  <link rel="stylesheet" href="assets/css/byteit-registration.css">
+  <link rel="stylesheet" href="assets/css/byteit-registration.css?v=20260527-loading-state">
 </head>
 
 <body>
@@ -117,10 +117,12 @@
       </div>
     </section>
 
-    <section class="event-list" data-event-list></section>
+    <section class="event-list" data-event-list>
+      <div class="event-list__loading">Loading...</div>
+    </section>
   </main>
 
-  <div class="byteit-modal" data-registration-modal hidden>
+  <div class="byteit-modal" data-registration-modal data-lenis-prevent hidden>
     <section class="byteit-modal__panel">
       <div class="byteit-modal__top">
         <div>
@@ -135,6 +137,7 @@
         <label>Team name
           <input type="text" name="teamName" required>
         </label>
+        <div class="byteit-status byteit-modal-status" data-modal-status hidden></div>
         <div class="participant-grid" data-participants></div>
         <div class="modal-actions">
           <button class="ghost-button" type="button" data-close-modal>cancel</button>
@@ -146,7 +149,7 @@
 
   <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
   <script src="assets/js/byteit-firebase-config.js?v=20260527-setpass4"></script>
-  <script type="module" src="assets/js/byteit-dashboard.js?v=20260527-setpass4"></script>
+  <script type="module" src="assets/js/byteit-dashboard.js?v=20260527-loading-state"></script>
   <script src="assets/js/resources.js"></script>
 </body>
 

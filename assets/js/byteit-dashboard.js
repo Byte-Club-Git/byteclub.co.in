@@ -28,6 +28,7 @@ const logoutButton = document.querySelector("[data-logout]");
 const modal = document.querySelector("[data-registration-modal]");
 const modalTitle = document.querySelector("[data-modal-title]");
 const modalMeta = document.querySelector("[data-modal-meta]");
+const modalStatusBox = document.querySelector("[data-modal-status]");
 const form = document.querySelector("[data-team-form]");
 const participantsHost = document.querySelector("[data-participants]");
 const closeModalButtons = document.querySelectorAll("[data-close-modal]");
@@ -46,6 +47,17 @@ function setStatus(message, type = "info") {
 
 function hideStatus() {
   if (statusBox) statusBox.hidden = true;
+}
+
+function setModalStatus(message, type = "info") {
+  if (!modalStatusBox) return;
+  modalStatusBox.textContent = message;
+  modalStatusBox.dataset.type = type;
+  modalStatusBox.hidden = false;
+}
+
+function hideModalStatus() {
+  if (modalStatusBox) modalStatusBox.hidden = true;
 }
 
 function byName(a, b) {
@@ -145,7 +157,7 @@ function renderEvents() {
             ${registeredMarkup}
           </div>
           <button class="byteit-button" type="button" data-register-event="${event.id}" ${limitReached ? "disabled" : ""}>
-            ${limitReached ? "limit reached" : "add team"}
+            ${limitReached ? "limit reached" : "Add Team"}
           </button>
         </article>
       `;
@@ -195,9 +207,11 @@ modal?.addEventListener("click", (event) => {
 
 function openTeamModal(event, registration = null) {
   hideStatus();
+  hideModalStatus();
   activeEvent = event;
   activeRegistration = registration;
   modal.hidden = false;
+  document.body.classList.add("byteit-modal-open");
   modalTitle.textContent = registration ? `Edit ${event.name}` : `Register ${event.name}`;
   modalMeta.textContent = `${event.mode} · ${participantLabel(event)} · Class ${event.classRange}`;
   form.teamName.value = registration?.teamName || `${event.name} Team`;
@@ -207,7 +221,9 @@ function openTeamModal(event, registration = null) {
 
 function closeTeamModal() {
   modal.hidden = true;
+  document.body.classList.remove("byteit-modal-open");
   form.reset();
+  hideModalStatus();
   participantsHost.innerHTML = "";
   activeEvent = null;
   activeRegistration = null;
@@ -245,7 +261,7 @@ form?.addEventListener("submit", async (event) => {
     renderEvents();
     setStatus("Registration saved.", "success");
   } catch (error) {
-    setStatus(error.message || "Could not save registration.", "error");
+    setModalStatus(error.message || "Could not save registration.", "error");
   }
 });
 

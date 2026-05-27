@@ -44,6 +44,10 @@ body {
   overflow-x: hidden;
 }
 
+body.byteit-modal-open {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
 }
@@ -258,7 +262,7 @@ a {
   background: var(--accent-1);
   color: #fff;
   cursor: pointer;
-  font-family: "Irish Grover", Poppins, sans-serif;
+  font-family:  Inter, sans-serif;
   font-size: 1.35rem;
   letter-spacing: 0;
   text-decoration: none;
@@ -399,6 +403,16 @@ a {
   margin-top: 1.5rem;
 }
 
+.event-list__loading {
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+  min-height: 12rem;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
 .event-card {
   display: flex;
   flex-direction: column;
@@ -479,11 +493,13 @@ a {
 .modal-close,
 .ghost-button {
   border: 1px solid var(--lines);
+  
   border-radius: 5px;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
   padding: 0.35rem 0.65rem;
+  font-family: Denver, sans-serif;
 }
 
 .byteit-modal {
@@ -494,6 +510,8 @@ a {
   place-items: center;
   padding: 1rem;
   background: rgba(0, 0, 0, 0.35);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .byteit-modal[hidden] {
@@ -503,7 +521,9 @@ a {
 .byteit-modal__panel {
   width: min(780px, 100%);
   max-height: min(88vh, 900px);
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: clamp(1.2rem, 3vw, 2rem);
   border-radius: 8px;
 }
@@ -523,9 +543,14 @@ a {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.8rem;
+  min-width: 0;
   padding: 1rem;
   border: 1px solid var(--lines);
   border-radius: 5px;
+}
+
+.byteit-modal__panel .byteit-form label {
+  min-width: 0;
 }
 
 .participant-fieldset legend {
@@ -573,5 +598,6 @@ a {
   .team-row {
     flex-direction: column;
     align-items: stretch;
+    justify-content: center;
   }
 }

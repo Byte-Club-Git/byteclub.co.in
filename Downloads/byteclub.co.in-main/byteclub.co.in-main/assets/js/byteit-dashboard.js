@@ -97,7 +97,7 @@ function renderEvents() {
             ${registeredMarkup}
           </div>
           <button class="byteit-button" type="button" data-register-event="${event.id}" ${limitReached ? "disabled" : ""}>
-            ${limitReached ? "limit reached" : "add team"}
+            ${limitReached ? "limit reached" : "Add Team"}
           </button>
         </article>
       `;
