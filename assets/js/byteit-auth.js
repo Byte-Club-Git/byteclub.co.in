@@ -12,12 +12,13 @@ import {
   signOut,
   updatePassword,
   updateProfile
-} from "./byteit-firebase.js?v=20260527-setpass2";
+} from "./byteit-firebase.js?v=20260527-setpass3";
 
 const forms = document.querySelectorAll("[data-auth-form]");
 const page = document.body.dataset.page;
 const loginParams = new URLSearchParams(window.location.search);
-const isPasswordSetupMode = page === "login" && loginParams.get("verified");
+const pendingSetupKey = "byteitPendingPasswordSetup";
+let isPasswordSetupMode = page === "login" && Boolean(loginParams.get("verified"));
 
 function getStatusBox(form) {
   return form.closest(".auth-card")?.querySelector("[data-status]") || document.querySelector("[data-status]");
@@ -45,6 +46,36 @@ function authErrorMessage(error) {
   return error.message || "Something went wrong. Please try again.";
 }
 
+function getPendingPasswordSetup() {
+  try {
+    return JSON.parse(localStorage.getItem(pendingSetupKey) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function setPendingPasswordSetup(data) {
+  localStorage.setItem(pendingSetupKey, JSON.stringify(data));
+}
+
+function clearPendingPasswordSetup() {
+  localStorage.removeItem(pendingSetupKey);
+}
+
+function enablePasswordSetupMode(email = "") {
+  const form = document.querySelector("[data-auth-form]");
+  if (!form) return;
+
+  isPasswordSetupMode = true;
+  if (form.schoolEmail && email) form.schoolEmail.value = email;
+  if (form.password) {
+    form.password.autocomplete = "new-password";
+    form.password.placeholder = "Create password";
+  }
+  form.querySelector("button[type='submit']")?.replaceChildren(document.createTextNode("set password"));
+  form.setAttribute("data-auth-mode", "set-password");
+}
+
 if (!hasFirebaseConfig()) {
   forms.forEach((form) => {
     setStatus(getStatusBox(form), "Firebase is not configured yet. Update assets/js/byteit-firebase-config.js.", "error");
@@ -57,15 +88,8 @@ if (page === "login" && loginParams.get("verify")) {
 }
 
 if (isPasswordSetupMode) {
-  const form = document.querySelector("[data-auth-form]");
   const email = loginParams.get("email") || "";
-  if (form?.schoolEmail && email) form.schoolEmail.value = email;
-  if (form?.password) {
-    form.password.autocomplete = "new-password";
-    form.password.placeholder = "Create password";
-  }
-  form?.querySelector("button[type='submit']")?.replaceChildren(document.createTextNode("set password"));
-  form?.setAttribute("data-auth-mode", "set-password");
+  enablePasswordSetupMode(email);
   setStatus(document.querySelector("[data-status]"), "Email verified. Enter a new password to open the dashboard.", "success");
 }
 
@@ -73,6 +97,15 @@ if (page === "login" && hasFirebaseConfig()) {
   const { auth } = requireFirebase();
   onAuthStateChanged(auth, async (user) => {
     if (!user) return;
+    const pendingSetup = getPendingPasswordSetup();
+    const isPendingUser = pendingSetup && (pendingSetup.uid === user.uid || pendingSetup.email === user.email);
+
+    if (user.emailVerified && isPendingUser) {
+      enablePasswordSetupMode(user.email);
+      setStatus(document.querySelector("[data-status]"), "Email verified. Enter a new password to open the dashboard.", "success");
+      return;
+    }
+
     if (isPasswordSetupMode) return;
     if (user.emailVerified) {
       window.location.href = "dashboard.html";
@@ -129,6 +162,7 @@ async function registerSchool(form, statusBox) {
   await sendEmailVerification(credential.user, {
     url: `${window.location.origin}${window.location.pathname.replace(/registration\.html$/, "login.html")}?verified=1&email=${encodeURIComponent(schoolEmail)}`
   });
+  setPendingPasswordSetup({ uid: credential.user.uid, email: schoolEmail });
 
   setStatus(statusBox, "School account created. Verify the email from Firebase, then set your password from the login page.", "success");
 
@@ -153,6 +187,7 @@ async function setVerifiedPassword(form, statusBox) {
   }
 
   await updatePassword(auth.currentUser, password);
+  clearPendingPasswordSetup();
   setStatus(statusBox, "Password set. Opening dashboard...", "success");
   window.location.href = "dashboard.html";
 }
