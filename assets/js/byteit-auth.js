@@ -12,7 +12,7 @@ import {
   signOut,
   updatePassword,
   updateProfile
-} from "./byteit-firebase.js?v=20260527-setpass3";
+} from "./byteit-firebase.js?v=20260527-setpass4";
 
 const forms = document.querySelectorAll("[data-auth-form]");
 const page = document.body.dataset.page;
@@ -60,6 +60,13 @@ function setPendingPasswordSetup(data) {
 
 function clearPendingPasswordSetup() {
   localStorage.removeItem(pendingSetupKey);
+}
+
+function passwordSetupUrl(email) {
+  const url = new URL("login.html", window.location.href);
+  url.searchParams.set("verified", "1");
+  url.searchParams.set("email", email);
+  return url.toString();
 }
 
 function enablePasswordSetupMode(email = "") {
@@ -160,7 +167,7 @@ async function registerSchool(form, statusBox) {
     updatedAt: serverTimestamp()
   });
   await sendEmailVerification(credential.user, {
-    url: `${window.location.origin}${window.location.pathname.replace(/registration\.html$/, "login.html")}?verified=1&email=${encodeURIComponent(schoolEmail)}`
+    url: passwordSetupUrl(schoolEmail)
   });
   setPendingPasswordSetup({ uid: credential.user.uid, email: schoolEmail });
 

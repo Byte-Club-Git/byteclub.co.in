@@ -16,7 +16,7 @@ import {
   setDoc,
   signOut,
   where
-} from "./byteit-firebase.js?v=20260527-setpass3";
+} from "./byteit-firebase.js?v=20260527-setpass4";
 
 const eventList = document.querySelector("[data-event-list]");
 const schoolName = document.querySelector("[data-school-name]");
