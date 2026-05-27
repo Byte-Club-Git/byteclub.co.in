@@ -4,6 +4,7 @@ import {
   hasFirebaseConfig,
   onAuthStateChanged,
   requireFirebase,
+  sendPasswordResetEmail,
   serverTimestamp,
   setDoc,
   signInWithEmailAndPassword,
@@ -12,7 +13,7 @@ import {
 } from "./byteit-firebase.js";
 
 const forms = document.querySelectorAll("[data-auth-form]");
-const resetPasswordButton = document.querySelector("[data-reset-password]");
+const forgotPasswordButton = document.querySelector("[data-forgot-password]");
 const passwordResult = document.querySelector("[data-password-result]");
 const generatedPassword = document.querySelector("[data-generated-password]");
 const copyPasswordButton = document.querySelector("[data-copy-password]");
@@ -77,30 +78,29 @@ forms.forEach((form) => {
   });
 });
 
-resetPasswordButton?.addEventListener("click", async () => {
-  const form = resetPasswordButton.closest(".auth-card")?.querySelector("[data-auth-form]");
+forgotPasswordButton?.addEventListener("click", async () => {
+  const form = forgotPasswordButton.closest(".auth-card")?.querySelector("[data-auth-form]");
   const statusBox = getStatusBox(form);
   const email = String(new FormData(form).get("schoolEmail") || "").trim().toLowerCase();
 
   if (!email) {
-    setStatus(statusBox, "Enter the school email first, then request the setup link.", "error");
+    setStatus(statusBox, "Enter the school email first, then request a password reset.", "error");
     return;
   }
 
-  resetPasswordButton.disabled = true;
-  resetPasswordButton.dataset.originalText ||= resetPasswordButton.textContent;
-  resetPasswordButton.textContent = "sending...";
+  forgotPasswordButton.disabled = true;
+  forgotPasswordButton.dataset.originalText ||= forgotPasswordButton.textContent;
+  forgotPasswordButton.textContent = "sending...";
 
   try {
     const { auth } = requireFirebase();
-    const { sendPasswordResetEmail } = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js");
     await sendPasswordResetEmail(auth, email);
-    setStatus(statusBox, "Password setup link requested. Please check inbox and spam.", "success");
+    setStatus(statusBox, "Password reset email requested. Please check inbox and spam.", "success");
   } catch (error) {
-    setStatus(statusBox, error.message || "Could not request the setup link.", "error");
+    setStatus(statusBox, error.message || "Could not request the password reset email.", "error");
   } finally {
-    resetPasswordButton.disabled = false;
-    resetPasswordButton.textContent = resetPasswordButton.dataset.originalText;
+    forgotPasswordButton.disabled = false;
+    forgotPasswordButton.textContent = forgotPasswordButton.dataset.originalText;
   }
 });
 
