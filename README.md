@@ -28,7 +28,7 @@ This award highlights Byte Club’s commitment to simplicity and great UX design
 
 ## Byte.IT Registration Setup
 
-This repo is a static HTML/CSS/JS site. The registration system uses Firebase Auth and Firestore. Schools register with their name and email; the browser creates the Firebase Auth account with a unique temporary password, then Firebase Auth sends a password setup/reset email so the school can set its own password.
+This repo is a static HTML/CSS/JS site. The registration system uses Firebase Auth and Firestore. Schools can register with email/password or Google. Email/password registration creates the Firebase Auth account with a unique temporary password, then Firebase Auth sends a password setup/reset email so the school can set its own password. Google registration signs in with a popup, creates the matching Firestore school profile, and sends a password setup email for the same Firebase user. If a password account already exists with that email, the Google button links Google to that existing UID after the user enters the email/password once.
 
 ### Files
 
@@ -44,8 +44,11 @@ This repo is a static HTML/CSS/JS site. The registration system uses Firebase Au
 
 1. In Firebase Console, use project `byteclub-cc7ac`.
 2. Enable Authentication > Sign-in method > Email/Password.
-3. Create Firestore Database.
-4. Make sure password reset emails are enabled in Authentication email templates.
+3. Enable Authentication > Sign-in method > Google, choose the project support email, and save.
+4. In Authentication > Settings, keep one account per email enabled so Google and password login share the same Firebase user.
+5. In Authentication > Settings > Authorized domains, make sure your live domain is listed, for example `byteclub.co.in` plus any local/test domains you use.
+6. Create Firestore Database.
+7. Make sure password reset emails are enabled in Authentication email templates.
 
 The app uses these Firestore collections:
 

@@ -279,6 +279,66 @@ a {
   opacity: 0.55;
 }
 
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin: 1.35rem 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--lines);
+}
+
+.google-auth-button {
+  width: 100%;
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: 1px solid #9f9e99;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.28);
+  color: #2c2c2c;
+  cursor: pointer;
+  font: 700 0.95rem Poppins, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.google-auth-button:hover {
+  border-color: var(--accent-1);
+}
+
+.google-auth-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.google-auth-button__mark {
+  width: 1.75rem;
+  height: 1.75rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--lines);
+  border-radius: 50%;
+  background: #fff;
+  color: #4285f4;
+  font: 800 1rem Inter, sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
 .byteit-button--secondary {
   background: transparent;
   color: var(--accent-1);
