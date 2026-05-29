@@ -38,6 +38,10 @@ let registrations = [];
 let activeEvent = null;
 let activeRegistration = null;
 
+function usesSharedRegistrationLink(event) {
+  return event?.id === "crypt-it" || event?.id === "build-it";
+}
+
 function setStatus(message, type = "info") {
   if (!statusBox) return;
   statusBox.textContent = message;
@@ -62,6 +66,12 @@ function hideModalStatus() {
 
 function byName(a, b) {
   return a.name.localeCompare(b.name);
+}
+
+function byDashboardOrder(a, b) {
+  if (a.id === "make-it") return -1;
+  if (b.id === "make-it") return 1;
+  return byName(a, b);
 }
 
 function waitForUser(auth) {
@@ -136,13 +146,22 @@ function renderEvents() {
 
   eventList.innerHTML = events
     .slice()
-    .sort(byName)
+    .sort(byDashboardOrder)
     .map((event) => {
       const eventRegistrations = registrations.filter((item) => item.eventId === event.id);
       const limitReached = event.teamsPerInstitution !== null && eventRegistrations.length >= event.teamsPerInstitution;
       const registeredMarkup = eventRegistrations.length
-        ? eventRegistrations.map(registrationCard).join("")
+        ? eventRegistrations.map((registration) => registrationCard(registration, event)).join("")
+        : usesSharedRegistrationLink(event)
+          ? ""
         : `<p class="byteit-muted">No teams registered yet.</p>`;
+      const actionMarkup = usesSharedRegistrationLink(event)
+        ? `<p class="event-card__notice">Registeration link will be shared</p>`
+        : `
+          <button class="byteit-button newbtn" type="button" data-register-event="${event.id}" ${limitReached ? "disabled" : ""}>
+            ${limitReached ? "limit reached" : "Add Team"}
+          </button>
+        `;
 
       return `
         <article class="event-card">
@@ -156,19 +175,25 @@ function renderEvents() {
           <div class="event-card__teams">
             ${registeredMarkup}
           </div>
-          <button class="byteit-button" type="button" data-register-event="${event.id}" ${limitReached ? "disabled" : ""}>
-            ${limitReached ? "limit reached" : "Add Team"}
-          </button>
+          ${actionMarkup}
         </article>
       `;
     })
     .join("");
 }
 
-function registrationCard(registration) {
+function registrationCard(registration, event) {
   const participantNames = (registration.participants || [])
     .map((participant) => `${participant.name} (${participant.classLabel})`)
     .join(", ");
+  const actionsMarkup = usesSharedRegistrationLink(event)
+    ? `<span class="team-actions__notice">Registeration link will be shared</span>`
+    : `
+      <div class="team-actions">
+        <button class="newbtn" data-edit-registration="${registration.id}">edit</button>
+        <button class="newbtn" type="button" data-delete-registration="${registration.id}">delete</button>
+      </div>
+    `;
 
   return `
     <div class="team-row">
@@ -176,10 +201,7 @@ function registrationCard(registration) {
         <strong>${registration.teamName}</strong>
         <span>${participantNames}</span>
       </div>
-      <div class="team-actions">
-        <button type="button" data-edit-registration="${registration.id}">edit</button>
-        <button type="button" data-delete-registration="${registration.id}">delete</button>
-      </div>
+      ${actionsMarkup}
     </div>
   `;
 }

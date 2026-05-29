@@ -171,7 +171,9 @@ async function registerSchool(form, statusBox) {
   });
   setPendingPasswordSetup({ uid: credential.user.uid, email: schoolEmail });
 
-  setStatus(statusBox, "School account created. Verify the email from Firebase, then set your password from the login page.", "success");
+  const verificationMessage = "Please check your email to verify your account. If you do not see it in your inbox, check your spam or junk folder.";
+  setStatus(statusBox, verificationMessage, "success");
+  window.alert(verificationMessage);
 
   form.reset();
 }

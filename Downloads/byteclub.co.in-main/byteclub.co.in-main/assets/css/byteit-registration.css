@@ -380,7 +380,7 @@ a {
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  padding: 0.35rem 0.65rem;
+  padding: 0.35 0.65rem;
 }
 
 .byteit-modal {

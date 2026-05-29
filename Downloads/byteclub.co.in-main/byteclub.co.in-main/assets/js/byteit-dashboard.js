@@ -117,8 +117,8 @@ function registrationCard(registration) {
         <span>${participantNames}</span>
       </div>
       <div class="team-actions">
-        <button type="button" data-edit-registration="${registration.id}">edit</button>
-        <button type="button" data-delete-registration="${registration.id}">delete</button>
+        <button class="newbtn" type="button" data-edit-registration="${registration.id}">edit</button>
+        <button class="newbtn" type="button" data-delete-registration="${registration.id}">delete</button>
       </div>
     </div>
   `;
