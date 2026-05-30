@@ -227,10 +227,9 @@ async function registerSchoolWithGoogle(form, statusBox) {
   const { auth, db } = requireFirebase();
   const formData = new FormData(form);
   const schoolName = String(formData.get("schoolName") || "").trim();
-  const schoolEmail = String(formData.get("schoolEmail") || "").trim().toLowerCase();
 
-  if (!schoolName || !schoolEmail) {
-    throw new Error("Please enter the school name and email before continuing with Google.");
+  if (!schoolName) {
+    throw new Error("Please enter the school name before continuing with Google.");
   }
 
   const provider = new GoogleAuthProvider();
@@ -247,9 +246,9 @@ async function registerSchoolWithGoogle(form, statusBox) {
   }
 
   const googleEmail = String(credential.user.email || "").trim().toLowerCase();
-  if (googleEmail !== schoolEmail) {
+  if (!googleEmail) {
     await signOut(auth);
-    throw new Error("The Google account email must match the school email entered in the form.");
+    throw new Error("The selected Google account does not have an email address.");
   }
 
   const schoolRef = doc(db, "schools", credential.user.uid);

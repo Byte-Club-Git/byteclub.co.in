@@ -9,7 +9,9 @@ export const events = [
   { id: "frag-it", name: "Frag.IT", teamsPerInstitution: 1, minParticipants: 6, maxParticipants: 6, classRange: "IX-XII", mode: "Online" },
   { id: "surprise-it", name: "Surprise.IT", teamsPerInstitution: 1, minParticipants: 2, maxParticipants: 2, classRange: "IX-XII", mode: "Hybrid" },
   { id: "film-it", name: "Film.IT", teamsPerInstitution: 1, minParticipants: 2, maxParticipants: 4, classRange: "IX-XII", mode: "Online" },
-  { id: "crypt-it", name: "Crypt.IT", teamsPerInstitution: null, minParticipants: 1, maxParticipants: 3, classRange: "Open", mode: "Online" }
+  { id: "crypt-it", name: "Crypt.IT", teamsPerInstitution: null, minParticipants: 1, maxParticipants: 3, classRange: "Open", mode: "Online" },
+  { id: "Robosoccer", name: "Robosoccer", teamsPerInstitution: 1, minParticipants: 2, maxParticipants: 4, classRange: "IX-XII", mode: "Online" },
+  { id: "Electroart", name: "Electroart", teamsPerInstitution: null, minParticipants: 1, maxParticipants: 3, classRange: "Open", mode: "Online" }
 ];
 
 const romanClasses = {
