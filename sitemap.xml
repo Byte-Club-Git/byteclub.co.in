@@ -19,6 +19,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://byteclub.co.in/self-invite</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>never</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://byteclub.co.in/contact</loc>
     <lastmod>2024-06-24</lastmod>
     <changefreq>monthly</changefreq>

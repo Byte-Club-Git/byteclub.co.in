@@ -55,6 +55,16 @@ The app uses these Firestore collections:
 - `schools`
 - `event_registrations`
 
+### Self invite setup
+
+The `/self-invite` page stores submitted emails in Supabase using the public publishable key. Create the table and RLS policy by running:
+
+```sql
+-- supabase/self_invites.sql
+```
+
+The page inserts into `public.self_invites` and shows: "Mail will be sent by tonight."
+
 Event rules are kept in frontend code and guarded by Firestore owner-only rules. For stronger server-side event limit enforcement later, upgrade to Firebase Cloud Functions on the Blaze plan.
 
 ### Frontend config

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Byte Club Self Invite</title>
+  <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+  <link rel="stylesheet" href="assets/css/workshop.css">
+  <link rel="stylesheet" href="assets/css/byteit-registration.css">
+</head>
+
+<body data-page="self-invite">
+  <div class="rectangle rectangle-left"></div>
+  <div class="rectangle rectangle-right"></div>
+  <div class="rectangle rectangle-top"></div>
+  <div class="rectangle rectangle-nav"></div>
+
+  <section id="bigNav" class="center bigNav">
+    <div class="left">
+      <div>
+        <span onclick="navMenuClick()" id="span1" onmouseover="rotateNumbers(this)"
+          onmouseout="stopRotateNumbers(this)">
+          <div class="numbers">
+            <div class="number"></div>
+          </div>
+          <a href="/#spanA">ABOUT</a>
+        </span>
+      </div>
+      <div>
+        <span id="span2" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+          <div class="numbers">
+            <div class="number"></div>
+            <div class="number"></div>
+          </div>
+          <a href="team">TEAM</a>
+        </span>
+      </div>
+      <div>
+        <span id="span3" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+          <div class="numbers">
+            <div class="number"></div>
+            <div class="number"></div>
+            <div class="number"></div>
+          </div>
+          <a href="resources">RESOURCES</a>
+        </span>
+      </div>
+      <div>
+        <span id="span4" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)">
+          <div class="numbers">
+            <div class="number"></div>
+            <div class="number"></div>
+            <div class="number"></div>
+            <div class="number"></div>
+          </div>
+          <a href="byteit">BYTE.IT</a>
+        </span>
+      </div>
+    </div>
+    <div class="right">
+      <span onmouseover="document.getElementById('spanContact').style.width='100%'"
+        onmouseout="document.getElementById('spanContact').style.width='0%'">
+        <a href="contact">Contact</a>
+        <span id="spanContact"></span>
+      </span>
+      <span onmouseover="document.getElementById('spanCredits').style.width='100%'"
+        onmouseout="document.getElementById('spanCredits').style.width='0%'">
+        <a href="credits">Credits</a>
+        <span id="spanCredits"></span>
+      </span>
+    </div>
+  </section>
+
+  <div class="nav">
+    <span id="navByte" onclick="window.location = '/';" class="navByte">byte.</span>
+    <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
+      <img id="circle1" class="circle1" src="assets/icons/circle1.svg" alt="">
+      <img id="circle2" class="circle2" src="assets/icons/circle2.svg" alt="">
+      <div class="lines">
+        <div id="line1" class="line1"></div>
+        <div id="line2" class="line2"></div>
+      </div>
+    </span>
+  </div>
+
+  <main class="byteit-shell auth-grid">
+    <section>
+      <span class="byteit-kicker">Self invite</span>
+      <h1 class="byteit-title">Invite</h1>
+      <p class="byteit-copy">Enter your email to join the invite list. Mail will be sent by tonight.</p>
+    </section>
+
+    <section class="auth-card">
+      <h1>Get invited</h1>
+      <p>Use the email where you want to receive the invite.</p>
+      <form class="byteit-form" data-self-invite-form>
+        <label>Email
+          <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <button class="byteit-button" type="submit">submit</button>
+      </form>
+      <div class="byteit-status" data-status hidden></div>
+      <p class="byteit-link-row">Mail will be sent by tonight.</p>
+    </section>
+  </main>
+
+  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+  <script src="assets/js/self-invite-supabase-config.js?v=20260602"></script>
+  <script src="assets/js/self-invite.js?v=20260602"></script>
+  <script src="assets/js/resources.js"></script>
+</body>
+
+</html>
