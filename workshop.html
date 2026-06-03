@@ -5,10 +5,35 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Redirecting...</title>
         <script>
-            window.location.href = "https://chat.whatsapp.com/HDVL1J1PJAS41cSErfm5VB";
+            
         </script>
     </head>
     <body>
-        <p>Redirecting to WhatsApp chat...</p>
+        <p>Enter your official school email ID:</p>
     </body>
     </html>
+
+    <script src="assets/js/prompts.js"></script>
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let email = prompt("Enter your official school email ID:");
+
+    // If user cancels or leaves empty
+    if (!email) {
+      alert("Access Denied");
+      window.location.href = "https://byteclub.co.in/";
+      return;
+    }
+
+    // Case-insensitive check
+    email = email.toLowerCase();
+
+    if (!email.includes("pp.balbharati")) {
+      alert("Access Denied");
+      window.location.href = "https://byteclub.co.in/";
+      return;
+    }
+window.location.href = "https://chat.whatsapp.com/HDVL1J1PJAS41cSErfm5VB";
+    // If valid → allow page
+  });
+</script>
