@@ -1,4 +1,4 @@
-import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js?v=20260604-event-updates";
+import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js?v=20260604-shared-link-db";
 import {
   db,
   deleteField,
@@ -11,11 +11,14 @@ import {
   serverTimestamp,
   setDoc,
   signOut
-} from "./byteit-firebase.js?v=20260604-sheet-fields";
+} from "./byteit-firebase.js?v=20260604-shared-link-db";
 
 const REGISTRATION_COLLECTION = "byteit_registrations";
 const DEFAULT_UNLIMITED_TEAM_SLOTS = 20;
 const LEGACY_FLAT_FIELD_PREFIX = ["c", "s", "v"].join("_");
+const REMOVED_DATABASE_EVENTS = [
+  { id: "quiz-it", name: "Quiz.IT", teamsPerInstitution: 1, maxParticipants: 2 }
+];
 const eventList = document.querySelector("[data-event-list]");
 const schoolName = document.querySelector("[data-school-name]");
 const schoolEmail = document.querySelector("[data-school-email]");
@@ -38,7 +41,11 @@ let activeEvent = null;
 let activeRegistration = null;
 
 function usesSharedRegistrationLink(event) {
-  return event?.id === "crypt-it" || event?.id === "build-it";
+  return Boolean(event?.sharedLinkOnly);
+}
+
+function isDatabaseEvent(event) {
+  return !usesSharedRegistrationLink(event);
 }
 
 function setStatus(message, type = "info") {
@@ -130,7 +137,7 @@ function legacyFlatFieldDeletes() {
     [`${LEGACY_FLAT_FIELD_PREFIX}_selected_events`]: deleteField()
   };
 
-  events.forEach((event) => {
+  [...events, ...REMOVED_DATABASE_EVENTS].forEach((event) => {
     const eventPrefix = flatKey(event.name || event.id);
     const teamSlots = event.teamsPerInstitution === null ? DEFAULT_UNLIMITED_TEAM_SLOTS : event.teamsPerInstitution;
     for (let teamIndex = 1; teamIndex <= teamSlots; teamIndex += 1) {
@@ -149,8 +156,9 @@ function legacyFlatFieldDeletes() {
 }
 
 function buildExportFields(school, registrationList) {
-  const eventOrder = new Map(events.map((event, index) => [event.id, index]));
-  const sortedRegistrations = registrationList.slice().sort((a, b) => {
+  const databaseEvents = events.filter(isDatabaseEvent);
+  const eventOrder = new Map(databaseEvents.map((event, index) => [event.id, index]));
+  const sortedRegistrations = registrationList.filter((registration) => eventOrder.has(registration.eventId)).slice().sort((a, b) => {
     const eventCompare = (eventOrder.get(a.eventId) ?? 999) - (eventOrder.get(b.eventId) ?? 999);
     return eventCompare || (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0);
   });
@@ -163,7 +171,7 @@ function buildExportFields(school, registrationList) {
     sheet_selected_events: [...new Set(sortedRegistrations.map((registration) => registration.eventName).filter(Boolean))].join(", ")
   };
 
-  events.forEach((event) => {
+  databaseEvents.forEach((event) => {
     const eventPrefix = flatKey(event.name || event.id);
     const eventRegistrations = sortedRegistrations.filter((registration) => registration.eventId === event.id);
     const teamSlots = teamSlotCount(event, registrationList);
@@ -200,8 +208,8 @@ function buildSchoolPayload(overrides = {}, registrationList = registrations) {
     teacherName: school.teacherName || "",
     teacherMobile: school.teacherMobile || "",
     teacherEmail: school.teacherEmail || "",
-    selectedEvents: [...new Set(registrationList.map((registration) => registration.eventName).filter(Boolean))],
-    registrations: registrationList,
+    selectedEvents: [...new Set(registrationList.filter((registration) => events.some((event) => event.id === registration.eventId && isDatabaseEvent(event))).map((registration) => registration.eventName).filter(Boolean))],
+    registrations: registrationList.filter((registration) => events.some((event) => event.id === registration.eventId && isDatabaseEvent(event))),
     ...legacyFlatFieldDeletes(),
     ...buildExportFields(school, registrationList),
     updatedAt: serverTimestamp()
@@ -273,8 +281,12 @@ async function init() {
 }
 
 async function loadRegistrations() {
+  const activeDatabaseEventIds = new Set(events.filter(isDatabaseEvent).map((event) => event.id));
   registrations = Array.isArray(schoolContext.school.registrations)
-    ? schoolContext.school.registrations.map(({ teamName, ...registration }) => registration).sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0))
+    ? schoolContext.school.registrations
+      .filter((registration) => activeDatabaseEventIds.has(registration.eventId))
+      .map(({ teamName, ...registration }) => registration)
+      .sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0))
     : [];
 }
 

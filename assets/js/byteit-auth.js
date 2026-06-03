@@ -17,8 +17,8 @@ import {
   signOut,
   updatePassword,
   updateProfile
-} from "./byteit-firebase.js?v=20260604-event-updates";
-import { events } from "./byteit-events.js?v=20260604-event-updates";
+} from "./byteit-firebase.js?v=20260604-shared-link-db";
+import { events } from "./byteit-events.js?v=20260604-shared-link-db";
 
 const REGISTRATION_COLLECTION = "byteit_registrations";
 const DEFAULT_UNLIMITED_TEAM_SLOTS = 20;
@@ -345,7 +345,7 @@ function blankSheetFields(schoolName, schoolEmail) {
     sheet_selected_events: ""
   };
 
-  events.forEach((event) => {
+  events.filter((event) => !event.sharedLinkOnly).forEach((event) => {
     const eventPrefix = flatKey(event.name || event.id);
     const teamSlots = event.teamsPerInstitution === null ? DEFAULT_UNLIMITED_TEAM_SLOTS : event.teamsPerInstitution;
 
