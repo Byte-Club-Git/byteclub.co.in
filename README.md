@@ -54,7 +54,7 @@ The Byte.IT dashboard stores school details and event teams in one export-friend
 
 - `byteit_registrations`
 
-Each school owns one document keyed by its Firebase Auth UID. The document includes school address, teacher-in-charge details, embedded `registrations`, `selectedEvents`, and `csv_*` flat fields for easier CSV export.
+Each school owns one document keyed by its Firebase Auth UID. The document includes school address, teacher-in-charge details, embedded `registrations`, `selectedEvents`, and `sheet_*` flat fields for easier spreadsheet export. Every event has a fixed set of `sheet_*` fields, so unfilled teams and participant slots remain blank instead of disappearing from exports.
 
 ### Self invite setup
 

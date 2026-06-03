@@ -17,9 +17,11 @@ import {
   signOut,
   updatePassword,
   updateProfile
-} from "./byteit-firebase.js?v=20260527-setpass4";
+} from "./byteit-firebase.js?v=20260604-sheet-fields";
+import { events } from "./byteit-events.js";
 
 const REGISTRATION_COLLECTION = "byteit_registrations";
+const DEFAULT_UNLIMITED_TEAM_SLOTS = 20;
 const forms = document.querySelectorAll("[data-auth-form]");
 const googleButtons = document.querySelectorAll("[data-google-auth]");
 const page = document.body.dataset.page;
@@ -216,12 +218,7 @@ async function registerSchool(form, statusBox) {
     teacherEmail: "",
     selectedEvents: [],
     registrations: [],
-    csv_school_name: schoolName,
-    csv_school_address: "",
-    csv_teacher_in_charge_name: "",
-    csv_teacher_in_charge_mobile: "",
-    csv_teacher_in_charge_email: schoolEmail,
-    csv_selected_events: "",
+    ...blankSheetFields(schoolName, schoolEmail),
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
   });
@@ -272,9 +269,9 @@ async function registerSchoolWithGoogle(form, statusBox) {
   const schoolData = {
     name: schoolName,
     email: googleEmail,
-    csv_school_name: schoolName,
-    csv_teacher_in_charge_email: googleEmail,
-    csv_selected_events: "",
+    sheet_school_name: schoolName,
+    sheet_teacher_in_charge_email: googleEmail,
+    sheet_selected_events: "",
     updatedAt: serverTimestamp()
   };
 
@@ -290,9 +287,7 @@ async function registerSchoolWithGoogle(form, statusBox) {
       teacherEmail: "",
       selectedEvents: [],
       registrations: [],
-      csv_school_address: "",
-      csv_teacher_in_charge_name: "",
-      csv_teacher_in_charge_mobile: "",
+      ...blankSheetFields(schoolName, googleEmail),
       createdAt: serverTimestamp()
     });
   }
@@ -331,6 +326,41 @@ function generateTemporaryPassword() {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%";
   const bytes = crypto.getRandomValues(new Uint8Array(18));
   return Array.from(bytes, (byte) => alphabet[byte % alphabet.length]).join("");
+}
+
+function flatKey(value) {
+  return String(value || "")
+    .replace(/[^a-z0-9]+/gi, "_")
+    .replace(/^_+|_+$/g, "")
+    .toLowerCase();
+}
+
+function blankSheetFields(schoolName, schoolEmail) {
+  const fields = {
+    sheet_school_name: schoolName || "",
+    sheet_school_address: "",
+    sheet_teacher_in_charge_name: "",
+    sheet_teacher_in_charge_mobile: "",
+    sheet_teacher_in_charge_email: schoolEmail || "",
+    sheet_selected_events: ""
+  };
+
+  events.forEach((event) => {
+    const eventPrefix = flatKey(event.name || event.id);
+    const teamSlots = event.teamsPerInstitution === null ? DEFAULT_UNLIMITED_TEAM_SLOTS : event.teamsPerInstitution;
+
+    for (let teamIndex = 1; teamIndex <= teamSlots; teamIndex += 1) {
+      fields[`sheet_${eventPrefix}_team_${teamIndex}_name`] = "";
+      for (let participantIndex = 1; participantIndex <= event.maxParticipants; participantIndex += 1) {
+        const participantPrefix = `sheet_${eventPrefix}_team_${teamIndex}_participant_${participantIndex}`;
+        fields[`${participantPrefix}_name`] = "";
+        fields[`${participantPrefix}_class`] = "";
+        fields[`${participantPrefix}_email`] = "";
+      }
+    }
+  });
+
+  return fields;
 }
 
 async function loginSchool(form, statusBox) {

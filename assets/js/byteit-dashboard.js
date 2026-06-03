@@ -1,6 +1,7 @@
 import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js";
 import {
   db,
+  deleteField,
   doc,
   getDoc,
   hasFirebaseConfig,
@@ -10,9 +11,11 @@ import {
   serverTimestamp,
   setDoc,
   signOut
-} from "./byteit-firebase.js?v=20260527-setpass4";
+} from "./byteit-firebase.js?v=20260604-sheet-fields";
 
 const REGISTRATION_COLLECTION = "byteit_registrations";
+const DEFAULT_UNLIMITED_TEAM_SLOTS = 20;
+const LEGACY_FLAT_FIELD_PREFIX = ["c", "s", "v"].join("_");
 const eventList = document.querySelector("[data-event-list]");
 const schoolName = document.querySelector("[data-school-name]");
 const schoolEmail = document.querySelector("[data-school-email]");
@@ -100,6 +103,46 @@ function flatKey(value) {
     .toLowerCase();
 }
 
+function teamSlotCount(event, registrationList) {
+  if (event.teamsPerInstitution !== null) return event.teamsPerInstitution;
+  const registeredTeams = registrationList.filter((registration) => registration.eventId === event.id).length;
+  return Math.max(DEFAULT_UNLIMITED_TEAM_SLOTS, registeredTeams);
+}
+
+function blankParticipantFields(fields, eventPrefix, teamNumber, participantNumber) {
+  const participantPrefix = `sheet_${eventPrefix}_team_${teamNumber}_participant_${participantNumber}`;
+  fields[`${participantPrefix}_name`] = "";
+  fields[`${participantPrefix}_class`] = "";
+  fields[`${participantPrefix}_email`] = "";
+}
+
+function legacyFlatFieldDeletes() {
+  const deletes = {
+    [`${LEGACY_FLAT_FIELD_PREFIX}_school_name`]: deleteField(),
+    [`${LEGACY_FLAT_FIELD_PREFIX}_school_address`]: deleteField(),
+    [`${LEGACY_FLAT_FIELD_PREFIX}_teacher_in_charge_name`]: deleteField(),
+    [`${LEGACY_FLAT_FIELD_PREFIX}_teacher_in_charge_mobile`]: deleteField(),
+    [`${LEGACY_FLAT_FIELD_PREFIX}_teacher_in_charge_email`]: deleteField(),
+    [`${LEGACY_FLAT_FIELD_PREFIX}_selected_events`]: deleteField()
+  };
+
+  events.forEach((event) => {
+    const eventPrefix = flatKey(event.name || event.id);
+    const teamSlots = event.teamsPerInstitution === null ? DEFAULT_UNLIMITED_TEAM_SLOTS : event.teamsPerInstitution;
+    for (let teamIndex = 1; teamIndex <= teamSlots; teamIndex += 1) {
+      deletes[`${LEGACY_FLAT_FIELD_PREFIX}_${eventPrefix}_team_${teamIndex}_name`] = deleteField();
+      for (let participantIndex = 1; participantIndex <= event.maxParticipants; participantIndex += 1) {
+        const participantPrefix = `${LEGACY_FLAT_FIELD_PREFIX}_${eventPrefix}_team_${teamIndex}_participant_${participantIndex}`;
+        deletes[`${participantPrefix}_name`] = deleteField();
+        deletes[`${participantPrefix}_class`] = deleteField();
+        deletes[`${participantPrefix}_email`] = deleteField();
+      }
+    }
+  });
+
+  return deletes;
+}
+
 function buildExportFields(school, registrationList) {
   const eventOrder = new Map(events.map((event, index) => [event.id, index]));
   const sortedRegistrations = registrationList.slice().sort((a, b) => {
@@ -107,26 +150,34 @@ function buildExportFields(school, registrationList) {
     return eventCompare || (a.teamName || "").localeCompare(b.teamName || "");
   });
   const exportFields = {
-    csv_school_name: school.name || "",
-    csv_school_address: school.schoolAddress || "",
-    csv_teacher_in_charge_name: school.teacherName || "",
-    csv_teacher_in_charge_mobile: school.teacherMobile || "",
-    csv_teacher_in_charge_email: school.teacherEmail || school.email || "",
-    csv_selected_events: [...new Set(sortedRegistrations.map((registration) => registration.eventName).filter(Boolean))].join(", ")
+    sheet_school_name: school.name || "",
+    sheet_school_address: school.schoolAddress || "",
+    sheet_teacher_in_charge_name: school.teacherName || "",
+    sheet_teacher_in_charge_mobile: school.teacherMobile || "",
+    sheet_teacher_in_charge_email: school.teacherEmail || school.email || "",
+    sheet_selected_events: [...new Set(sortedRegistrations.map((registration) => registration.eventName).filter(Boolean))].join(", ")
   };
 
-  sortedRegistrations.forEach((registration, registrationIndex) => {
-    const eventPrefix = flatKey(registration.eventName || registration.eventId || `event_${registrationIndex + 1}`);
-    const teamNumber = sortedRegistrations
-      .filter((item) => item.eventId === registration.eventId)
-      .findIndex((item) => item.id === registration.id) + 1;
-    exportFields[`csv_${eventPrefix}_team_${teamNumber}_name`] = registration.teamName || "";
-    (registration.participants || []).forEach((participant, participantIndex) => {
-      const participantPrefix = `csv_${eventPrefix}_team_${teamNumber}_participant_${participantIndex + 1}`;
-      exportFields[`${participantPrefix}_name`] = participant.name || "";
-      exportFields[`${participantPrefix}_class`] = participant.classLabel || "";
-      exportFields[`${participantPrefix}_email`] = participant.contact || "";
-    });
+  events.forEach((event) => {
+    const eventPrefix = flatKey(event.name || event.id);
+    const eventRegistrations = sortedRegistrations.filter((registration) => registration.eventId === event.id);
+    const teamSlots = teamSlotCount(event, registrationList);
+
+    for (let teamIndex = 1; teamIndex <= teamSlots; teamIndex += 1) {
+      const registration = eventRegistrations[teamIndex - 1];
+      exportFields[`sheet_${eventPrefix}_team_${teamIndex}_name`] = registration?.teamName || "";
+
+      for (let participantIndex = 1; participantIndex <= event.maxParticipants; participantIndex += 1) {
+        blankParticipantFields(exportFields, eventPrefix, teamIndex, participantIndex);
+        const participant = registration?.participants?.[participantIndex - 1];
+        if (participant) {
+          const participantPrefix = `sheet_${eventPrefix}_team_${teamIndex}_participant_${participantIndex}`;
+          exportFields[`${participantPrefix}_name`] = participant.name || "";
+          exportFields[`${participantPrefix}_class`] = participant.classLabel || "";
+          exportFields[`${participantPrefix}_email`] = participant.contact || "";
+        }
+      }
+    }
   });
 
   return exportFields;
@@ -147,6 +198,7 @@ function buildSchoolPayload(overrides = {}, registrationList = registrations) {
     teacherEmail: school.teacherEmail || "",
     selectedEvents: [...new Set(registrationList.map((registration) => registration.eventName).filter(Boolean))],
     registrations: registrationList,
+    ...legacyFlatFieldDeletes(),
     ...buildExportFields(school, registrationList),
     updatedAt: serverTimestamp()
   };
