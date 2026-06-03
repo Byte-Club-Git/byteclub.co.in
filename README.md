@@ -50,10 +50,11 @@ This repo is a static HTML/CSS/JS site. The registration system uses Firebase Au
 6. Create Firestore Database.
 7. Make sure password reset emails are enabled in Authentication email templates.
 
-The app uses these Firestore collections:
+The Byte.IT dashboard stores school details and event teams in one export-friendly Firestore collection:
 
-- `schools`
-- `event_registrations`
+- `byteit_registrations`
+
+Each school owns one document keyed by its Firebase Auth UID. The document includes school address, teacher-in-charge details, embedded `registrations`, `selectedEvents`, and `csv_*` flat fields for easier CSV export.
 
 ### Self invite setup
 

@@ -19,6 +19,7 @@ import {
   updateProfile
 } from "./byteit-firebase.js?v=20260527-setpass4";
 
+const REGISTRATION_COLLECTION = "byteit_registrations";
 const forms = document.querySelectorAll("[data-auth-form]");
 const googleButtons = document.querySelectorAll("[data-google-auth]");
 const page = document.body.dataset.page;
@@ -205,9 +206,22 @@ async function registerSchool(form, statusBox) {
   const tempPassword = generateTemporaryPassword();
   const credential = await createUserWithEmailAndPassword(auth, schoolEmail, tempPassword);
   await updateProfile(credential.user, { displayName: schoolName });
-  await setDoc(doc(db, "schools", credential.user.uid), {
+  await setDoc(doc(db, REGISTRATION_COLLECTION, credential.user.uid), {
+    schoolId: credential.user.uid,
     name: schoolName,
     email: schoolEmail,
+    schoolAddress: "",
+    teacherName: "",
+    teacherMobile: "",
+    teacherEmail: "",
+    selectedEvents: [],
+    registrations: [],
+    csv_school_name: schoolName,
+    csv_school_address: "",
+    csv_teacher_in_charge_name: "",
+    csv_teacher_in_charge_mobile: "",
+    csv_teacher_in_charge_email: schoolEmail,
+    csv_selected_events: "",
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp()
   });
@@ -251,13 +265,16 @@ async function registerSchoolWithGoogle(form, statusBox) {
     throw new Error("The selected Google account does not have an email address.");
   }
 
-  const schoolRef = doc(db, "schools", credential.user.uid);
+  const schoolRef = doc(db, REGISTRATION_COLLECTION, credential.user.uid);
   const schoolSnapshot = await getDoc(schoolRef);
 
   await updateProfile(credential.user, { displayName: schoolName });
   const schoolData = {
     name: schoolName,
     email: googleEmail,
+    csv_school_name: schoolName,
+    csv_teacher_in_charge_email: googleEmail,
+    csv_selected_events: "",
     updatedAt: serverTimestamp()
   };
 
@@ -266,6 +283,16 @@ async function registerSchoolWithGoogle(form, statusBox) {
   } else {
     await setDoc(schoolRef, {
       ...schoolData,
+      schoolId: credential.user.uid,
+      schoolAddress: "",
+      teacherName: "",
+      teacherMobile: "",
+      teacherEmail: "",
+      selectedEvents: [],
+      registrations: [],
+      csv_school_address: "",
+      csv_teacher_in_charge_name: "",
+      csv_teacher_in_charge_mobile: "",
       createdAt: serverTimestamp()
     });
   }
@@ -339,7 +366,7 @@ async function loginSchoolWithGoogle(form, statusBox) {
     credential = await linkPasswordAccountToGoogle(form, error);
   }
 
-  const schoolSnapshot = await getDoc(doc(db, "schools", credential.user.uid));
+  const schoolSnapshot = await getDoc(doc(db, REGISTRATION_COLLECTION, credential.user.uid));
 
   if (!schoolSnapshot.exists()) {
     await signOut(auth);
