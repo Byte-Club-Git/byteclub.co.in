@@ -1,4 +1,4 @@
-import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js";
+import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js?v=20260604-event-updates";
 import {
   db,
   deleteField,
@@ -81,6 +81,10 @@ function makeRegistrationId(eventId) {
   return `${eventId}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+function teamLabel(event, index) {
+  return `${event.name} Team ${index + 1}`;
+}
+
 function writeField(form, name, value) {
   if (form?.elements[name]) form.elements[name].value = value || "";
 }
@@ -131,6 +135,7 @@ function legacyFlatFieldDeletes() {
     const teamSlots = event.teamsPerInstitution === null ? DEFAULT_UNLIMITED_TEAM_SLOTS : event.teamsPerInstitution;
     for (let teamIndex = 1; teamIndex <= teamSlots; teamIndex += 1) {
       deletes[`${LEGACY_FLAT_FIELD_PREFIX}_${eventPrefix}_team_${teamIndex}_name`] = deleteField();
+      deletes[`sheet_${eventPrefix}_team_${teamIndex}_name`] = deleteField();
       for (let participantIndex = 1; participantIndex <= event.maxParticipants; participantIndex += 1) {
         const participantPrefix = `${LEGACY_FLAT_FIELD_PREFIX}_${eventPrefix}_team_${teamIndex}_participant_${participantIndex}`;
         deletes[`${participantPrefix}_name`] = deleteField();
@@ -147,7 +152,7 @@ function buildExportFields(school, registrationList) {
   const eventOrder = new Map(events.map((event, index) => [event.id, index]));
   const sortedRegistrations = registrationList.slice().sort((a, b) => {
     const eventCompare = (eventOrder.get(a.eventId) ?? 999) - (eventOrder.get(b.eventId) ?? 999);
-    return eventCompare || (a.teamName || "").localeCompare(b.teamName || "");
+    return eventCompare || (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0);
   });
   const exportFields = {
     sheet_school_name: school.name || "",
@@ -165,7 +170,6 @@ function buildExportFields(school, registrationList) {
 
     for (let teamIndex = 1; teamIndex <= teamSlots; teamIndex += 1) {
       const registration = eventRegistrations[teamIndex - 1];
-      exportFields[`sheet_${eventPrefix}_team_${teamIndex}_name`] = registration?.teamName || "";
 
       for (let participantIndex = 1; participantIndex <= event.maxParticipants; participantIndex += 1) {
         blankParticipantFields(exportFields, eventPrefix, teamIndex, participantIndex);
@@ -270,7 +274,7 @@ async function init() {
 
 async function loadRegistrations() {
   registrations = Array.isArray(schoolContext.school.registrations)
-    ? schoolContext.school.registrations.slice().sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0))
+    ? schoolContext.school.registrations.map(({ teamName, ...registration }) => registration).sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0))
     : [];
 }
 
@@ -321,6 +325,8 @@ function registrationCard(registration, event) {
   const participantNames = (registration.participants || [])
     .map((participant) => `${participant.name} (${participant.classLabel})`)
     .join(", ");
+  const eventRegistrations = registrations.filter((item) => item.eventId === registration.eventId);
+  const registrationIndex = Math.max(eventRegistrations.findIndex((item) => item.id === registration.id), 0);
   const actionsMarkup = usesSharedRegistrationLink(event)
     ? `<span class="team-actions__notice">Registeration link will be shared</span>`
     : `
@@ -333,7 +339,7 @@ function registrationCard(registration, event) {
   return `
     <div class="team-row">
       <div>
-        <strong>${registration.teamName}</strong>
+        <strong>${teamLabel(event, registrationIndex)}</strong>
         <span>${participantNames}</span>
       </div>
       ${actionsMarkup}
@@ -371,7 +377,6 @@ function openTeamModal(event, registration = null) {
   document.body.classList.add("byteit-modal-open");
   modalTitle.textContent = registration ? `Edit ${event.name}` : `Register ${event.name}`;
   modalMeta.textContent = `${event.mode} · ${participantLabel(event)} · Class ${event.classRange}`;
-  form.teamName.value = registration?.teamName || `${event.name} Team`;
   form.registrationId.value = registration?.id || "";
   renderParticipantFields(registration?.participants || []);
 }
@@ -441,7 +446,6 @@ form?.addEventListener("submit", async (event) => {
 
 async function saveRegistration() {
   const formData = new FormData(form);
-  const teamName = String(formData.get("teamName") || "").trim();
   const names = formData.getAll("participantName");
   const classes = formData.getAll("participantClass");
   const contacts = formData.getAll("participantContact");
@@ -454,7 +458,6 @@ async function saveRegistration() {
     }))
     .filter((participant) => participant.name || participant.classLabel || participant.contact);
 
-  if (!teamName) throw new Error("Please name the team.");
   if (participants.length < activeEvent.minParticipants || participants.length > activeEvent.maxParticipants) {
     throw new Error(`${activeEvent.name} needs ${participantLabel(activeEvent)}.`);
   }
@@ -475,7 +478,6 @@ async function saveRegistration() {
     schoolId: schoolContext.school.id,
     eventId: activeEvent.id,
     eventName: activeEvent.name,
-    teamName,
     participants,
     participantCount: participants.length,
     mode: activeEvent.mode,

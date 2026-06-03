@@ -17,8 +17,8 @@ import {
   signOut,
   updatePassword,
   updateProfile
-} from "./byteit-firebase.js?v=20260604-sheet-fields";
-import { events } from "./byteit-events.js";
+} from "./byteit-firebase.js?v=20260604-event-updates";
+import { events } from "./byteit-events.js?v=20260604-event-updates";
 
 const REGISTRATION_COLLECTION = "byteit_registrations";
 const DEFAULT_UNLIMITED_TEAM_SLOTS = 20;
@@ -350,7 +350,6 @@ function blankSheetFields(schoolName, schoolEmail) {
     const teamSlots = event.teamsPerInstitution === null ? DEFAULT_UNLIMITED_TEAM_SLOTS : event.teamsPerInstitution;
 
     for (let teamIndex = 1; teamIndex <= teamSlots; teamIndex += 1) {
-      fields[`sheet_${eventPrefix}_team_${teamIndex}_name`] = "";
       for (let participantIndex = 1; participantIndex <= event.maxParticipants; participantIndex += 1) {
         const participantPrefix = `sheet_${eventPrefix}_team_${teamIndex}_participant_${participantIndex}`;
         fields[`${participantPrefix}_name`] = "";
