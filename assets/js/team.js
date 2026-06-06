@@ -1,83 +1,101 @@
 // Team Data Structure
-const teamMembers = [
-  // Presidents
+// const teamMembers = [
+//   // Presidents
   
-  { email: 'kapurpranav506@gmail.com', firstName: 'Pranav', lastName: 'Kapur', post: 'President', hasHover: true, social: { website: 'https://www.behance.net/pranavkapur2', linkedin: 'https://www.linkedin.com/in/pranav-kapur-8b2a3932a' } },
-  { email: 'neilgandhi2009@gmail.com', firstName: 'Neil', lastName: 'Gandhi', post: 'President', hasHover: true, social: { website: 'https://www.behance.net/neilgandhi04', linkedin: 'https://www.linkedin.com/in/neilgandhi04/' } },
-  // Vice Presidents
-  { email: 'parinkhurana@gmail.com', firstName: 'Parin', lastName: 'Khurana', post: 'Vice President', hasHover: true, social: { special: 'yes' } },
-  { email: 'Abhayanvika2@gmail.com', firstName: 'Abhay', lastName: 'Mangla', post: 'Vice President', hasHover: true, social: { linkedin: 'http://linkedin.com/in/abhay-mangla-457019312/', github: 'https://github.com/Dev-Abhay-ai' } },
-  { email: 'ekanshgupta49@gmail.com', firstName: 'Ekansh', lastName: 'Gupta', post: 'Vice President', hasHover: true, social: { website: 'https://x.com/Ekansh707645621', linkedin: 'https://www.linkedin.com/in/ekansh-gupta-b49249312/', github: 'https://github.com/Ekansh-Coder5' } },
+//   { email: 'kapurpranav506@gmail.com', firstName: 'Pranav', lastName: 'Kapur', post: 'President', hasHover: true, social: { website: 'https://www.behance.net/pranavkapur2', linkedin: 'https://www.linkedin.com/in/pranav-kapur-8b2a3932a' } },
+//   { email: 'neilgandhi2009@gmail.com', firstName: 'Neil', lastName: 'Gandhi', post: 'President', hasHover: true, social: { website: 'https://www.behance.net/neilgandhi04', linkedin: 'https://www.linkedin.com/in/neilgandhi04/' } },
+//   // Vice Presidents
+//   { email: 'parinkhurana@gmail.com', firstName: 'Parin', lastName: 'Khurana', post: 'Vice President', hasHover: true, social: { special: 'yes' } },
+//   { email: 'Abhayanvika2@gmail.com', firstName: 'Abhay', lastName: 'Mangla', post: 'Vice President', hasHover: true, social: { linkedin: 'http://linkedin.com/in/abhay-mangla-457019312/', github: 'https://github.com/Dev-Abhay-ai' } },
+//   { email: 'ekanshgupta49@gmail.com', firstName: 'Ekansh', lastName: 'Gupta', post: 'Vice President', hasHover: true, social: { website: 'https://x.com/Ekansh707645621', linkedin: 'https://www.linkedin.com/in/ekansh-gupta-b49249312/', github: 'https://github.com/Ekansh-Coder5' } },
   
-  // Club Ambassadors
-  { email: 'tvishanangia@gmail.com', firstName: 'Tvisha', lastName: 'Nangia', post: 'Club Ambassador', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/tvisha-nangia-6b1b6a34a' } },
-  { email: 'divakshv@gmail.com', firstName: 'Divaksh', lastName: 'Vir', post: 'Club Ambassador', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/divaksh-vir-176401365' } },
-  { email: 'jaskirat.ob8@gmail.com', firstName: 'Jaskirat', lastName: 'Singh', post: 'Club Ambassador', hasHover: true, social: {} },
+//   // Club Ambassadors
+//   { email: 'tvishanangia@gmail.com', firstName: 'Tvisha', lastName: 'Nangia', post: 'Club Ambassador', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/tvisha-nangia-6b1b6a34a' } },
+//   { email: 'divakshv@gmail.com', firstName: 'Divaksh', lastName: 'Vir', post: 'Club Ambassador', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/divaksh-vir-176401365' } },
+//   { email: 'jaskirat.ob8@gmail.com', firstName: 'Jaskirat', lastName: 'Singh', post: 'Club Ambassador', hasHover: true, social: {} },
   
-  // Members
-  { email: 'rishikk1507@gmail.com', firstName: 'Rishik', lastName: 'Goyal', post: 'Member', hasHover: true, social: {} },
-  { email: 'adhritgarg017@gmail.com', firstName: 'Adhrit', lastName: 'Garg', post: 'Member', hasHover: true, social: { website: 'adhritgarg.carrd.co', linkedin: 'https://www.linkedin.com/in/adhrit-garg-76a7a8291/', github: 'https://github.com/MrYoinkk' } },
-  { email: 'ishaanhanda2010@gmail.com', firstName: 'Ishaan', lastName: 'Handa', post: 'Member', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/ishaan-handa-a18164363/', github: 'https://github.com/handaishaan10' } },
-  { email: 'abhirajnarayan26@gmail.com', firstName: 'Abhiraj', lastName: 'Narayan', post: 'Member', hasHover: true, social: {} },
-  { email: 'kabirdhingra001@gmail.com', firstName: 'Kabir', lastName: 'Dhingra', post: 'Member', hasHover: true, social: { linkedin: 'www.linkedin.com/in/kabir-dhingra-745704361', github: 'https://github.com/KabirDhingra' } },
-  { email: 'anvisaluja24@gmail.com', firstName: 'Anvi', lastName: 'Saluja', post: 'Member', hasHover: true, social: {} },
-  { email: 'shriyankalra26@gmail.com', firstName: 'Shriyan', lastName: 'Kalra', post: 'Member', hasHover: true, social: { github: 'http://github.com/botbean-pro' } },
-  { email: 'artistgupta0309@gmail.com', firstName: 'Aarav', lastName: 'Gupta', post: 'Member', hasHover: true, social: {  }},
-  { email: 'banpreet.rekhi@gmail.com', firstName: 'Banpreet', lastName: 'Singh Rikhi', post: 'Member', hasHover: true, social: {} },
-  { email: 'arora08viraj@gmail.com', firstName: 'Viraj', lastName: 'Arora', post: 'Member', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/viraj-arora/' } },
+//   // Members
+//   { email: 'rishikk1507@gmail.com', firstName: 'Rishik', lastName: 'Goyal', post: 'Member', hasHover: true, social: {} },
+//   { email: 'adhritgarg017@gmail.com', firstName: 'Adhrit', lastName: 'Garg', post: 'Member', hasHover: true, social: { website: 'adhritgarg.carrd.co', linkedin: 'https://www.linkedin.com/in/adhrit-garg-76a7a8291/', github: 'https://github.com/MrYoinkk' } },
+//   { email: 'ishaanhanda2010@gmail.com', firstName: 'Ishaan', lastName: 'Handa', post: 'Member', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/ishaan-handa-a18164363/', github: 'https://github.com/handaishaan10' } },
+//   { email: 'abhirajnarayan26@gmail.com', firstName: 'Abhiraj', lastName: 'Narayan', post: 'Member', hasHover: true, social: {} },
+//   { email: 'kabirdhingra001@gmail.com', firstName: 'Kabir', lastName: 'Dhingra', post: 'Member', hasHover: true, social: { linkedin: 'www.linkedin.com/in/kabir-dhingra-745704361', github: 'https://github.com/KabirDhingra' } },
+//   { email: 'anvisaluja24@gmail.com', firstName: 'Anvi', lastName: 'Saluja', post: 'Member', hasHover: true, social: {} },
+//   { email: 'shriyankalra26@gmail.com', firstName: 'Shriyan', lastName: 'Kalra', post: 'Member', hasHover: true, social: { github: 'http://github.com/botbean-pro' } },
+//   { email: 'artistgupta0309@gmail.com', firstName: 'Aarav', lastName: 'Gupta', post: 'Member', hasHover: true, social: {  }},
+//   { email: 'banpreet.rekhi@gmail.com', firstName: 'Banpreet', lastName: 'Singh Rikhi', post: 'Member', hasHover: true, social: {} },
+//   { email: 'arora08viraj@gmail.com', firstName: 'Viraj', lastName: 'Arora', post: 'Member', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/viraj-arora/' } },
   
-  // Junior Members
-  { email: '@gmail.com', firstName: 'Inesh', lastName: 'Khosla', post: 'Member', hasHover: true, social: {} },
-  { email: 'raunakpahwa2010@gmail.com', firstName: 'Raunak', lastName: 'Pahwa', post: 'Junior Member', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/raunak-pahwa-059458260' } },
-  { email: 'contact.kashika@gmail.com', firstName: 'Kashika', lastName: 'Arora', post: 'Junior Member', hasHover: true, social: {} },
-  { email: 'naksalujapro11@gmail.com', firstName: 'Naksh', lastName: 'Saluja', post: 'Junior Member', hasHover: true, social: { website: 'https://www.bribooks.com/author/naksh-saluja', linkedin: 'https://www.linkedin.com/in/naksh-saluja-13098736b/', github: 'https://github.com/nakshtheking12' } },
-  { email: 'ishitabatra0811@gmail.com', firstName: 'Ishita', lastName: 'Batra', post: 'Junior Member', hasHover: true, social: { linkedin: 'www.linkedin.com/in/ishita-batra-161a54361', github: 'https://github.com/ishh-b' } },
-];
+//   // Junior Members
+//   { email: '@gmail.com', firstName: 'Inesh', lastName: 'Khosla', post: 'Member', hasHover: true, social: {} },
+//   { email: 'raunakpahwa2010@gmail.com', firstName: 'Raunak', lastName: 'Pahwa', post: 'Junior Member', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/raunak-pahwa-059458260' } },
+//   { email: 'contact.kashika@gmail.com', firstName: 'Kashika', lastName: 'Arora', post: 'Junior Member', hasHover: true, social: {} },
+//   { email: 'naksalujapro11@gmail.com', firstName: 'Naksh', lastName: 'Saluja', post: 'Junior Member', hasHover: true, social: { website: 'https://www.bribooks.com/author/naksh-saluja', linkedin: 'https://www.linkedin.com/in/naksh-saluja-13098736b/', github: 'https://github.com/nakshtheking12' } },
+//   { email: 'ishitabatra0811@gmail.com', firstName: 'Ishita', lastName: 'Batra', post: 'Junior Member', hasHover: true, social: { linkedin: 'www.linkedin.com/in/ishita-batra-161a54361', github: 'https://github.com/ishh-b' } },
+// ];
 
-const alumniMembers = [
-  { email: 'namishoberoi2008@gmail.com', firstName: 'Namish', lastName: 'Oberoi', post: 'President', hasHover: false, social: {} },
-  { email: 'amaanssethi@gmail.com', firstName: 'Amaan', lastName: 'Singh', post: 'President', hasHover: true, social: { linkedin: 'https://in.linkedin.com/in/amaansinghsethi', website: 'https://www.instagram.com/amaansinghsethi' } },
-  { email: 'gavishjindal2006@gmail.com', firstName: 'Gavish', lastName: 'Jindal', post: 'President', hasHover: true, social: { website: 'https://gavishjindal.com/', linkedin: 'https://www.linkedin.com/in/Gavishjindal/', github: 'https://github.com/Gavishj' } },
-  { email: 'gsoham562@gmail.com', firstName: 'Soham', lastName: 'Gupta', post: 'Vice President', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/soham-gupta-b567b2274/', github: 'https://github.com/Sam562retro' } },
-  { email: 'vanditkad@gmail.com', firstName: 'Vandit', lastName: 'Kad', post: 'Vice President', hasHover: true, social: { website: 'https://vanditkad.xyz/', linkedin: 'https://www.linkedin.com/in/vanditkad/', github: 'https://github.com/MrVoraciousw' } },
-  { email: 'aravgupta28@gmail.com', firstName: 'Arav', lastName: 'Gupta', post: 'Secretary', hasHover: false, social: {} },
-  { email: 'pratyushgarg527@gmail.com', firstName: 'Pratyush', lastName: 'Garg', post: 'Secretary', hasHover: false, social: {} },
-  { email: 'sharma.shaurya2007@gmail.com', firstName: 'Shaurya', lastName: 'Sharma', post: 'Secretary', hasHover: false, social: {} },
-  { email: 'gavishjindal2006@gmail.com', firstName: 'Gavish', lastName: 'Jindal', post: 'Co-President', hasHover: false, social: {} },
-  { email: 'sakshamkochar@gmail.com', firstName: 'Saksham', lastName: 'Kochar', post: 'President', hasHover: false, social: {} },
-  { email: 'ayushi_agrawal@hotmail.com', firstName: 'Ayushi', lastName: 'Aggarwal', post: 'President', hasHover: false, social: {} },
-  { email: 'star.shreya67.mangla@gmail.com', firstName: 'Shreya', lastName: 'Mangla', post: 'Vice President', hasHover: false, social: {} },
-  { email: 'shubhamgamer.6105@gmail.com', firstName: 'Shubham', lastName: 'Aggarwal', post: 'Club Ambassador', hasHover: false, social: {} },
-  { email: 'Yttanay07@gmail.com', firstName: 'Tanay', lastName: 'Jain', post: 'Vice President', hasHover: false, social: {} },
-  { email: 'twittersaatvik@gmail.com', firstName: 'Saatvik', lastName: 'Sachdeva', post: 'Club Ambassador', hasHover: false, social: {} },
-  { email: 'narulanischay2005@gmail.com', firstName: 'Nischay', lastName: 'Narula', post: 'Club Ambassador', hasHover: false, social: {} },
-  { email: 'aryan_02@outlook.com', firstName: 'Aryan', lastName: 'Mediratta', post: 'President', hasHover: false, social: {} },
-  { email: 'mah.ansh564@gmail.com', firstName: 'Anshul', lastName: 'Mahajan', post: 'Co-President', hasHover: false, social: {} },
-  { email: 'aaditsaluja@gmail.com', firstName: 'Aadit', lastName: 'Saluja', post: 'Co-President', hasHover: false, social: {} },
-  { email: 'ahujatejas06@gmail.com', firstName: 'Tejas', lastName: 'Ahuja', post: 'Vice President', hasHover: false, social: {} },
-  { email: 'singhjaspreet.official@gmail.com', firstName: 'Jaspreet', lastName: 'Singh', post: 'Robotics President', hasHover: false, social: {} },
-  { email: 'divyamarora2213@gmail.com', firstName: 'Divyam', lastName: 'Arora', post: 'Robotics President', hasHover: false, social: {} },
-  { email: 'ngarg311@gmail.com', firstName: 'Nabh', lastName: 'Garg', post: 'Alumni', hasHover: false, social: {} },
-  { email: 'adi.oberoi2004@gmail.com', firstName: 'Aditya', lastName: 'Oberoi', post: 'Group Discussion', hasHover: false, social: {} },
-  { email: 'paartha27@gmail.com', firstName: 'Paartha', lastName: 'Panwar', post: 'Quizzing', hasHover: false, social: {} },
-  { email: 'harshmittal101001@gmail.com', firstName: 'Harsh', lastName: 'Mittal', post: 'President', hasHover: false, social: {} },
-  { email: 'mananmrig47@gmail.com', firstName: 'Manan', lastName: 'Mrig', post: 'Alumni', hasHover: false, social: {} },
-  { email: 'gautamsinghi2013@gmail.com', firstName: 'Gautam', lastName: 'Singhi', post: 'Alumni', hasHover: false, social: {} },
-  { email: 'manas.25.july@gmail.com', firstName: 'Manas', lastName: 'Khandelwal', post: 'Alumni', hasHover: false, social: {} },
-  { email: 'saiyyamkochar@gmail.com', firstName: 'Saiyyam', lastName: 'Kochar', post: 'President', hasHover: false, social: {} },
-  { email: 'yajatkhanna28@gmail.com', firstName: 'Yajat', lastName: 'Khanna', post: 'Alumni', hasHover: false, social: {} },
-  { email: 'abheetkansal@gmail.com', firstName: 'Abheet', lastName: 'Kansal', post: 'Alumni', hasHover: false, social: {} },
-  { email: 'ishpreet2000@gmail.com', firstName: 'Ishpreet', lastName: 'Singh Bhasin', post: 'President', hasHover: false, social: {} },
-  { email: 'tharejatanmay@gmail.com', firstName: 'Tanmay', lastName: 'Thareja', post: 'President', hasHover: false, social: {} },
-  { email: 'kapoornitigya@gmail.com', firstName: 'Nitigya', lastName: 'Kapoor', post: 'Alumni', hasHover: false, social: {} },
-  { email: 'shivam0732@gmail.com', firstName: 'Shivam', lastName: 'Issar', post: 'Cryptic', hasHover: false, social: {} },
-];
+// const alumniMembers = [
+//   { email: 'namishoberoi2008@gmail.com', firstName: 'Namish', lastName: 'Oberoi', post: 'President', hasHover: false, social: {} },
+//   { email: 'amaanssethi@gmail.com', firstName: 'Amaan', lastName: 'Singh', post: 'President', hasHover: true, social: { linkedin: 'https://in.linkedin.com/in/amaansinghsethi', website: 'https://www.instagram.com/amaansinghsethi' } },
+//   { email: 'gavishjindal2006@gmail.com', firstName: 'Gavish', lastName: 'Jindal', post: 'President', hasHover: true, social: { website: 'https://gavishjindal.com/', linkedin: 'https://www.linkedin.com/in/Gavishjindal/', github: 'https://github.com/Gavishj' } },
+//   { email: 'gsoham562@gmail.com', firstName: 'Soham', lastName: 'Gupta', post: 'Vice President', hasHover: true, social: { linkedin: 'https://www.linkedin.com/in/soham-gupta-b567b2274/', github: 'https://github.com/Sam562retro' } },
+//   { email: 'vanditkad@gmail.com', firstName: 'Vandit', lastName: 'Kad', post: 'Vice President', hasHover: true, social: { website: 'https://vanditkad.xyz/', linkedin: 'https://www.linkedin.com/in/vanditkad/', github: 'https://github.com/MrVoraciousw' } },
+//   { email: 'aravgupta28@gmail.com', firstName: 'Arav', lastName: 'Gupta', post: 'Secretary', hasHover: false, social: {} },
+//   { email: 'pratyushgarg527@gmail.com', firstName: 'Pratyush', lastName: 'Garg', post: 'Secretary', hasHover: false, social: {} },
+//   { email: 'sharma.shaurya2007@gmail.com', firstName: 'Shaurya', lastName: 'Sharma', post: 'Secretary', hasHover: false, social: {} },
+//   { email: 'gavishjindal2006@gmail.com', firstName: 'Gavish', lastName: 'Jindal', post: 'Co-President', hasHover: false, social: {} },
+//   { email: 'sakshamkochar@gmail.com', firstName: 'Saksham', lastName: 'Kochar', post: 'President', hasHover: false, social: {} },
+//   { email: 'ayushi_agrawal@hotmail.com', firstName: 'Ayushi', lastName: 'Aggarwal', post: 'President', hasHover: false, social: {} },
+//   { email: 'star.shreya67.mangla@gmail.com', firstName: 'Shreya', lastName: 'Mangla', post: 'Vice President', hasHover: false, social: {} },
+//   { email: 'shubhamgamer.6105@gmail.com', firstName: 'Shubham', lastName: 'Aggarwal', post: 'Club Ambassador', hasHover: false, social: {} },
+//   { email: 'Yttanay07@gmail.com', firstName: 'Tanay', lastName: 'Jain', post: 'Vice President', hasHover: false, social: {} },
+//   { email: 'twittersaatvik@gmail.com', firstName: 'Saatvik', lastName: 'Sachdeva', post: 'Club Ambassador', hasHover: false, social: {} },
+//   { email: 'narulanischay2005@gmail.com', firstName: 'Nischay', lastName: 'Narula', post: 'Club Ambassador', hasHover: false, social: {} },
+//   { email: 'aryan_02@outlook.com', firstName: 'Aryan', lastName: 'Mediratta', post: 'President', hasHover: false, social: {} },
+//   { email: 'mah.ansh564@gmail.com', firstName: 'Anshul', lastName: 'Mahajan', post: 'Co-President', hasHover: false, social: {} },
+//   { email: 'aaditsaluja@gmail.com', firstName: 'Aadit', lastName: 'Saluja', post: 'Co-President', hasHover: false, social: {} },
+//   { email: 'ahujatejas06@gmail.com', firstName: 'Tejas', lastName: 'Ahuja', post: 'Vice President', hasHover: false, social: {} },
+//   { email: 'singhjaspreet.official@gmail.com', firstName: 'Jaspreet', lastName: 'Singh', post: 'Robotics President', hasHover: false, social: {} },
+//   { email: 'divyamarora2213@gmail.com', firstName: 'Divyam', lastName: 'Arora', post: 'Robotics President', hasHover: false, social: {} },
+//   { email: 'ngarg311@gmail.com', firstName: 'Nabh', lastName: 'Garg', post: 'Alumni', hasHover: false, social: {} },
+//   { email: 'adi.oberoi2004@gmail.com', firstName: 'Aditya', lastName: 'Oberoi', post: 'Group Discussion', hasHover: false, social: {} },
+//   { email: 'paartha27@gmail.com', firstName: 'Paartha', lastName: 'Panwar', post: 'Quizzing', hasHover: false, social: {} },
+//   { email: 'harshmittal101001@gmail.com', firstName: 'Harsh', lastName: 'Mittal', post: 'President', hasHover: false, social: {} },
+//   { email: 'mananmrig47@gmail.com', firstName: 'Manan', lastName: 'Mrig', post: 'Alumni', hasHover: false, social: {} },
+//   { email: 'gautamsinghi2013@gmail.com', firstName: 'Gautam', lastName: 'Singhi', post: 'Alumni', hasHover: false, social: {} },
+//   { email: 'manas.25.july@gmail.com', firstName: 'Manas', lastName: 'Khandelwal', post: 'Alumni', hasHover: false, social: {} },
+//   { email: 'saiyyamkochar@gmail.com', firstName: 'Saiyyam', lastName: 'Kochar', post: 'President', hasHover: false, social: {} },
+//   { email: 'yajatkhanna28@gmail.com', firstName: 'Yajat', lastName: 'Khanna', post: 'Alumni', hasHover: false, social: {} },
+//   { email: 'abheetkansal@gmail.com', firstName: 'Abheet', lastName: 'Kansal', post: 'Alumni', hasHover: false, social: {} },
+//   { email: 'ishpreet2000@gmail.com', firstName: 'Ishpreet', lastName: 'Singh Bhasin', post: 'President', hasHover: false, social: {} },
+//   { email: 'tharejatanmay@gmail.com', firstName: 'Tanmay', lastName: 'Thareja', post: 'President', hasHover: false, social: {} },
+//   { email: 'kapoornitigya@gmail.com', firstName: 'Nitigya', lastName: 'Kapoor', post: 'Alumni', hasHover: false, social: {} },
+//   { email: 'shivam0732@gmail.com', firstName: 'Shivam', lastName: 'Issar', post: 'Cryptic', hasHover: false, social: {} },
+// ];
 
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+window.TEAM_SUPABASE_CONFIG = {
+  url: "https://nesecqrnsqfnhvggdvuj.supabase.co/",
+  publishableKey: "sb_publishable_Nk9HA9DtPljJMXimeseroA_duqhjKy5"
+};
+console.log("URL:", window.TEAM_SUPABASE_CONFIG.url);
+console.log("KEY:", window.TEAM_SUPABASE_CONFIG.publishableKey);
+const supabase = createClient(
+  window.TEAM_SUPABASE_CONFIG.url,
+  window.TEAM_SUPABASE_CONFIG.publishableKey
+);
+console.log(supabase);
 // Function to detect mobile devices
 function isMobile() {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
-isAnimationEnabled = false;
+
+// Module-level variable declarations
+let isAnimationEnabled = false;
+let teamMembers = [];
+let alumniMembers = [];
+let invisibleTimeout;
 
 const keyboard = document.getElementById("keyboard")
 const container1 = document.getElementById("container")
@@ -136,7 +154,60 @@ function generateCardHTML(member, isAlumni = false) {
     </div>
   `;
 }
+async function loadMembers() {
+  const { data, error } = await supabase
+    .from('members')
+    .select('*');
 
+  if (error) {
+    console.error(error);
+    return;
+  }
+  console.log(data);
+  teamMembers = [];
+  alumniMembers = [];
+
+  data.forEach(row => {
+    const names = (row.name || '').trim().split(' ');
+
+    const member = {
+      email: row.email || '',
+      firstName: names[0] || '',
+      lastName: names.slice(1).join(' '),
+      post: row.role || 'Member',
+      hasHover: true,
+      social: {},
+      orderIndex: row.order_index || 999
+    };
+
+    if (row.github)
+      member.social.github = row.github;
+
+    if (row.linkdin)
+      member.social.linkedin = row.linkdin;
+
+    if (row.other)
+      member.social.website = row.other;
+
+    console.log(member.social.github, member.social.linkedin,member.social.website)
+    if (
+      row.nick &&
+      row.nick.toLowerCase() === 'special'
+    ) {
+      member.social.special = 'yes';
+    }
+
+    if (row.is_alumni) {
+      alumniMembers.push(member);
+    } else {
+      teamMembers.push(member);
+    }
+  });
+
+  // Sort members by order_index
+  teamMembers.sort((a, b) => a.orderIndex - b.orderIndex);
+  alumniMembers.sort((a, b) => a.orderIndex - b.orderIndex);
+}
 // Function to render cards
 function renderCards() {
   const memberCardsContainer = document.getElementById('memberCards');
@@ -158,9 +229,10 @@ function renderCards() {
 }
 
 // Render cards on page load
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async  () => {
+  initNavElements();
+  await loadMembers();
   renderCards();
-  
   // Set up gravatars for all profile pictures
   const pfp = document.getElementsByClassName("pfp");
   for (let i = 0; i < pfp.length; i++) {
@@ -226,7 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let hoverTimeout;
 
       item.addEventListener('mouseenter', () => {
-        if (!isAnimationEnabled) return;
+        // if (!isAnimationEnabled) return;
 
         hoverTimeout = setTimeout(() => {
           clearTimeout(invisibleTimeout);
@@ -313,10 +385,10 @@ function getGravatarHash(email) {
 }
 // --------------------
 
-memberCards = document.getElementById("memberCards")
-alumnis = document.getElementById("alumni")
-memberOpt = document.getElementById("memberOpt")
-alumOpt = document.getElementById("alumOpt")
+const memberCards = document.getElementById("memberCards")
+const alumnis = document.getElementById("alumni")
+const memberOpt = document.getElementById("memberOpt")
+const alumOpt = document.getElementById("alumOpt")
 
 var n = 1
 
@@ -343,11 +415,12 @@ const scrollableDiv = document.getElementById('cardsContainer');
 function handleWheelEvent(event) {
   // Determine scroll direction
   let direction;
+  let scrolledAmount;
 
-  cards = document.getElementsByClassName("card")
-  names = document.getElementsByClassName("name")
-  pfps = document.getElementsByClassName("pfp")
-  posts = document.getElementsByClassName("post")
+  let cards = document.getElementsByClassName("card")
+  let names = document.getElementsByClassName("name")
+  let pfps = document.getElementsByClassName("pfp")
+  let posts = document.getElementsByClassName("post")
 
   if (!(isMobile())) {
     direction = Math.sign(event.deltaY);
@@ -474,17 +547,31 @@ function stopRotateNumbers(e) {
 
 // navbar circles and lines
 
-circle1 = document.getElementById("circle1")
-circle2 = document.getElementById("circle2")
-navByte = document.getElementById("navByte")
-line1 = document.getElementById("line1")
-line2 = document.getElementById("line2")
-bigNav = document.getElementById("bigNav")
-span1 = document.getElementById("span1")
-span2 = document.getElementById("span2")
-span3 = document.getElementById("span3")
-span4 = document.getElementById("span4")
+let circle1;
+let circle2;
+let navByte;
+let line1;
+let line2;
+let bigNav;
+let span1;
+let span2;
+let span3;
+let span4;
 var n = 0
+
+// Initialize DOM elements after page load
+function initNavElements() {
+  circle1 = document.getElementById("circle1")
+  circle2 = document.getElementById("circle2")
+  navByte = document.getElementById("navByte")
+  line1 = document.getElementById("line1")
+  line2 = document.getElementById("line2")
+  bigNav = document.getElementById("bigNav")
+  span1 = document.getElementById("span1")
+  span2 = document.getElementById("span2")
+  span3 = document.getElementById("span3")
+  span4 = document.getElementById("span4")
+}
 
 function rotateBack() {
   circle1.classList.remove("rotateStop")
@@ -494,6 +581,10 @@ function rotateStop() {
   circle1.classList.add("rotateStop")
   circle2.classList.add("rotateStop")
 }
+
+// Make functions globally accessible for inline HTML event handlers
+window.rotateBack = rotateBack;
+window.rotateStop = rotateStop;
 function navMenuClick() {
   if (n == 0) {
     line1.classList.add("line1Click")
@@ -520,6 +611,7 @@ function navMenuClick() {
     n = 0
   }
 }
+window.navMenuClick = navMenuClick;
 
 
 //  -----------------------
