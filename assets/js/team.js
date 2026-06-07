@@ -141,7 +141,7 @@ function generateCardHTML(member, isAlumni = false) {
   }
 
   return `
-    <div class="center card ${hoverClass}">
+    <div class="center card ${hoverClass}" data-animation-enabled="${member.cardAnimationEnabled}">
       <div data-value="${member.email}" class="center pfp"></div>
       <div class="name">
         ${member.firstName}<br>
@@ -196,6 +196,9 @@ async function loadMembers() {
     ) {
       member.social.special = 'yes';
     }
+
+    // Set cardAnimationEnabled based on whether the card has social links
+    member.cardAnimationEnabled = Object.keys(member.social).length > 0;
 
     if (row.is_alumni) {
       alumniMembers.push(member);
@@ -298,7 +301,9 @@ document.addEventListener('DOMContentLoaded', async  () => {
       let hoverTimeout;
 
       item.addEventListener('mouseenter', () => {
-        // if (!isAnimationEnabled) return;
+         if (!isAnimationEnabled) return;
+         // Only animate if this card has animations enabled
+         if (item.dataset.animationEnabled !== 'true') return;
 
         hoverTimeout = setTimeout(() => {
           clearTimeout(invisibleTimeout);
@@ -406,6 +411,10 @@ function member() {
   alumOpt.classList.remove("current")
 }
 
+// Make functions globally accessible for inline HTML event handlers
+window.alumni = alumni;
+window.member = member;
+
 
 // scroll-----------------------------
 
@@ -475,7 +484,7 @@ function handleWheelEvent(event) {
       e.classList.add("postAdd")
     }
   } else if ((direction < 0) && (scrollableDiv.scrollLeft <= 800)) {
-
+    isAnimationEnabled = false
     if (isMobile() && scrolledAmount > 400) {
       return;
     }
@@ -620,7 +629,6 @@ function removeHover() {
     //  sociallinks.style.animation = 'linksout .5s forwards ease-in-out';
     //      card.classList.remove('hoverme');
     card.style.marginTop = "15px"
-    isAnimationEnabled = false
 
 
   })
@@ -631,7 +639,6 @@ function addHover() {
     if (!isMobile()) {
       card.classList.add('hoverme');
       console.log("added")
-      isAnimationEnabled = false
       card.style.marginTop = "30px"
     }
   })
