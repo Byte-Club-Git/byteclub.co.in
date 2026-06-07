@@ -1,23 +1,24 @@
-import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js";
+import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js?v=20260604-shared-link-db";
 import {
-  addDoc,
-  collection,
   db,
-  deleteDoc,
+  deleteField,
   doc,
   getDoc,
-  getDocs,
   hasFirebaseConfig,
   onAuthStateChanged,
-  query,
   reload,
   requireFirebase,
   serverTimestamp,
   setDoc,
-  signOut,
-  where
-} from "./byteit-firebase.js?v=20260527-setpass4";
+  signOut
+} from "./byteit-firebase.js?v=20260604-shared-link-db";
 
+const REGISTRATION_COLLECTION = "byteit_registrations";
+const DEFAULT_UNLIMITED_TEAM_SLOTS = 20;
+const LEGACY_FLAT_FIELD_PREFIX = ["c", "s", "v"].join("_");
+const REMOVED_DATABASE_EVENTS = [
+  { id: "quiz-it", name: "Quiz.IT", teamsPerInstitution: 1, maxParticipants: 2 }
+];
 const eventList = document.querySelector("[data-event-list]");
 const schoolName = document.querySelector("[data-school-name]");
 const schoolEmail = document.querySelector("[data-school-email]");
@@ -25,6 +26,7 @@ const registeredCount = document.querySelector("[data-registered-count]");
 const availableCount = document.querySelector("[data-available-count]");
 const statusBox = document.querySelector("[data-status]");
 const logoutButton = document.querySelector("[data-logout]");
+const schoolDetailsForm = document.querySelector("[data-school-details-form]");
 const modal = document.querySelector("[data-registration-modal]");
 const modalTitle = document.querySelector("[data-modal-title]");
 const modalMeta = document.querySelector("[data-modal-meta]");
@@ -39,7 +41,11 @@ let activeEvent = null;
 let activeRegistration = null;
 
 function usesSharedRegistrationLink(event) {
-  return event?.id === "crypt-it" || event?.id === "build-it";
+  return Boolean(event?.sharedLinkOnly);
+}
+
+function isDatabaseEvent(event) {
+  return !usesSharedRegistrationLink(event);
 }
 
 function setStatus(message, type = "info") {
@@ -74,6 +80,142 @@ function byDashboardOrder(a, b) {
   return byName(a, b);
 }
 
+function registrationDocRef(schoolId) {
+  return doc(db, REGISTRATION_COLLECTION, schoolId);
+}
+
+function makeRegistrationId(eventId) {
+  return `${eventId}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+function teamLabel(event, index) {
+  return `${event.name} Team ${index + 1}`;
+}
+
+function writeField(form, name, value) {
+  if (form?.elements[name]) form.elements[name].value = value || "";
+}
+
+function schoolDetailsFromForm() {
+  if (!schoolDetailsForm) return {};
+  const formData = new FormData(schoolDetailsForm);
+  return {
+    schoolAddress: String(formData.get("schoolAddress") || "").trim(),
+    teacherName: String(formData.get("teacherName") || "").trim(),
+    teacherMobile: String(formData.get("teacherMobile") || "").trim(),
+    teacherEmail: String(formData.get("teacherEmail") || "").trim().toLowerCase()
+  };
+}
+
+function flatKey(value) {
+  return String(value || "")
+    .replace(/[^a-z0-9]+/gi, "_")
+    .replace(/^_+|_+$/g, "")
+    .toLowerCase();
+}
+
+function teamSlotCount(event, registrationList) {
+  if (event.teamsPerInstitution !== null) return event.teamsPerInstitution;
+  const registeredTeams = registrationList.filter((registration) => registration.eventId === event.id).length;
+  return Math.max(DEFAULT_UNLIMITED_TEAM_SLOTS, registeredTeams);
+}
+
+function blankParticipantFields(fields, eventPrefix, teamNumber, participantNumber) {
+  const participantPrefix = `sheet_${eventPrefix}_team_${teamNumber}_participant_${participantNumber}`;
+  fields[`${participantPrefix}_name`] = "";
+  fields[`${participantPrefix}_class`] = "";
+  fields[`${participantPrefix}_email`] = "";
+}
+
+function legacyFlatFieldDeletes() {
+  const deletes = {
+    [`${LEGACY_FLAT_FIELD_PREFIX}_school_name`]: deleteField(),
+    [`${LEGACY_FLAT_FIELD_PREFIX}_school_address`]: deleteField(),
+    [`${LEGACY_FLAT_FIELD_PREFIX}_teacher_in_charge_name`]: deleteField(),
+    [`${LEGACY_FLAT_FIELD_PREFIX}_teacher_in_charge_mobile`]: deleteField(),
+    [`${LEGACY_FLAT_FIELD_PREFIX}_teacher_in_charge_email`]: deleteField(),
+    [`${LEGACY_FLAT_FIELD_PREFIX}_selected_events`]: deleteField()
+  };
+
+  [...events, ...REMOVED_DATABASE_EVENTS].forEach((event) => {
+    const eventPrefix = flatKey(event.name || event.id);
+    const teamSlots = event.teamsPerInstitution === null ? DEFAULT_UNLIMITED_TEAM_SLOTS : event.teamsPerInstitution;
+    for (let teamIndex = 1; teamIndex <= teamSlots; teamIndex += 1) {
+      deletes[`${LEGACY_FLAT_FIELD_PREFIX}_${eventPrefix}_team_${teamIndex}_name`] = deleteField();
+      deletes[`sheet_${eventPrefix}_team_${teamIndex}_name`] = deleteField();
+      for (let participantIndex = 1; participantIndex <= event.maxParticipants; participantIndex += 1) {
+        const participantPrefix = `${LEGACY_FLAT_FIELD_PREFIX}_${eventPrefix}_team_${teamIndex}_participant_${participantIndex}`;
+        deletes[`${participantPrefix}_name`] = deleteField();
+        deletes[`${participantPrefix}_class`] = deleteField();
+        deletes[`${participantPrefix}_email`] = deleteField();
+      }
+    }
+  });
+
+  return deletes;
+}
+
+function buildExportFields(school, registrationList) {
+  const databaseEvents = events.filter(isDatabaseEvent);
+  const eventOrder = new Map(databaseEvents.map((event, index) => [event.id, index]));
+  const sortedRegistrations = registrationList.filter((registration) => eventOrder.has(registration.eventId)).slice().sort((a, b) => {
+    const eventCompare = (eventOrder.get(a.eventId) ?? 999) - (eventOrder.get(b.eventId) ?? 999);
+    return eventCompare || (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0);
+  });
+  const exportFields = {
+    sheet_school_name: school.name || "",
+    sheet_school_address: school.schoolAddress || "",
+    sheet_teacher_in_charge_name: school.teacherName || "",
+    sheet_teacher_in_charge_mobile: school.teacherMobile || "",
+    sheet_teacher_in_charge_email: school.teacherEmail || school.email || "",
+    sheet_selected_events: [...new Set(sortedRegistrations.map((registration) => registration.eventName).filter(Boolean))].join(", ")
+  };
+
+  databaseEvents.forEach((event) => {
+    const eventPrefix = flatKey(event.name || event.id);
+    const eventRegistrations = sortedRegistrations.filter((registration) => registration.eventId === event.id);
+    const teamSlots = teamSlotCount(event, registrationList);
+
+    for (let teamIndex = 1; teamIndex <= teamSlots; teamIndex += 1) {
+      const registration = eventRegistrations[teamIndex - 1];
+
+      for (let participantIndex = 1; participantIndex <= event.maxParticipants; participantIndex += 1) {
+        blankParticipantFields(exportFields, eventPrefix, teamIndex, participantIndex);
+        const participant = registration?.participants?.[participantIndex - 1];
+        if (participant) {
+          const participantPrefix = `sheet_${eventPrefix}_team_${teamIndex}_participant_${participantIndex}`;
+          exportFields[`${participantPrefix}_name`] = participant.name || "";
+          exportFields[`${participantPrefix}_class`] = participant.classLabel || "";
+          exportFields[`${participantPrefix}_email`] = participant.contact || "";
+        }
+      }
+    }
+  });
+
+  return exportFields;
+}
+
+function buildSchoolPayload(overrides = {}, registrationList = registrations) {
+  const school = {
+    ...schoolContext.school,
+    ...overrides
+  };
+  return {
+    schoolId: schoolContext.school.id,
+    name: school.name || "",
+    email: school.email || "",
+    schoolAddress: school.schoolAddress || "",
+    teacherName: school.teacherName || "",
+    teacherMobile: school.teacherMobile || "",
+    teacherEmail: school.teacherEmail || "",
+    selectedEvents: [...new Set(registrationList.filter((registration) => events.some((event) => event.id === registration.eventId && isDatabaseEvent(event))).map((registration) => registration.eventName).filter(Boolean))],
+    registrations: registrationList.filter((registration) => events.some((event) => event.id === registration.eventId && isDatabaseEvent(event))),
+    ...legacyFlatFieldDeletes(),
+    ...buildExportFields(school, registrationList),
+    updatedAt: serverTimestamp()
+  };
+}
+
 function waitForUser(auth) {
   return new Promise((resolve) => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -103,14 +245,21 @@ async function init() {
       return;
     }
 
-    const schoolRef = doc(db, "schools", user.uid);
+    const schoolRef = registrationDocRef(user.uid);
     const schoolSnapshot = await getDoc(schoolRef);
     let schoolData = schoolSnapshot.data();
 
     if (!schoolSnapshot.exists()) {
       schoolData = {
+        schoolId: user.uid,
         name: user.displayName || user.email?.split("@")[0] || "School",
         email: user.email,
+        schoolAddress: "",
+        teacherName: "",
+        teacherMobile: "",
+        teacherEmail: "",
+        selectedEvents: [],
+        registrations: [],
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       };
@@ -120,6 +269,10 @@ async function init() {
     schoolContext = { user, school: { id: user.uid, ...schoolData } };
     schoolName.textContent = schoolContext.school.name;
     schoolEmail.textContent = schoolContext.school.email;
+    writeField(schoolDetailsForm, "schoolAddress", schoolContext.school.schoolAddress);
+    writeField(schoolDetailsForm, "teacherName", schoolContext.school.teacherName);
+    writeField(schoolDetailsForm, "teacherMobile", schoolContext.school.teacherMobile);
+    writeField(schoolDetailsForm, "teacherEmail", schoolContext.school.teacherEmail);
     await loadRegistrations();
     renderEvents();
   } catch (error) {
@@ -128,15 +281,13 @@ async function init() {
 }
 
 async function loadRegistrations() {
-  const registrationsQuery = query(
-    collection(db, "event_registrations"),
-    where("schoolId", "==", schoolContext.school.id)
-  );
-  const snapshot = await getDocs(registrationsQuery);
-  registrations = snapshot.docs.map((registrationDoc) => ({
-    id: registrationDoc.id,
-    ...registrationDoc.data()
-  })).sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0));
+  const activeDatabaseEventIds = new Set(events.filter(isDatabaseEvent).map((event) => event.id));
+  registrations = Array.isArray(schoolContext.school.registrations)
+    ? schoolContext.school.registrations
+      .filter((registration) => activeDatabaseEventIds.has(registration.eventId))
+      .map(({ teamName, ...registration }) => registration)
+      .sort((a, b) => (a.createdAt?.seconds || 0) - (b.createdAt?.seconds || 0))
+    : [];
 }
 
 function renderEvents() {
@@ -186,6 +337,8 @@ function registrationCard(registration, event) {
   const participantNames = (registration.participants || [])
     .map((participant) => `${participant.name} (${participant.classLabel})`)
     .join(", ");
+  const eventRegistrations = registrations.filter((item) => item.eventId === registration.eventId);
+  const registrationIndex = Math.max(eventRegistrations.findIndex((item) => item.id === registration.id), 0);
   const actionsMarkup = usesSharedRegistrationLink(event)
     ? `<span class="team-actions__notice">Registeration link will be shared</span>`
     : `
@@ -198,7 +351,7 @@ function registrationCard(registration, event) {
   return `
     <div class="team-row">
       <div>
-        <strong>${registration.teamName}</strong>
+        <strong>${teamLabel(event, registrationIndex)}</strong>
         <span>${participantNames}</span>
       </div>
       ${actionsMarkup}
@@ -236,7 +389,6 @@ function openTeamModal(event, registration = null) {
   document.body.classList.add("byteit-modal-open");
   modalTitle.textContent = registration ? `Edit ${event.name}` : `Register ${event.name}`;
   modalMeta.textContent = `${event.mode} · ${participantLabel(event)} · Class ${event.classRange}`;
-  form.teamName.value = registration?.teamName || `${event.name} Team`;
   form.registrationId.value = registration?.id || "";
   renderParticipantFields(registration?.participants || []);
 }
@@ -267,6 +419,21 @@ function renderParticipantFields(existingParticipants) {
   }).join("");
 }
 
+schoolDetailsForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  try {
+    const details = schoolDetailsFromForm();
+    schoolContext.school = {
+      ...schoolContext.school,
+      ...details
+    };
+    await setDoc(registrationDocRef(schoolContext.school.id), buildSchoolPayload(details), { merge: true });
+    setStatus("School details saved.", "success");
+  } catch (error) {
+    setStatus(error.message || "Could not save school details.", "error");
+  }
+});
+
 form?.addEventListener("submit", async (event) => {
   event.preventDefault();
   try {
@@ -280,7 +447,9 @@ form?.addEventListener("submit", async (event) => {
     } else {
       registrations = [...registrations, savedRegistration];
     }
+    schoolContext.school.registrations = registrations;
     renderEvents();
+    await setDoc(registrationDocRef(schoolContext.school.id), buildSchoolPayload({}, registrations), { merge: true });
     setStatus("Registration saved.", "success");
   } catch (error) {
     setModalStatus(error.message || "Could not save registration.", "error");
@@ -289,7 +458,6 @@ form?.addEventListener("submit", async (event) => {
 
 async function saveRegistration() {
   const formData = new FormData(form);
-  const teamName = String(formData.get("teamName") || "").trim();
   const names = formData.getAll("participantName");
   const classes = formData.getAll("participantClass");
   const contacts = formData.getAll("participantContact");
@@ -302,14 +470,13 @@ async function saveRegistration() {
     }))
     .filter((participant) => participant.name || participant.classLabel || participant.contact);
 
-  if (!teamName) throw new Error("Please name the team.");
   if (participants.length < activeEvent.minParticipants || participants.length > activeEvent.maxParticipants) {
     throw new Error(`${activeEvent.name} needs ${participantLabel(activeEvent)}.`);
   }
 
   const ineligible = participants.find((participant) => !isClassEligible(participant.classLabel, activeEvent));
   if (ineligible) {
-    throw new Error(`${ineligible.name || "A participant"} is not eligible for Class ${activeEvent.classRange}.`);
+    throw new Error(`${activeEvent.name} allows Class ${activeEvent.classRange} only. ${ineligible.name || "A participant"} entered Class ${ineligible.classLabel || "blank"}.`);
   }
 
   if (!activeRegistration) {
@@ -323,7 +490,6 @@ async function saveRegistration() {
     schoolId: schoolContext.school.id,
     eventId: activeEvent.id,
     eventName: activeEvent.name,
-    teamName,
     participants,
     participantCount: participants.length,
     mode: activeEvent.mode,
@@ -332,20 +498,15 @@ async function saveRegistration() {
   };
 
   if (activeRegistration?.id) {
-    await setDoc(doc(db, "event_registrations", activeRegistration.id), payload, { merge: true });
     return {
       ...activeRegistration,
       ...payload,
       updatedAt: { seconds: Math.floor(Date.now() / 1000) }
     };
   } else {
-    const registrationRef = await addDoc(collection(db, "event_registrations"), {
-      ...payload,
-      createdAt: serverTimestamp()
-    });
     return {
       ...payload,
-      id: registrationRef.id,
+      id: makeRegistrationId(activeEvent.id),
       createdAt: { seconds: Math.floor(Date.now() / 1000) },
       updatedAt: { seconds: Math.floor(Date.now() / 1000) }
     };
@@ -355,8 +516,9 @@ async function saveRegistration() {
 async function deleteRegistration(registrationId) {
   if (!window.confirm("Delete this team registration?")) return;
   try {
-    await deleteDoc(doc(db, "event_registrations", registrationId));
     registrations = registrations.filter((registration) => registration.id !== registrationId);
+    schoolContext.school.registrations = registrations;
+    await setDoc(registrationDocRef(schoolContext.school.id), buildSchoolPayload({}, registrations), { merge: true });
     renderEvents();
     setStatus("Registration deleted.", "success");
   } catch (error) {

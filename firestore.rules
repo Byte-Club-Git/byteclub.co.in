@@ -20,6 +20,20 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    match /byteit_registrations/{schoolId} {
+      allow read: if ownsSchool(schoolId);
+      allow create: if ownsSchool(schoolId)
+        && request.resource.data.schoolId == schoolId
+        && request.resource.data.email is string
+        && request.resource.data.name is string;
+      allow update: if ownsSchool(schoolId)
+        && request.resource.data.schoolId == schoolId
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.name is string
+        && request.resource.data.registrations is list;
+      allow delete: if false;
+    }
+
     match /event_registrations/{registrationId} {
       allow read: if ownsSchool(resource.data.schoolId);
       allow create: if ownsSchool(request.resource.data.schoolId)

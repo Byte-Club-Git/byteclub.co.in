@@ -450,6 +450,19 @@ a {
   margin-top: 1.5rem;
 }
 
+.school-details-form {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+}
+
+.school-details-form .byteit-button {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.85rem 1.25rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
 .stat-box {
   min-height: 7rem;
   padding: 1.1rem;
@@ -677,6 +690,7 @@ a {
   .auth-grid,
   .event-list,
   .dashboard-stats,
+  .school-details-form,
   .participant-fieldset {
     grid-template-columns: 1fr;
   }
