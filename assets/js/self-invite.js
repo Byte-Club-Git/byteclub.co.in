@@ -53,6 +53,29 @@ async function saveInvite(email) {
   }
 }
 
+async function sendInviteEmail(email) {
+  const { url, publishableKey } = getSupabaseConfig();
+
+  if (!url || !publishableKey) {
+    throw new Error("Supabase is not configured yet.");
+  }
+
+  const response = await fetch(`${url}/functions/v1/send-self-invite`, {
+    method: "POST",
+    headers: {
+      apikey: publishableKey,
+      Authorization: `Bearer ${publishableKey}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email })
+  });
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({}));
+    throw new Error(data.error || "Email could not be sent.");
+  }
+}
+
 form?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const email = normalizeEmail(new FormData(form).get("email"));
@@ -66,8 +89,9 @@ form?.addEventListener("submit", async (event) => {
 
   try {
     await saveInvite(email);
+    await sendInviteEmail(email);
     form.reset();
-    setStatus("You're on the invite list. Mail will be sent by tonight.", "success");
+    setStatus("The email should reach you within 2-3 minutes. If you don't see it, please check your spam folder.", "success");
   } catch (error) {
     setStatus(error.message || "Could not save your email. Please try again.", "error");
   } finally {

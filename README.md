@@ -64,7 +64,7 @@ The `/self-invite` page stores submitted emails in Supabase using the public pub
 -- supabase/self_invites.sql
 ```
 
-The page inserts into `public.self_invites` and shows: "Mail will be sent by tonight."
+The page inserts into `public.self_invites` and can send a short confirmation email through the Supabase Edge Function at `supabase/functions/send-self-invite`. Add `RESEND_API_KEY` as a Supabase secret before deploying the function. Do not put the Resend key in frontend code.
 
 Event rules are kept in frontend code and guarded by Firestore owner-only rules. For stronger server-side event limit enforcement later, upgrade to Firebase Cloud Functions on the Blaze plan.
 
