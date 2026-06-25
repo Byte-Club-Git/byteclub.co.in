@@ -307,12 +307,22 @@ function renderEvents() {
           ? ""
         : `<p class="byteit-muted">No teams registered yet.</p>`;
       const actionMarkup = usesSharedRegistrationLink(event)
-        ? `<p class="event-card__notice">Registeration link will be shared</p>`
-        : `
-          <button class="byteit-button newbtn" type="button" data-register-event="${event.id}" ${limitReached ? "disabled" : ""}>
-            ${limitReached ? "limit reached" : "Add Team"}
-          </button>
-        `;
+  ? `
+    <p class="event-card__notice">
+      <a href="${
+        event.id === "crypt-it"
+          ? "https://unstop.com/quiz/cryptit-bal-bharati-public-school-pitampura-1690718"
+          : "https://unstop.com/hackathons/buildit-26-bal-bharati-public-school-pitampura-1698904"
+      }" target="_blank" rel="noopener noreferrer">
+        Register Here
+      </a>
+    </p>
+  `
+  : `
+    <button class="byteit-button newbtn" type="button" data-register-event="${event.id}" ${limitReached ? "disabled" : ""}>
+      ${limitReached ? "limit reached" : "Add Team"}
+    </button>
+  `;
 
       return `
         <article class="event-card">
@@ -340,7 +350,17 @@ function registrationCard(registration, event) {
   const eventRegistrations = registrations.filter((item) => item.eventId === registration.eventId);
   const registrationIndex = Math.max(eventRegistrations.findIndex((item) => item.id === registration.id), 0);
   const actionsMarkup = usesSharedRegistrationLink(event)
-    ? `<span class="team-actions__notice">Registeration link will be shared</span>`
+  ? `
+    <span class="team-actions__notice">
+      <a href="${
+        event.id === "crypt-it"
+          ? "https://unstop.com/quiz/cryptit-bal-bharati-public-school-pitampura-1690718"
+          : "https://unstop.com/hackathons/buildit-26-bal-bharati-public-school-pitampura-1698904"
+      }" target="_blank" rel="noopener noreferrer">
+        Register Here
+      </a>
+    </span>
+  `
     : `
       <div class="team-actions">
         <button class="newbtn" data-edit-registration="${registration.id}">edit</button>
