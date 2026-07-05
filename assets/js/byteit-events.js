@@ -9,8 +9,8 @@ export const events = [
   { id: "surprise-it", name: "Surprise.IT", teamsPerInstitution: 1, minParticipants: 2, maxParticipants: 2, classRange: "IX-XII", mode: "Hybrid" },
   { id: "film-it", name: "Film.IT", teamsPerInstitution: 1, minParticipants: 2, maxParticipants: 4, classRange: "IX-XII", mode: "Online" },
   { id: "crypt-it", name: "Crypt.IT", teamsPerInstitution: null, minParticipants: 1, maxParticipants: 3, classRange: "Open", mode: "Online", sharedLinkOnly: true },
-  { id: "Robosoccer", name: "Robosoccer", teamsPerInstitution: 1, minParticipants: 2, maxParticipants: 4, classRange: "VIII-XII", mode: "Online" },
-  { id: "Electroart", name: "Electroart", teamsPerInstitution: 1, minParticipants: 2, maxParticipants: 2, classRange: "VI-VIII", mode: "Online" }
+  { id: "Robosoccer", name: "Robosoccer", teamsPerInstitution: 1, minParticipants: 2, maxParticipants: 4, classRange: "VIII-XII", mode: "Offline" },
+  { id: "Electroart", name: "Electroart", teamsPerInstitution: 1, minParticipants: 2, maxParticipants: 2, classRange: "VI-VIII", mode: "Offline" }
 ];
 
 const romanClasses = {
