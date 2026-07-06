@@ -44,6 +44,10 @@ function usesSharedRegistrationLink(event) {
   return Boolean(event?.sharedLinkOnly);
 }
 
+function isRegistrationClosed(event) {
+  return Boolean(event?.registrationsClosed);
+}
+
 function isDatabaseEvent(event) {
   return !usesSharedRegistrationLink(event);
 }
@@ -306,7 +310,9 @@ function renderEvents() {
         : usesSharedRegistrationLink(event)
           ? ""
         : `<p class="byteit-muted">No teams registered yet.</p>`;
-      const actionMarkup = usesSharedRegistrationLink(event)
+      const actionMarkup = isRegistrationClosed(event)
+  ? `<p class="event-card__notice">Registrations closed for this event.</p>`
+  : usesSharedRegistrationLink(event)
   ? `
     <p class="event-card__notice">
       <a href="${
@@ -384,7 +390,14 @@ eventList?.addEventListener("click", async (event) => {
   const editId = event.target.closest("[data-edit-registration]")?.dataset.editRegistration;
   const deleteId = event.target.closest("[data-delete-registration]")?.dataset.deleteRegistration;
 
-  if (registerId) openTeamModal(events.find((item) => item.id === registerId));
+  if (registerId) {
+    const eventToRegister = events.find((item) => item.id === registerId);
+    if (isRegistrationClosed(eventToRegister)) {
+      setStatus("Registrations closed for this event.", "error");
+      return;
+    }
+    openTeamModal(eventToRegister);
+  }
   if (editId) {
     const registration = registrations.find((item) => item.id === editId);
     openTeamModal(events.find((item) => item.id === registration.eventId), registration);
@@ -477,6 +490,10 @@ form?.addEventListener("submit", async (event) => {
 });
 
 async function saveRegistration() {
+  if (isRegistrationClosed(activeEvent)) {
+    throw new Error("Registrations closed for this event.");
+  }
+
   const formData = new FormData(form);
   const names = formData.getAll("participantName");
   const classes = formData.getAll("participantClass");
