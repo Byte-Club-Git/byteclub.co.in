@@ -17,10 +17,11 @@ import {
   signOut,
   updatePassword,
   updateProfile
-} from "./byteit-firebase.js?v=20260604-shared-link-db";
-import { events } from "./byteit-events.js?v=20260604-shared-link-db";
+} from "./byteit-firebase.js?v=20260709-closed";
+import { events } from "./byteit-events.js?v=20260709-closed";
 
 const REGISTRATION_COLLECTION = "byteit_registrations";
+const SCHOOL_REGISTRATIONS_CLOSED = true;
 const DEFAULT_UNLIMITED_TEAM_SLOTS = 20;
 const forms = document.querySelectorAll("[data-auth-form]");
 const googleButtons = document.querySelectorAll("[data-google-auth]");
@@ -112,6 +113,18 @@ if (!hasFirebaseConfig()) {
   });
 }
 
+if (page === "register" && SCHOOL_REGISTRATIONS_CLOSED) {
+  forms.forEach((form) => {
+    form.querySelectorAll("input, button").forEach((control) => {
+      control.disabled = true;
+    });
+    setStatus(getStatusBox(form), "Registrations are closed.", "error");
+  });
+  googleButtons.forEach((button) => {
+    button.disabled = true;
+  });
+}
+
 if (page === "login" && loginParams.get("verify")) {
   const statusBox = document.querySelector("[data-status]");
   setStatus(statusBox, "Kindly verify your email first, then set your password.", "error");
@@ -196,6 +209,10 @@ googleButtons.forEach((button) => {
 });
 
 async function registerSchool(form, statusBox) {
+  if (SCHOOL_REGISTRATIONS_CLOSED) {
+    throw new Error("Registrations are closed.");
+  }
+
   const { auth, db } = requireFirebase();
   const formData = new FormData(form);
   const schoolName = String(formData.get("schoolName") || "").trim();
@@ -235,6 +252,10 @@ async function registerSchool(form, statusBox) {
 }
 
 async function registerSchoolWithGoogle(form, statusBox) {
+  if (SCHOOL_REGISTRATIONS_CLOSED) {
+    throw new Error("Registrations are closed.");
+  }
+
   const { auth, db } = requireFirebase();
   const formData = new FormData(form);
   const schoolName = String(formData.get("schoolName") || "").trim();

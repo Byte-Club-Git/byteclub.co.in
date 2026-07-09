@@ -1,4 +1,4 @@
-import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js?v=20260604-shared-link-db";
+import { events, isClassEligible, participantLabel, teamLimitLabel } from "./byteit-events.js?v=20260709-closed";
 import {
   db,
   deleteField,
@@ -11,9 +11,10 @@ import {
   serverTimestamp,
   setDoc,
   signOut
-} from "./byteit-firebase.js?v=20260604-shared-link-db";
+} from "./byteit-firebase.js?v=20260709-closed";
 
 const REGISTRATION_COLLECTION = "byteit_registrations";
+const ALL_REGISTRATIONS_CLOSED = true;
 const DEFAULT_UNLIMITED_TEAM_SLOTS = 20;
 const LEGACY_FLAT_FIELD_PREFIX = ["c", "s", "v"].join("_");
 const REMOVED_DATABASE_EVENTS = [
@@ -45,7 +46,7 @@ function usesSharedRegistrationLink(event) {
 }
 
 function isRegistrationClosed(event) {
-  return Boolean(event?.registrationsClosed);
+  return ALL_REGISTRATIONS_CLOSED || Boolean(event?.registrationsClosed);
 }
 
 function isDatabaseEvent(event) {
@@ -355,7 +356,9 @@ function registrationCard(registration, event) {
     .join(", ");
   const eventRegistrations = registrations.filter((item) => item.eventId === registration.eventId);
   const registrationIndex = Math.max(eventRegistrations.findIndex((item) => item.id === registration.id), 0);
-  const actionsMarkup = usesSharedRegistrationLink(event)
+  const actionsMarkup = isRegistrationClosed(event)
+    ? `<span class="team-actions__notice">Registrations closed for this event.</span>`
+    : usesSharedRegistrationLink(event)
   ? `
     <span class="team-actions__notice">
       <a href="${
