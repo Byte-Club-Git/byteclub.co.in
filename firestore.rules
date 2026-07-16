@@ -56,6 +56,40 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /judges/{judgeEmail} {
+      allow read: if signedIn()
+        && request.auth.token.email == judgeEmail;
+      allow write: if false;
+    }
+
+    match /judge_assignments/{judgeEmail} {
+      allow read: if signedIn()
+        && request.auth.token.email == judgeEmail;
+      allow write: if false;
+    }
+
+    match /judgement_scores/{scoreId} {
+      allow read: if signedIn()
+        && resource.data.judgeEmail == request.auth.token.email;
+      allow create, update: if signedIn()
+        && request.resource.data.judgeEmail == request.auth.token.email
+        && request.resource.data.eventId is string
+        && request.resource.data.eventName is string
+        && request.resource.data.teamName is string
+        && request.resource.data.schoolName is string
+        && request.resource.data.participants is list
+        && request.resource.data.scores is map
+        && request.resource.data.total is number;
+      allow delete: if false;
+    }
+
+    match /team/{teamId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn()
+        && request.resource.data.points is map;
+      allow delete: if false;
+    }
+
     match /mail/{mailId} {
       allow read, write: if false;
     }

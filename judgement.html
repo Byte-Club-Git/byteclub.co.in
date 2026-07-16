@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Byte.IT — Judgement</title>
+  <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+  <link rel="stylesheet" href="assets/css/workshop.css">
+  <link rel="stylesheet" href="assets/css/byteit-registration.css?v=20260604-shared-link-db">
+
+  <style>
+    /* ─── Portal layout ─────────────────────────────────────── */
+    #portalSection {
+      padding-top: 20vh;
+      padding-bottom: 8vh;
+    }
+
+    /* Header row */
+    .portal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .portal-meta {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
+    .portal-meta strong { color: var(--ink); }
+
+    /* Progress bar */
+    .j-progress-wrap {
+      margin-top: 2.5rem;
+      border: 1px solid var(--lines);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+    }
+    .j-progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.75rem;
+    }
+    .j-progress-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .j-progress-nums {
+      display: flex;
+      gap: 1rem;
+      align-items: baseline;
+    }
+    #progressText { font-size: 0.88rem; color: var(--muted); }
+    #progressPct  { font-size: 1.6rem; font-weight: 800; color: var(--accent-1); line-height: 1; }
+
+    .j-progress-track {
+      height: 6px;
+      background: var(--lines);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    #progressFill {
+      height: 100%;
+      background: var(--accent-1);
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.6s cubic-bezier(0.25,1,0.5,1);
+    }
+
+    /* Teams grid */
+    #teamsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Skeleton loaders */
+    .team-skeleton {
+      height: 220px;
+      border-radius: 8px;
+      background: linear-gradient(90deg, var(--lines) 25%, #e8e5dd 50%, var(--lines) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ─── Team card ──────────────────────────────────────────── */
+    .j-card {
+      border: 1px solid var(--lines);
+      border-radius: 8px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      transition: border-color 0.2s;
+    }
+    .j-card--scored { border-color: rgba(43,78,107,0.35); }
+
+    .j-card__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .j-card__name {
+      font-size: 1.3rem;
+      font-weight: 800;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+    .j-card__members {
+      margin-top: 0.3rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    /* Badge */
+    .j-badge {
+      flex-shrink: 0;
+      padding: 0.25rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+    .j-badge--done    { background: rgba(47,104,70,0.1);  color: var(--success); border: 1px solid rgba(47,104,70,0.3); }
+    .j-badge--pending { background: rgba(43,78,107,0.08); color: var(--accent-1); border: 1px solid rgba(43,78,107,0.25); }
+
+    /* Card body */
+    .j-card__body { flex: 1; }
+
+    .j-unscoredMsg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 80px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      font-style: italic;
+    }
+
+    /* Score header inside scored card */
+    .j-score-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+    }
+    .j-score-big {
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--accent-1);
+    }
+    .j-score-big span { font-size: 1.1rem; font-weight: 500; color: var(--muted); }
+    .j-score-pct {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    /* Mini bar chart */
+    .j-bars { display: grid; gap: 0.45rem; }
+    .j-bar-row {
+      display: grid;
+      grid-template-columns: 7rem 1fr 2rem;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .j-bar-label { font-size: 0.75rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .j-bar-track { height: 4px; background: var(--lines); border-radius: 999px; overflow: hidden; }
+    .j-bar-fill  { height: 100%; background: var(--accent-1); border-radius: 999px; }
+    .j-bar-val   { font-size: 0.75rem; font-weight: 700; color: var(--accent-1); text-align: right; }
+
+    .j-remarks {
+      margin-top: 0.75rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-style: italic;
+      line-height: 1.5;
+      border-left: 2px solid var(--lines);
+      padding-left: 0.65rem;
+    }
+
+    /* Action button on card */
+    .j-score-btn {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--lines);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--ink);
+      font: 600 0.9rem Poppins, sans-serif;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .j-score-btn:hover { border-color: var(--accent-1); background: rgba(43,78,107,0.05); }
+    .j-score-btn--edit { color: var(--accent-1); border-color: rgba(43,78,107,0.4); }
+
+    /* Empty state */
+    .portal-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    /* ─── Score Modal ────────────────────────────────────────── */
+    .modal-team-sub {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+    }
+
+    /* Criteria rows */
+    #criteriaRows { display: grid; gap: 0.1rem; margin: 1rem 0 0; }
+
+    .criteria-row {
+      display: grid !important;
+      grid-template-columns: 1fr auto auto !important;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--lines);
+      min-width: 0 !important;
+      text-transform: none !important;
+      letter-spacing: 0 !important;
+      font-size: 0.92rem !important;
+      font-weight: 500 !important;
+      color: var(--ink) !important;
+    }
+    .criteria-row:last-of-type { border-bottom: none; }
+    .criteria-row em { font-style: normal; color: var(--muted); font-size: 0.78rem; }
+
+    .criteria-row input[type=number] {
+      width: 4.5rem !important;
+      min-width: unset !important;
+      text-align: center;
+      font-size: 1.05rem !important;
+      font-weight: 700;
+      height: 2.2rem !important;
+      border-radius: 4px;
+      border: 1px solid var(--lines) !important;
+      border-bottom: 1px solid var(--lines) !important;
+      padding: 0 0.4rem;
+    }
+    .criteria-row input[type=number]:focus {
+      outline: none;
+      border-color: var(--accent-1) !important;
+    }
+
+    /* Modal progress + total */
+    .modal-score-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1.1rem;
+      padding: 0.9rem 1rem;
+      border: 1px solid var(--lines);
+      border-radius: 6px;
+      background: rgba(43,78,107,0.04);
+    }
+    .modal-total-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .modal-total-val   { font-size: 1.9rem; font-weight: 800; color: var(--accent-1); line-height: 1; }
+    .modal-total-pct   { font-size: 0.95rem; color: var(--muted); font-weight: 600; }
+
+    .modal-progress-track {
+      height: 4px;
+      background: var(--lines);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    #modalProgressFill {
+      height: 100%;
+      background: var(--accent-1);
+      border-radius: 999px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Remarks */
+    .remarks-label {
+      display: grid;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 1.1rem;
+    }
+    .remarks-label textarea {
+      width: 100%;
+      min-height: 4rem;
+      border: 0;
+      border-bottom: 1px solid #807e7b;
+      background: transparent;
+      color: var(--ink);
+      font: 500 0.95rem Poppins, sans-serif;
+      resize: vertical;
+      padding: 0.35rem 0;
+    }
+    .remarks-label textarea:focus { outline: none; border-bottom-color: var(--accent-1); }
+
+    @media (max-width: 860px) {
+      #teamsContainer { grid-template-columns: 1fr; }
+      .j-bar-row { grid-template-columns: 5.5rem 1fr 1.8rem; }
+    }
+  </style>
+</head>
+
+<body data-page="judgement">
+  <div class="rectangle rectangle-left"></div>
+  <div class="rectangle rectangle-right"></div>
+  <div class="rectangle rectangle-top"></div>
+  <div class="rectangle rectangle-nav"></div>
+
+  <section id="bigNav" class="center bigNav">
+    <div class="left">
+      <div><span onclick="navMenuClick()" id="span1" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)"><div class="numbers"><div class="number"></div></div><a href="/#spanA">ABOUT</a></span></div>
+      <div><span id="span2" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)"><div class="numbers"><div class="number"></div><div class="number"></div></div><a href="team">TEAM</a></span></div>
+      <div><span id="span3" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)"><div class="numbers"><div class="number"></div><div class="number"></div><div class="number"></div></div><a href="resources">RESOURCES</a></span></div>
+      <div><span id="span4" onmouseover="rotateNumbers(this)" onmouseout="stopRotateNumbers(this)"><div class="numbers"><div class="number"></div><div class="number"></div><div class="number"></div><div class="number"></div></div><a href="byteit">BYTE.IT</a></span></div>
+    </div>
+    <div class="right">
+      <span onmouseover="document.getElementById('spanContact').style.width='100%'" onmouseout="document.getElementById('spanContact').style.width='0%'"><a href="contact">Contact</a><span id="spanContact"></span></span>
+      <span onmouseover="document.getElementById('spanCredits').style.width='100%'" onmouseout="document.getElementById('spanCredits').style.width='0%'"><a href="credits">Credits</a><span id="spanCredits"></span></span>
+    </div>
+  </section>
+
+  <div class="nav">
+    <span id="navByte" onclick="window.location = '/';" class="navByte">byte.</span>
+    <span onmouseout="rotateBack()" onmouseover="rotateStop()" onclick="navMenuClick()" class="center menuNav">
+      <img id="circle1" class="circle1" src="assets/icons/circle1.svg" alt="">
+      <img id="circle2" class="circle2" src="assets/icons/circle2.svg" alt="">
+      <div class="lines">
+        <div id="line1" class="line1"></div>
+        <div id="line2" class="line2"></div>
+      </div>
+    </span>
+  </div>
+
+  <main id="loginSection" class="byteit-shell auth-grid">
+    <section>
+      <span class="byteit-kicker">Paperless Judgement</span>
+      <h1 class="byteit-title">Judge</h1>
+      <p class="byteit-copy">Sign in with your assigned judge account to score teams in your event.</p>
+    </section>
+
+    <section class="auth-card">
+      <h1>Continue</h1>
+      <p>Judges only. Sign in with your assigned Google account.</p>
+      <div style="margin-top:2rem;">
+        <button class="google-auth-button" type="button" id="googleBtn">
+          <svg class="google-auth-button__mark" viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M21.6 12.23c0-.78-.07-1.53-.2-2.23H12v4.22h5.37a4.6 4.6 0 0 1-1.99 3.02v2.51h3.22c1.89-1.74 3-4.3 3-7.52z"/>
+            <path fill="#34A853" d="M12 22c2.7 0 4.96-.89 6.6-2.42l-3.22-2.51c-.9.6-2.04.95-3.38.95-2.6 0-4.8-1.75-5.59-4.11H3.08v2.59A9.98 9.98 0 0 0 12 22z"/>
+            <path fill="#FBBC05" d="M6.41 13.91A6 6 0 0 1 6.1 12c0-.66.11-1.3.31-1.91V7.5H3.08A9.98 9.98 0 0 0 2 12c0 1.61.39 3.14 1.08 4.5l3.33-2.59z"/>
+            <path fill="#EA4335" d="M12 5.98c1.47 0 2.78.5 3.82 1.5l2.86-2.86C16.95 3.01 14.69 2 12 2a9.98 9.98 0 0 0-8.92 5.5l3.33 2.59C7.2 7.73 9.4 5.98 12 5.98z"/>
+          </svg>
+          Continue with Google
+        </button>
+      </div>
+      <div class="byteit-status" data-status hidden></div>
+    </section>
+  </main>
+
+  <div id="portalSection" class="byteit-shell" hidden>
+
+    <div class="portal-header">
+      <div>
+        <span class="byteit-kicker">Judgement Portal</span>
+        <h1 class="byteit-title" style="font-size:clamp(2.8rem,8vw,5.5rem);margin-top:0.4rem;line-height:0.85;">
+          <span id="judgeEvent">—</span>
+        </h1>
+        <p class="portal-meta">Signed in as <strong id="judgeName">—</strong></p>
+      </div>
+      <button class="byteit-button byteit-button2" id="logoutBtn" type="button">Sign out</button>
+    </div>
+
+    <div class="j-progress-wrap">
+      <div class="j-progress-top">
+        <span class="j-progress-label">Points progress</span>
+        <div class="j-progress-nums">
+          <span id="progressText">0 / 0 teams entered</span>
+          <span id="progressPct">0%</span>
+        </div>
+      </div>
+      <div class="j-progress-track"><div id="progressFill"></div></div>
+    </div>
+
+    <div id="teamsContainer"></div>
+  </div>
+
+  <div class="byteit-modal" id="scoreModal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTeamName">
+    <div class="byteit-modal__panel">
+
+      <div class="byteit-modal__top">
+        <div>
+          <p class="byteit-kicker">Scoring</p>
+          <h2 style="font-size:clamp(1.5rem,4vw,2.4rem);font-weight:800;text-transform:uppercase;line-height:1;" id="modalTeamName">Team</h2>
+          <p class="modal-team-sub" id="modalMembers"></p>
+        </div>
+        <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      </div>
+
+      <form id="scoringForm" style="margin-top:0.5rem;">
+
+        <div id="criteriaRows"></div>
+
+        <div class="modal-score-summary">
+          <div>
+            <div class="modal-total-label">Total points</div>
+            <div style="display:flex;align-items:baseline;gap:0.5rem;">
+              <span class="modal-total-val" id="liveTotal">0</span>
+              <span class="modal-total-pct" id="livePct">0%</span>
+            </div>
+            <div class="modal-progress-track"><div id="modalProgressFill"></div></div>
+          </div>
+        </div>
+
+        <label class="remarks-label">
+          Remarks <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span>
+          <textarea name="remarks" placeholder="Overall feedback for the team…"></textarea>
+        </label>
+
+        <div class="modal-actions" style="margin-top:1.25rem;">
+          <button type="button" class="ghost-button" id="cancelBtn">Cancel</button>
+          <button type="submit" class="byteit-button" style="font-size:1rem;padding:0.85rem 2.5rem;">
+            Save Points
+          </button>
+        </div>
+
+        <div class="byteit-status" id="modalStatus" hidden></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("cancelBtn")?.addEventListener("click", () => {
+      document.getElementById("scoreModal").hidden = true;
+      document.body.classList.remove("byteit-modal-open");
+    });
+  </script>
+
+  <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
+  <script src="assets/js/resources.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script type="module">
+    
+    import {config} from './config.js';
+    /* ── SUPABASE CONFIG ────────────────────────────────────── */
+    //const SUPABASE_URL = "%SUPABASE_URL%"; // Fill in your project URL
+    //const SUPABASE_ANON_KEY = "%SUPABASE_ANON_KEY%"; // Fill in your anon key -->
+
+    const supabaseClient = supabase.createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY);
+
+    /* ══════════════════════════════════════════════════════════════
+       SCORING CRITERIA — edit labels & max scores as needed
+       ══════════════════════════════════════════════════════════════ */
+    const CRITERIA = [
+      { id: "innovation",    label: "Innovation",        max: 10 },
+      { id: "execution",     label: "Execution",         max: 10 },
+      { id: "presentation",  label: "Presentation",      max: 10 },
+      { id: "impact",        label: "Impact / Utility",  max: 10 },
+      { id: "design",        label: "Design & UX",       max: 10 },
+    ];
+
+    /* ══════════════════════════════════════════════════════════════
+       DOM REFERENCES
+       ══════════════════════════════════════════════════════════════ */
+    const loginSection    = document.getElementById("loginSection");
+    const portalSection   = document.getElementById("portalSection");
+    const googleBtn       = document.getElementById("googleBtn");
+    const loginStatus     = document.querySelector("[data-status]");
+    const judgeNameEl     = document.getElementById("judgeName");
+    const judgeEventEl    = document.getElementById("judgeEvent");
+    const teamsContainer  = document.getElementById("teamsContainer");
+    const logoutBtn       = document.getElementById("logoutBtn");
+    const scoreModal      = document.getElementById("scoreModal");
+    const modalTeamName   = document.getElementById("modalTeamName");
+    const scoringForm     = document.getElementById("scoringForm");
+    const criteriaRows    = document.getElementById("criteriaRows");
+    const modalClose      = document.getElementById("modalClose");
+    const modalStatus     = document.getElementById("modalStatus");
+
+    let currentJudge = null;   // { email, name, event }
+    let currentTeam  = null;   // { name, members[], event, points }
+
+    /* ══════════════════════════════════════════════════════════════
+       BUILD SCORING CRITERIA INPUTS
+       ══════════════════════════════════════════════════════════════ */
+    CRITERIA.forEach(c => {
+      criteriaRows.insertAdjacentHTML("beforeend", `
+        <label class="criteria-row">
+          <span class="criteria-label">${c.label} <em>/ ${c.max}</em></span>
+          <input
+            type="number"
+            name="${c.id}"
+            min="0"
+            max="${c.max}"
+            step="0.5"
+            placeholder="0"
+            required
+            data-max="${c.max}"
+          >
+        </label>
+      `);
+    });
+
+    /* ══════════════════════════════════════════════════════════════
+       AUTH STATE
+       ══════════════════════════════════════════════════════════════ */
+    let isProcessingAuth = false;
+
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+      console.log("[auth] onAuthStateChange fired:", event, "User:", session?.user ? session.user.email : null);
+      
+      if (!session?.user) {
+        currentJudge = null;
+        showLogin();
+        return;
+      }
+
+      if (isProcessingAuth) return;
+      isProcessingAuth = true;
+
+      showStatus(loginStatus, "info", "Verifying judge credentials…");
+
+      try {
+        const judgeEmail = session.user.email.trim().toLowerCase();
+        
+        const { data: judgeData, error: judgeError } = await supabaseClient
+          .from('judges')
+          .select('*')
+          .eq('email', judgeEmail)
+          .maybeSingle();
+
+        if (judgeError || !judgeData) {
+          console.log("[db] judge doc exists: false for", judgeEmail);
+          showStatus(loginStatus, "error", "This Google account is not a registered judge. Contact the organiser.");
+          
+          await supabaseClient.auth.signOut();
+          isProcessingAuth = false;
+          return;
+        }
+        
+        console.log("[db] judge doc exists: true for", judgeEmail);
+        currentJudge = { email: judgeEmail, ...judgeData };
+        console.log("[auth] judge loaded:", currentJudge);
+        showPortal();
+      } catch (err) {
+        console.error("[db] Supabase check failed:", err);
+        showStatus(loginStatus, "error", "Database error: " + err.message);
+      } finally {
+        isProcessingAuth = false;
+      }
+    });
+
+    /* ══════════════════════════════════════════════════════════════
+       LOGIN — Google via Popup flow
+       ══════════════════════════════════════════════════════════════ */
+   /* ══════════════════════════════════════════════════════════════
+       LOGIN — Google via Popup flow with explicit return URL
+       ══════════════════════════════════════════════════════════════ */
+    googleBtn.addEventListener("click", async () => {
+      googleBtn.disabled = true;
+      showStatus(loginStatus, "info", "Opening Google sign-in…");
+      
+      const { error } = await supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          queryParams: { prompt: 'select_account' },
+          // Forces the auth flow to route explicitly back to this exact sub-page
+          redirectTo: window.location.origin + window.location.pathname
+        }
+      });
+
+      if (error) {
+        console.error("[auth] Sign in error:", error);
+        showStatus(loginStatus, "error", friendlyError(error.status || error.message));
+        googleBtn.disabled = false;
+      } else {
+        showStatus(loginStatus, "success", "Signed in. Verifying judge access…");
+      }
+    });
+
+    /* ══════════════════════════════════════════════════════════════
+       LOGOUT
+       ══════════════════════════════════════════════════════════════ */
+    logoutBtn.addEventListener("click", () => supabaseClient.auth.signOut());
+
+    /* ══════════════════════════════════════════════════════════════
+       SHOW PORTAL
+       ══════════════════════════════════════════════════════════════ */
+    async function showPortal() {
+      loginSection.hidden  = true;
+      loginSection.style.display = "none";
+      portalSection.hidden = false;
+      portalSection.removeAttribute("hidden");
+      portalSection.style.display = "block";
+      requestAnimationFrame(() => portalSection.scrollIntoView({ block: "start" }));
+
+      judgeNameEl.textContent  = currentJudge.name  || currentJudge.email;
+      judgeEventEl.textContent = currentJudge.event || "—";
+
+      teamsContainer.innerHTML = `
+        <div class="team-skeleton"></div>
+        <div class="team-skeleton"></div>
+        <div class="team-skeleton"></div>`;
+
+      let teams = [];
+      try {
+        const targetEvent = currentJudge.event;
+        if (!targetEvent) {
+          teamsContainer.innerHTML = `<p class="portal-empty">Your judge profile does not have an assigned event.</p>`;
+          return;
+        }
+
+        const { data: teamsData, error: teamsError } = await supabaseClient
+          .from('team')
+          .select('*')
+          .eq('event', targetEvent);
+
+        if (teamsError) throw teamsError;
+        teams = teamsData || [];
+      } catch (err) {
+        console.error("[db] failed to load teams:", err);
+        teamsContainer.innerHTML = `<p class="portal-empty">The judge portal is open, but teams could not be loaded right now.</p>`;
+        return;
+      }
+
+      if (teams.length === 0) {
+        teamsContainer.innerHTML = `<p class="portal-empty">No teams registered for <strong>${escHtml(currentJudge.event)}</strong> yet.</p>`;
+        return;
+      }
+
+      const scoredCount = teams.filter(t => t.points && Object.keys(t.points).length > 0).length;
+      updateProgress(scoredCount, teams.length);
+
+      teamsContainer.innerHTML = "";
+      teams.forEach(team => {
+        teamsContainer.appendChild(buildTeamCard(team, Boolean(team.points), team.points));
+      });
+    }
+
+    function updateProgress(done, total) {
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      document.getElementById("progressFill").style.width  = pct + "%";
+      document.getElementById("progressText").textContent  = `${done} / ${total} teams entered`;
+      document.getElementById("progressPct").textContent   = pct + "%";
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       TEAM CARD (Identified by team.name field)
+       ══════════════════════════════════════════════════════════════ */
+    function buildTeamCard(team, scored, pointsData) {
+      const TOTAL_MAX  = CRITERIA.reduce((s, c) => s + c.max, 0);
+      const memberList = (team.members || []).join(", ") || "—";
+      const card       = document.createElement("div");
+      card.className   = "j-card" + (scored ? " j-card--scored" : "");
+      card.dataset.teamId = team.name; 
+
+      let bodyHTML;
+      const savedPoints = pointsData?.criteria || pointsData?.scores || pointsData || null;
+      if (scored && savedPoints) {
+        const total = Number(pointsData?.total) || CRITERIA.reduce((s, c) => s + (Number(savedPoints[c.id]) || 0), 0);
+        const pct   = Math.round((total / TOTAL_MAX) * 100);
+        const bars  = CRITERIA.map(c => {
+          const v    = Number(savedPoints[c.id]) || 0;
+          const w    = Math.round((v / c.max) * 100);
+          return `<div class="j-bar-row">
+            <span class="j-bar-label">${escHtml(c.label)}</span>
+            <div class="j-bar-track"><div class="j-bar-fill" style="width:${w}%"></div></div>
+            <span class="j-bar-val">${v}</span>
+          </div>`;
+        }).join("");
+
+        bodyHTML = `
+          <div class="j-score-header">
+            <div class="j-score-big">${total}<span>/${TOTAL_MAX}</span></div>
+            <div class="j-score-pct">${pct}%</div>
+          </div>
+          <div class="j-bars">${bars}</div>
+          ${pointsData.remarks ? `<p class="j-remarks">"${escHtml(pointsData.remarks)}"</p>` : ""}`;
+      } else {
+        bodyHTML = `<div class="j-unscoredMsg">No points entered yet</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="j-card__top">
+          <div class="j-card__meta">
+            <h2 class="j-card__name">${escHtml(team.name)}</h2>
+            <p class="j-card__members">${escHtml(memberList)}</p>
+          </div>
+          <span class="j-badge ${scored ? "j-badge--done" : "j-badge--pending"}">
+            ${scored ? "✓ Entered" : "Pending"}
+          </span>
+        </div>
+        <div class="j-card__body">${bodyHTML}</div>
+        <button class="j-score-btn ${scored ? "j-score-btn--edit" : ""}" data-team-id="${team.name}">
+          ${scored ? "Edit points" : "Enter points →"}
+        </button>`;
+
+      card.querySelector(".j-score-btn").addEventListener("click", () => openScoreModal(team, pointsData));
+      return card;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       SCORE MODAL
+       ══════════════════════════════════════════════════════════════ */
+    function openScoreModal(team, existing) {
+      currentTeam = team;
+      modalTeamName.textContent = team.name;
+      document.getElementById("modalMembers").textContent = (team.members || []).join(", ") || "—";
+      modalStatus.hidden = true;
+
+      CRITERIA.forEach(c => {
+        const inp = scoringForm.querySelector(`[name="${c.id}"]`);
+        inp.value = existing?.criteria?.[c.id] ?? existing?.scores?.[c.id] ?? existing?.[c.id] ?? "";
+        inp.style.borderBottomColor = "";
+      });
+      scoringForm.querySelector("[name=remarks]").value = existing?.remarks ?? "";
+      recalcTotal();
+
+      document.body.classList.add("byteit-modal-open");
+      scoreModal.hidden = false;
+    }
+
+    function closeScoreModal() {
+      document.body.classList.remove("byteit-modal-open");
+      scoreModal.hidden = true;
+      currentTeam = null;
+    }
+    modalClose.addEventListener("click", closeScoreModal);
+    scoreModal.addEventListener("click", e => { if (e.target === scoreModal) closeScoreModal(); });
+
+    function recalcTotal() {
+      const inputs = [...scoringForm.querySelectorAll("#criteriaRows input")];
+      const total  = inputs.reduce((s, i) => s + (parseFloat(i.value) || 0), 0);
+      const max    = CRITERIA.reduce((s, c) => s + c.max, 0);
+      document.getElementById("liveTotal").textContent = Number.isInteger(total) ? total : total.toFixed(1);
+      document.getElementById("livePct").textContent   = max ? Math.round((total / max) * 100) + "%" : "0%";
+      const fill = document.getElementById("modalProgressFill");
+      if (fill) fill.style.width = (max ? (total / max) * 100 : 0) + "%";
+    }
+    scoringForm.addEventListener("input", recalcTotal);
+
+    /* ── Submit Points payload to PostgreSQL ── */
+    scoringForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      if (!currentTeam) return;
+
+      let valid = true;
+      const scores = {};
+      CRITERIA.forEach(c => {
+        const inp = scoringForm.querySelector(`[name="${c.id}"]`);
+        const val = parseFloat(inp.value);
+        if (isNaN(val) || val < 0 || val > c.max) {
+          inp.style.borderBottomColor = "var(--danger)";
+          valid = false;
+        } else {
+          inp.style.borderBottomColor = "";
+          scores[c.id] = val;
+        }
+      });
+      if (!valid) {
+        showStatus(modalStatus, "error", "Fix highlighted scores (check 0–max range).");
+        return;
+      }
+
+      const remarks   = scoringForm.querySelector("[name=remarks]").value.trim();
+      const submitBtn = scoringForm.querySelector("[type=submit]");
+      submitBtn.disabled = true;
+      showStatus(modalStatus, "info", "Saving points…");
+
+      try {
+        const total = CRITERIA.reduce((sum, c) => sum + (Number(scores[c.id]) || 0), 0);
+        
+        const pointsPayload = {
+          criteria: scores,
+          total,
+          remarks,
+          judgeEmail: currentJudge.email,
+          judgeName: currentJudge.name || currentJudge.email,
+          updatedAt: new Date().toISOString()
+        };
+
+        // Queries perfectly using 'name' row filtering logic mapping your exact layout
+        const { error: updateError } = await supabaseClient
+          .from('team')
+          .update({ points: pointsPayload })
+          .eq('name', currentTeam.name);
+
+        if (updateError) throw updateError;
+
+        showStatus(modalStatus, "success", "Saved!");
+        setTimeout(() => { closeScoreModal(); showPortal(); }, 700);
+      } catch (err) {
+        showStatus(modalStatus, "error", "Save failed: " + err.message);
+        submitBtn.disabled = false;
+      }
+    });
+
+    /* ══════════════════════════════════════════════════════════════
+       HELPERS
+       ══════════════════════════════════════════════════════════════ */
+    function showLogin() {
+      loginSection.hidden  = false;
+      portalSection.hidden = true;
+      if(loginSection && portalSection) {
+         loginSection.style.display = "grid";
+         portalSection.style.display = "none";
+      }
+    }
+
+    if(loginSection && portalSection) {
+       loginSection.style.display = loginSection.hidden ? "none" : "grid";
+       portalSection.style.display = portalSection.hidden ? "none" : "block";
+    }
+
+    function showStatus(el, type, msg) {
+      el.hidden = false;
+      el.dataset.type = type;
+      el.textContent  = msg;
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/[&<>"']/g, c =>
+        ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])
+      );
+    }
+
+    function friendlyError(code) {
+      const map = {
+        "400": "Sign-in cancelled or validation error.",
+        "401": "Unauthorised access.",
+        "500": "Server error. Try again later.",
+      };
+      return map[code] || "Request failed (" + code + ").";
+    }
+  </script>
+
+</body>
+</html>
+

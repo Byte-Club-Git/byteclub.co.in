@@ -177,6 +177,7 @@ a {
 .auth-card {
   padding: clamp(0.8rem, 1.5vw, 1rem);
   border-radius: 8px;
+  min-width: 20rem;
 }
 
 .auth-choice-card {
@@ -224,15 +225,15 @@ a {
 }
 
 .byteit-form label {
-  display: grid;
-  width: 100%;
-  gap: 0.5rem;
-  color: var(--muted);
-  font-size: 0.84rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  min-width: 30vw;
+display: grid;
+    width: 100%;
+    gap: 0.5rem;
+    color: var(--muted);
+    font-size: 0.84rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    min-width: 30vw;
 }
 
 .byteit-form input {

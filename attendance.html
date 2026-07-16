@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Byte.IT — Attendance Portal</title>
+  <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
+  <link rel="stylesheet" href="assets/css/workshop.css">
+  <link rel="stylesheet" href="assets/css/byteit-registration.css?v=20260604-shared-link-db">
+
+  <style>
+    #portalSection {
+      padding-top: 15vh;
+      padding-bottom: 8vh;
+    }
+
+    /* School Selector Styling */
+    .selection-wrap {
+      margin-top: 2rem;
+      background: var(--panel);
+      border: 1px solid var(--lines);
+      border-radius: 8px;
+      padding: 1.5rem;
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .selection-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .school-dropdown {
+      width: 100%;
+      padding: 1rem;
+      border: 1px solid var(--lines);
+      background: var(--background);
+      color: var(--ink);
+      font-family: Poppins, sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .school-dropdown:focus {
+      border-color: var(--accent-1);
+    }
+
+    /* Teams container */
+    #teamsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+
+    /* Attendance Card */
+    .j-card {
+      border: 1px solid var(--lines);
+      border-radius: 8px;
+      background: var(--panel);
+      backdrop-filter: blur(18px);
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .j-card--present { 
+      border-color: rgba(47,104,70,0.4); 
+      background: rgba(47,104,70,0.03);
+    }
+
+    .j-card__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .j-card__event-badge {
+      background: rgba(43,78,107,0.1);
+      color: var(--accent-1);
+      padding: 0.25rem 0.6rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+    .j-card__name {
+      font-size: 1.2rem;
+      font-weight: 800;
+      line-height: 1.2;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+    .j-card__members {
+      margin-top: 0.3rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    /* Stylish Switch Toggle */
+    .attendance-control {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--lines);
+      padding-top: 1rem;
+      margin-top: auto;
+    }
+    .status-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-label[data-present="true"] { color: var(--success); }
+    .status-label[data-present="false"] { color: var(--muted); }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: var(--lines);
+      transition: .3s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: var(--success);
+    }
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    /* Global Save Button Row */
+    .action-bar {
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    /* Status Notifications */
+    .toast-status {
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: none;
+    }
+    .toast-status[data-type="success"] { background: rgba(47,104,70,0.1); color: var(--success); border: 1px solid rgba(47,104,70,0.3); }
+    .toast-status[data-type="error"] { background: rgba(234,67,53,0.1); color: var(--danger); border: 1px solid rgba(234,67,53,0.3); }
+    .toast-status[data-type="info"] { background: rgba(43,78,107,0.08); color: var(--accent-1); border: 1px solid rgba(43,78,107,0.25); }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+  </style>
+</head>
+
+<body data-page="attendance">
+  <div class="rectangle rectangle-left"></div>
+  <div class="rectangle rectangle-right"></div>
+  <div class="rectangle rectangle-top"></div>
+  <div class="rectangle rectangle-nav"></div>
+
+  <div id="portalSection" class="byteit-shell">
+    <div>
+      <span class="byteit-kicker">Reporting & Desk Portal</span>
+      <h1 class="byteit-title" style="font-size:clamp(2.5rem,6vw,4.5rem); margin-top:0.4rem; line-height:0.9;">
+        Attendance
+      </h1>
+      <p class="portal-meta" style="color: var(--muted); margin-top: 0.5rem;">Mark and save present schools and teams</p>
+    </div>
+
+    <div class="selection-wrap">
+      <label class="selection-label" for="schoolSelect">Select registered school</label>
+      <select id="schoolSelect" class="school-dropdown">
+        <option value="" disabled selected>Loading schools...</option>
+      </select>
+    </div>
+
+    <div id="teamsContainer">
+      <div class="empty-state">Select a school above to manage team attendance.</div>
+    </div>
+
+    <div class="action-bar" id="actionBar" style="display: none;">
+      <div class="toast-status" id="saveStatus"></div>
+      <button class="byteit-button" id="saveBtn" type="button" style="padding: 1rem 3rem; font-size: 1.05rem;">
+        Save Attendance Changes
+      </button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script type="module">
+    import {config} from './config.js';
+    const SUPABASE_URL = config.SUPABASE_URL; 
+    const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY;
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    /* ── DOM ELEMENTS ───────────────────────────────────────── */
+    const schoolSelect = document.getElementById("schoolSelect");
+    const teamsContainer = document.getElementById("teamsContainer");
+    const actionBar = document.getElementById("actionBar");
+    const saveBtn = document.getElementById("saveBtn");
+    const saveStatus = document.getElementById("saveStatus");
+
+    // Runtime state
+    let allTeams = [];             // Stores all teams loaded from Supabase
+    let uniqueSchools = [];        // Cleaned list of schools
+    let selectedSchoolTeams = [];  // Teams belonging to the currently chosen school
+
+    /* ── INITIAL LOAD: GET ALL TEAMS ────────────────────────── */
+    async function initPortal() {
+      try {
+        const { data, error } = await supabaseClient
+          .from('team')
+          .select('*')
+          .order('name', { ascending: true });
+
+        if (error) throw error;
+        allTeams = data || [];
+
+        // Parse unique schools from team names (extract text before the first " - " separator)
+        const schoolSet = new Set();
+        allTeams.forEach(t => {
+          const nameStr = String(t.name);
+          if (nameStr.includes(" - ")) {
+            schoolSet.add(nameStr.split(" - ")[0].trim());
+          } else {
+            schoolSet.add(nameStr.trim());
+          }
+        });
+
+        uniqueSchools = Array.from(schoolSet).sort();
+
+        // Populate the dropdown
+        schoolSelect.innerHTML = `<option value="" disabled selected>-- Choose a School --</option>`;
+        uniqueSchools.forEach(school => {
+          const opt = document.createElement("option");
+          opt.value = school;
+          opt.textContent = school;
+          schoolSelect.appendChild(opt);
+        });
+
+      } catch (err) {
+        console.error("Failed to load teams:", err);
+        teamsContainer.innerHTML = `<div class="empty-state" style="color:var(--danger)">Error connecting to Supabase: ${err.message}</div>`;
+      }
+    }
+
+    /* ── DROPDOWN CHANGE HANDLER ────────────────────────────── */
+    schoolSelect.addEventListener("change", (e) => {
+      const targetSchool = e.target.value;
+      
+      // Filter teams that correspond to this school
+      selectedSchoolTeams = allTeams.filter(t => {
+        const nameStr = String(t.name);
+        const parsedSchool = nameStr.includes(" - ") ? nameStr.split(" - ")[0].trim() : nameStr.trim();
+        return parsedSchool.toLowerCase() === targetSchool.toLowerCase();
+      });
+
+      renderTeamCards();
+      
+      // Hide status toast and reveal Action Row
+      saveStatus.style.display = "none";
+      actionBar.style.display = "flex";
+    });
+
+    /* ── RENDER ATTENDANCE CARDS ────────────────────────────── */
+    function renderTeamCards() {
+      if (selectedSchoolTeams.length === 0) {
+        teamsContainer.innerHTML = `<div class="empty-state">No registered teams found for this school.</div>`;
+        actionBar.style.display = "none";
+        return;
+      }
+
+      teamsContainer.innerHTML = "";
+      selectedSchoolTeams.forEach(team => {
+        const isPresent = Boolean(team.present);
+        const cleanEventName = team.event || "Event";
+        
+        // Extract team sub-name (e.g. "Snap.IT Team 1")
+        let displayTitle = team.name;
+        if (team.name.includes(" - ")) {
+          displayTitle = team.name.split(" - ").slice(1).join(" - ");
+        }
+
+        const card = document.createElement("div");
+        card.className = `j-card ${isPresent ? 'j-card--present' : ''}`;
+        card.id = `card-${escapeId(team.name)}`;
+
+        const membersList = (team.members || []).join(", ") || "No members assigned";
+
+        card.innerHTML = `
+          <div class="j-card__top">
+            <div>
+              <span class="j-card__event-badge">${escHtml(cleanEventName)}</span>
+              <h2 class="j-card__name">${escHtml(displayTitle)}</h2>
+              <p class="j-card__members">${escHtml(membersList)}</p>
+            </div>
+          </div>
+          <div class="attendance-control">
+            <span class="status-label" id="status-label-${escapeId(team.name)}" data-present="${isPresent}">
+              ${isPresent ? "Arrived" : "Absent"}
+            </span>
+            <label class="switch">
+              <input type="checkbox" id="toggle-${escapeId(team.name)}" ${isPresent ? 'checked' : ''}>
+              <span class="slider"></span>
+            </label>
+          </div>
+        `;
+
+        // Interactive toggle change (local updates)
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        checkbox.addEventListener("change", (event) => {
+          const checked = event.target.checked;
+          
+          // Update local state arrays
+          team.present = checked;
+          const masterRef = allTeams.find(t => t.name === team.name);
+          if (masterRef) masterRef.present = checked;
+
+          // Update UI styles immediately
+          const cardEl = document.getElementById(`card-${escapeId(team.name)}`);
+          const labelEl = document.getElementById(`status-label-${escapeId(team.name)}`);
+          
+          if (checked) {
+            cardEl.classList.add("j-card--present");
+            labelEl.textContent = "Arrived";
+            labelEl.setAttribute("data-present", "true");
+          } else {
+            cardEl.classList.remove("j-card--present");
+            labelEl.textContent = "Absent";
+            labelEl.setAttribute("data-present", "false");
+          }
+        });
+
+        teamsContainer.appendChild(card);
+      });
+    }
+
+    /* ── SAVE ATTENDANCE TO DATABASE ────────────────────────── */
+    saveBtn.addEventListener("click", async () => {
+      saveBtn.disabled = true;
+      showToast("info", "Updating attendance database...");
+
+      try {
+        // Build individual update promises in parallel
+        const updatePromises = selectedSchoolTeams.map(team => {
+          return supabaseClient
+            .from('team')
+            .update({ present: team.present })
+            .eq('name', team.name);
+        });
+
+        const results = await Promise.all(updatePromises);
+        
+        // Inspect if any queries threw errors
+        const errorResult = results.find(r => r.error);
+        if (errorResult) throw errorResult.error;
+
+        showToast("success", "Attendance successfully saved!");
+      } catch (err) {
+        console.error("Save error:", err);
+        showToast("error", "Failed to save: " + err.message);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    });
+
+    /* ── HELPER FUNCTIONS ───────────────────────────────────── */
+    function showToast(type, msg) {
+      saveStatus.style.display = "block";
+      saveStatus.dataset.type = type;
+      saveStatus.textContent = msg;
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/[&<>"']/g, c =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+      );
+    }
+
+    function escapeId(str) {
+      // Replaces whitespace and special characters so they can safely act as DOM element IDs
+      return btoa(unescape(encodeURIComponent(str))).replace(/=/g, "");
+    }
+
+    // Run on Mount
+    initPortal();
+  </script>
+</body>
+</html>
