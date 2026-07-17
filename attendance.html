@@ -280,13 +280,31 @@
   <div class="rectangle rectangle-top"></div>
   <div class="rectangle rectangle-nav"></div>
 
-  <div id="portalSection" class="byteit-shell">
+  <div id="loginSection" class="byteit-shell auth-grid" hidden>
+    <section>
+      <span class="byteit-kicker">Attendance Portal</span>
+      <h1 class="byteit-title">Access</h1>
+      <p class="byteit-copy">Sign in with your Google account to access the attendance portal.</p>
+    </section>
+
+    <section class="auth-card">
+      <h1>Continue</h1>
+      <p>Sign in to mark team attendance.</p>
+      <div style="margin-top:2rem;">
+        <div id="googleSignInButton"></div>
+      </div>
+      <div id="loginStatus" hidden style="padding: 1rem; border-radius: 8px; font-size: 0.9rem; margin-top: 1rem;"></div>
+    </section>
+  </div>
+
+  <div id="portalSection" class="byteit-shell" hidden>
     <div>
       <span class="byteit-kicker">Reporting & Desk Portal</span>
       <h1 class="byteit-title" style="font-size:clamp(2.5rem,6vw,4.5rem); margin-top:0.4rem; line-height:0.9;">
         Attendance
       </h1>
       <p class="portal-meta" style="color: var(--muted); margin-top: 0.5rem;">Mark, manage rows, and save present schools and teams</p>
+      <button class="byteit-button byteit-button2" id="logoutBtn" type="button" style="margin-top: 1rem;">Sign out</button>
     </div>
 
     <div class="selection-wrap">
@@ -316,14 +334,17 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <script type="module">
     import {config} from './config.js';
 
-
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const supabaseClient = supabase.createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY);
+    window.supabaseClient = supabaseClient;
 
     /* ── DOM ELEMENTS ───────────────────────────────────────── */
+    const loginSection = document.getElementById("loginSection");
+    const portalSection = document.getElementById("portalSection");
     const schoolSelect = document.getElementById("schoolSelect");
     const teamsContainer = document.getElementById("teamsContainer");
     const actionBar = document.getElementById("actionBar");
@@ -332,11 +353,185 @@
     const participantCounter = document.getElementById("participantCounter");
     const totalCount = document.getElementById("totalCount");
     const addEventBtn = document.getElementById("addEventBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const loginStatus = document.getElementById("loginStatus");
 
     // Runtime state
-    let allTeams = [];             // Stores all teams loaded from Supabase
-    let uniqueSchools = [];        // Cleaned list of schools
-    let selectedSchoolTeams = [];  // Teams belonging to the currently chosen school
+    let allTeams = [];
+    let uniqueSchools = [];
+    let selectedSchoolTeams = [];
+    let currentUser = null;
+
+    /* ── AUTH STATE MANAGEMENT ──────────────────────────────── */
+    
+    // Check auth state immediately on load
+    async function checkAuthOnLoad() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (session && session.user) {
+        const email = session.user.email.trim().toLowerCase();
+        
+        // Verify user is in judges table
+        const { data: judgeData, error: judgeError } = await supabaseClient
+          .from('judges')
+          .select('*')
+          .eq('email', email)
+          .maybeSingle();
+
+        if (judgeError) {
+          console.error('Error checking judges table:', judgeError);
+          showStatus(document.getElementById('loginStatus'), 'error', 'Error verifying access');
+          await supabaseClient.auth.signOut();
+          showLogin();
+          return;
+        }
+
+        if (!judgeData) {
+          console.error('User not found in judges table:', email);
+          showStatus(document.getElementById('loginStatus'), 'error', 'You are not authorized to access this portal');
+          await supabaseClient.auth.signOut();
+          showLogin();
+          return;
+        }
+
+        currentUser = session.user;
+        showPortal();
+      } else {
+        currentUser = null;
+        showLogin();
+      }
+    }
+
+    // Also listen for auth state changes
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+      if (session && session.user) {
+        const email = session.user.email.trim().toLowerCase();
+        
+        // Verify user is in judges table
+        const { data: judgeData, error: judgeError } = await supabaseClient
+          .from('judges')
+          .select('*')
+          .eq('email', email)
+          .maybeSingle();
+
+        if (judgeError) {
+          console.error('Error checking judges table:', judgeError);
+          showStatus(document.getElementById('loginStatus'), 'error', 'Error verifying access');
+          await supabaseClient.auth.signOut();
+          currentUser = null;
+          showLogin();
+          return;
+        }
+
+        if (!judgeData) {
+          console.error('User not found in judges table:', email);
+          showStatus(document.getElementById('loginStatus'), 'error', 'You are not authorized to access this portal');
+          await supabaseClient.auth.signOut();
+          currentUser = null;
+          showLogin();
+          return;
+        }
+
+        currentUser = session.user;
+        showPortal();
+      } else {
+        currentUser = null;
+        showLogin();
+      }
+    });
+
+    // Run immediately
+    checkAuthOnLoad();
+
+    function showLogin() {
+      if (loginSection) {
+        loginSection.hidden = false;
+        loginSection.style.display = 'grid';
+      }
+      if (portalSection) {
+        portalSection.hidden = true;
+        portalSection.style.display = 'none';
+      }
+      window.scrollTo(0, 0);
+      initializeGoogleSignIn();
+    }
+
+    function showPortal() {
+      if (loginSection) {
+        loginSection.hidden = true;
+        loginSection.style.display = 'none';
+      }
+      if (portalSection) {
+        portalSection.hidden = false;
+        portalSection.style.display = 'block';
+      }
+      window.scrollTo(0, 0);
+      initPortal();
+    }
+
+    function initializeGoogleSignIn() {
+      const googleBtn = document.createElement('button');
+      googleBtn.id = 'googleOAuthBtn';
+      googleBtn.className = 'google-auth-button';
+      googleBtn.type = 'button';
+      googleBtn.innerHTML = `
+        <svg class="google-auth-button__mark" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M21.6 12.23c0-.78-.07-1.53-.2-2.23H12v4.22h5.37a4.6 4.6 0 0 1-1.99 3.02v2.51h3.22c1.89-1.74 3-4.3 3-7.52z"/>
+          <path fill="#34A853" d="M12 22c2.7 0 4.96-.89 6.6-2.42l-3.22-2.51c-.9.6-2.04.95-3.38.95-2.6 0-4.8-1.75-5.59-4.11H3.08v2.59A9.98 9.98 0 0 0 12 22z"/>
+          <path fill="#FBBC05" d="M6.41 13.91A6 6 0 0 1 6.1 12c0-.66.11-1.3.31-1.91V7.5H3.08A9.98 9.98 0 0 0 2 12c0 1.61.39 3.14 1.08 4.5l3.33-2.59z"/>
+          <path fill="#EA4335" d="M12 5.98c1.47 0 2.78.5 3.82 1.5l2.86-2.86C16.95 3.01 14.69 2 12 2a9.98 9.98 0 0 0-8.92 5.5l3.33 2.59C7.2 7.73 9.4 5.98 12 5.98z"/>
+        </svg>
+        Continue with Google
+      `;
+      
+      const container = document.getElementById('googleSignInButton');
+      if (container) {
+        container.appendChild(googleBtn);
+        googleBtn.addEventListener('click', handleGoogleOAuth);
+      }
+    }
+
+    async function handleGoogleOAuth() {
+      const loginStatus = document.getElementById('loginStatus');
+      const googleBtn = document.getElementById('googleOAuthBtn');
+      
+      if (googleBtn) googleBtn.disabled = true;
+      showStatus(loginStatus, 'info', 'Opening Google sign-in...');
+
+      try {
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            queryParams: { prompt: 'select_account' },
+            redirectTo: window.location.origin + window.location.pathname
+          }
+        });
+
+        if (error) {
+          console.error('OAuth error:', error);
+          showStatus(loginStatus, 'error', 'Sign-in failed: ' + error.message);
+          if (googleBtn) googleBtn.disabled = false;
+        }
+      } catch (err) {
+        console.error('Sign-in failed:', err);
+        showStatus(loginStatus, 'error', 'Sign-in failed: ' + err.message);
+        if (googleBtn) googleBtn.disabled = false;
+      }
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async () => {
+        await supabaseClient.auth.signOut();
+        currentUser = null;
+        showLogin();
+      });
+    }
+
+    function showStatus(el, type, msg) {
+      if (!el) return;
+      el.hidden = false;
+      el.dataset.type = type;
+      el.textContent = msg;
+    }
 
     /* ── INITIAL LOAD: GET ALL TEAMS ────────────────────────── */
     async function initPortal() {

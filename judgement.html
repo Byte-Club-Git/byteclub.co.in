@@ -8,6 +8,7 @@
   <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
   <link rel="stylesheet" href="assets/css/workshop.css">
   <link rel="stylesheet" href="assets/css/byteit-registration.css?v=20260604-shared-link-db">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <style>
     /* ─── Portal layout ─────────────────────────────────────── */
@@ -508,11 +509,12 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script type="module">
+  <script >
     
-    import {config} from './config.js';
+    const SUPABASE_URL= "https://ytqnrwrdkokwhwbvpuar.supabase.co/";
+    const  SUPABASE_ANON_KEY = "sb_publishable_71j0hKh8qEDS6_hDUK6d0A_DAFrNF2V";
 
-    const supabaseClient = supabase.createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY);
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     /* ══════════════════════════════════════════════════════════════
        SCORING CRITERIA — edit labels & max scores as needed
@@ -987,6 +989,137 @@
       };
       return map[code] || "Request failed (" + code + ").";
     }
+
+    /* ══════════════════════════════════════════════════════════════
+       GOOGLE OAUTH INITIALIZATION
+       ══════════════════════════════════════════════════════════════ */
+
+    // Initialize Google Sign-In when page loads
+    window.addEventListener('load', function() {
+      // Check if user is already logged into Supabase
+      supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (session && session.user) {
+          currentJudge = {
+            email: session.user.email,
+            name: session.user.user_metadata?.name || session.user.email,
+            role: 'judge' // You may want to set this based on your database
+          };
+          showPortal();
+        } else {
+          showLogin();
+          initializeGoogleSignIn();
+        }
+      });
+    });
+
+    // Initialize Google Sign-In button
+    function initializeGoogleSignIn() {
+      if (typeof google === 'undefined') {
+        console.error('Google Sign-In library not loaded');
+        return;
+      }
+
+      try {
+        google.accounts.id.initialize({
+          client_id: 'YOUR_GOOGLE_CLIENT_ID_HERE', // ⚠️ REPLACE WITH YOUR GOOGLE CLIENT ID
+          callback: handleGoogleSignIn,
+          auto_select: false
+        });
+
+        // Render the sign-in button
+        google.accounts.id.renderButton(
+          document.getElementById('googleSignInButton'),
+          {
+            theme: 'outline',
+            size: 'large',
+            width: '300',
+            locale: 'en'
+          }
+        );
+      } catch (err) {
+        console.error('Error initializing Google Sign-In:', err);
+        showStatus(document.getElementById('loginStatus'), 'error', 'Failed to load Google Sign-In');
+      }
+    }
+
+    // Handle Google Sign-In response
+    async function handleGoogleSignIn(response) {
+      const loginStatus = document.getElementById('loginStatus');
+      
+      if (!response.credential) {
+        showStatus(loginStatus, 'error', 'No credentials received from Google');
+        return;
+      }
+
+      showStatus(loginStatus, 'info', 'Signing in...');
+
+      try {
+        // Sign in to Supabase with Google ID Token
+        const { data, error } = await supabaseClient.auth.signInWithIdToken({
+          provider: 'google',
+          token: response.credential
+        });
+
+        if (error) {
+          console.error('Supabase auth error:', error);
+          throw new Error(error.message);
+        }
+
+        if (data.user) {
+          const userEmail = data.user.email;
+          
+          // Query the judges table to get the role
+          const { data: judgeData, error: judgeError } = await supabaseClient
+            .from('judges')
+            .select('role, name, event')
+            .eq('email', userEmail)
+            .single();
+
+          if (judgeError) {
+            console.error('Error fetching judge data:', judgeError);
+            showStatus(loginStatus, 'error', 'Judge not found in database');
+            await supabaseClient.auth.signOut();
+            return;
+          }
+
+          if (!judgeData) {
+            console.error('No judge record found for:', userEmail);
+            showStatus(loginStatus, 'error', 'You are not registered as a judge');
+            await supabaseClient.auth.signOut();
+            return;
+          }
+
+          currentJudge = {
+            email: userEmail,
+            name: judgeData.name || data.user.user_metadata?.name || userEmail,
+            role: judgeData.role, // Get actual role from database
+            event: judgeData.event || null
+          };
+
+          console.log('Logged in as:', currentJudge);
+
+          showStatus(loginStatus, 'success', 'Welcome! Loading portal...');
+          
+          setTimeout(() => {
+            showPortal();
+          }, 500);
+        }
+      } catch (err) {
+        console.error('Sign-in failed:', err);
+        showStatus(loginStatus, 'error', 'Sign-in failed: ' + err.message);
+      }
+    }
+
+    // Logout function
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      try {
+        await supabaseClient.auth.signOut();
+        currentJudge = null;
+        showLogin();
+      } catch (err) {
+        console.error('Logout failed:', err);
+      }
+    });
   </script>
 
 </body>
