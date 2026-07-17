@@ -8,7 +8,6 @@
   <link rel="icon" type="image/x-icon" href="assets/icons/logoBlue.webp">
   <link rel="stylesheet" href="assets/css/workshop.css">
   <link rel="stylesheet" href="assets/css/byteit-registration.css?v=20260604-shared-link-db">
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <style>
     /* ─── Portal layout ─────────────────────────────────────── */
@@ -223,13 +222,50 @@
     .j-bar-val   { font-size: 0.75rem; font-weight: 700; color: var(--accent-1); text-align: right; }
 
     .j-remarks {
-      margin-top: 0.75rem;
+      margin-top: 0.35rem;
       color: var(--muted);
       font-size: 0.82rem;
       font-style: italic;
       line-height: 1.5;
       border-left: 2px solid var(--lines);
       padding-left: 0.65rem;
+      margin-bottom: 0.6rem;
+    }
+
+    /* Admin specific judges breakdown listing */
+    .admin-judges-breakdown {
+      margin-top: 0.5rem;
+      border-top: 1px dashed var(--lines);
+      padding-top: 0.75rem;
+    }
+    .admin-breakdown-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .judge-score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      padding: 0.25rem 0;
+      color: var(--ink);
+    }
+    .judge-score-name { font-weight: 500; }
+    .judge-score-right { display: flex; align-items: center; gap: 0.75rem; }
+    .judge-score-val { font-weight: 700; color: var(--accent-1); }
+    .admin-edit-single-btn {
+      background: none;
+      border: none;
+      color: var(--accent-1);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
     }
 
     /* Action button on card */
@@ -415,7 +451,7 @@
           Continue with Google
         </button>
       </div>
-      <div class="byteit-status" data-status hidden></div>
+      <div class="byteit-status" id="loginStatus" hidden></div>
     </section>
   </main>
 
@@ -458,7 +494,7 @@
 
       <div class="byteit-modal__top">
         <div>
-          <p class="byteit-kicker">Scoring</p>
+          <p class="byteit-kicker" id="modalKicker">Scoring</p>
           <h2 style="font-size:clamp(1.5rem,4vw,2.4rem);font-weight:800;text-transform:uppercase;line-height:1;" id="modalTeamName">Team</h2>
           <p class="modal-team-sub" id="modalMembers"></p>
         </div>
@@ -487,7 +523,7 @@
 
         <div class="modal-actions" style="margin-top:1.25rem;">
           <button type="button" class="ghost-button" id="cancelBtn">Cancel</button>
-          <button type="submit" class="byteit-button" style="font-size:1rem;padding:0.85rem 2.5rem;">
+          <button type="submit" class="byteit-button" id="submitPointsBtn" style="font-size:1rem;padding:0.85rem 2.5rem;">
             Save Points
           </button>
         </div>
@@ -506,34 +542,54 @@
 
   <script src="https://unpkg.com/lenis@1.1.2/dist/lenis.min.js"></script>
   <script src="assets/js/resources.js"></script>
-
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script >
-    
+  <script>
     const SUPABASE_URL= "https://ytqnrwrdkokwhwbvpuar.supabase.co/";
-    const  SUPABASE_ANON_KEY = "sb_publishable_71j0hKh8qEDS6_hDUK6d0A_DAFrNF2V";
+    const SUPABASE_ANON_KEY = "sb_publishable_71j0hKh8qEDS6_hDUK6d0A_DAFrNF2V";
 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     /* ══════════════════════════════════════════════════════════════
-       SCORING CRITERIA — edit labels & max scores as needed
+       DIFERENT JUDGEMENT CRITERIA FOR ALL EVENTS
        ══════════════════════════════════════════════════════════════ */
-    const CRITERIA = [
-      { id: "innovation",    label: "Innovation",        max: 10 },
-      { id: "execution",     label: "Execution",         max: 10 },
-      { id: "presentation",  label: "Presentation",      max: 10 },
-      { id: "impact",        label: "Impact / Utility",  max: 10 },
-      { id: "design",        label: "Design & UX",       max: 10 },
-    ];
+    const EVENT_CRITERIA_MAP = {
+      "default": [
+        { id: "innovation",    label: "Innovation",        max: 10 },
+        { id: "execution",     label: "Execution",         max: 10 },
+        { id: "presentation",  label: "Presentation",      max: 10 },
+        { id: "impact",        label: "Impact & Utility",  max: 10 },
+        { id: "design",        label: "Design & UX",       max: 10 },
+      ],
+      "hackathon": [
+        { id: "technical",     label: "Technical Complexity",max: 20 },
+        { id: "originality",   label: "Originality",         max: 15 },
+        { id: "viability",     label: "Market Viability",    max: 10 },
+        { id: "ui_ux",         label: "UI/UX Quality",       max: 5  }
+      ],
+      "web design": [
+        { id: "visuals",       label: "Visual Design",       max: 15 },
+        { id: "accessibility", label: "Accessibility & Code",max: 15 },
+        { id: "responsiveness",label: "Responsiveness",      max: 10 },
+        { id: "content",       label: "Content Layout",      max: 10 }
+      ],
+      "coding": [
+        { id: "accuracy",      label: "Test Cases Passed",   max: 30 },
+        { id: "optimization",  label: "Code Optimization",   max: 10 },
+        { id: "readability",   label: "Readability & Style", max: 10 }
+      ]
+    };
 
-    /* ══════════════════════════════════════════════════════════════
-       DOM REFERENCES
-       ══════════════════════════════════════════════════════════════ */
+    function getCriteriaForEvent(eventName) {
+      if (!eventName) return EVENT_CRITERIA_MAP["default"];
+      const key = eventName.toLowerCase().trim();
+      return EVENT_CRITERIA_MAP[key] || EVENT_CRITERIA_MAP["default"];
+    }
+
     const loginSection    = document.getElementById("loginSection");
     const portalSection   = document.getElementById("portalSection");
     const googleBtn       = document.getElementById("googleBtn");
-    const loginStatus     = document.querySelector("[data-status]");
+    const loginStatus     = document.getElementById("loginStatus");
     const judgeNameEl     = document.getElementById("judgeName");
     const judgeEventEl    = document.getElementById("judgeEvent");
     const teamsContainer  = document.getElementById("teamsContainer");
@@ -544,44 +600,22 @@
     const criteriaRows    = document.getElementById("criteriaRows");
     const modalClose      = document.getElementById("modalClose");
     const modalStatus     = document.getElementById("modalStatus");
+    const submitPointsBtn = document.getElementById("submitPointsBtn");
     
-    // Filter Elements
     const adminFilterContainer = document.getElementById("adminFilterContainer");
     const eventFilter          = document.getElementById("eventFilter");
 
-    let currentJudge   = null;   // { email, name, event, role: 'admin' | 'judge' | 'viewer' }
-    let currentTeam    = null;   // { name, members[], event, points }
-    let allLoadedTeams = [];     // Cached copy of fetched teams for dynamic dropdown sorting
+    let currentJudge   = null;   
+    let currentTeam    = null;   
+    let allLoadedTeams = [];     
+    let globalScores   = [];     
 
-    /* ══════════════════════════════════════════════════════════════
-       BUILD SCORING CRITERIA INPUTS
-       ══════════════════════════════════════════════════════════════ */
-    CRITERIA.forEach(c => {
-      criteriaRows.insertAdjacentHTML("beforeend", `
-        <label class="criteria-row">
-          <span class="criteria-label">${c.label} <em>/ ${c.max}</em></span>
-          <input
-            type="number"
-            name="${c.id}"
-            min="0"
-            max="${c.max}"
-            step="0.5"
-            placeholder="0"
-            required
-            data-max="${c.max}"
-          >
-        </label>
-      `);
-    });
+    let activeTargetEmail = null;
+    let activeTargetName  = null;
 
-    /* ══════════════════════════════════════════════════════════════
-       AUTH STATE
-       ══════════════════════════════════════════════════════════════ */
     let isProcessingAuth = false;
 
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
-      console.log("[auth] onAuthStateChange fired:", event, "User:", session?.user ? session.user.email : null);
-      
       if (!session?.user) {
         currentJudge = null;
         showLogin();
@@ -594,22 +628,20 @@
       showStatus(loginStatus, "info", "Verifying credentials…");
 
       try {
-        const email = session.user.email.trim().toLowerCase();
+        const userEmail = session.user.email.trim().toLowerCase();
         
-        // Query the judges database table first
         const { data: judgeData, error: judgeError } = await supabaseClient
           .from('judges')
           .select('*')
-          .eq('email', email)
+          .eq('email', userEmail)
           .maybeSingle();
 
         if (judgeData) {
           const assignedEvent = (judgeData.event || "").toLowerCase();
           
-          // Self-Healing Logic: If the judge is mapped to "All Events" or "Admin", classify them as Admin
-          if (assignedEvent.includes("all") || assignedEvent.includes("admin")) {
+          if (assignedEvent.includes("all") || assignedEvent.includes("admin") || judgeData.role === "admin") {
             currentJudge = { 
-              email, 
+              email: userEmail, 
               ...judgeData,
               name: judgeData.name || "System Administrator",
               event: "All Events (Admin Mode)",
@@ -617,17 +649,16 @@
             };
           } else {
             currentJudge = { 
-              email, 
+              email: userEmail, 
               ...judgeData,
-              role: "judge"
+              role: judgeData.role || "judge"
             };
           }
           showPortal();
         } else {
-          // Default fallback to read-only viewer mode
           currentJudge = {
-            email,
-            name: session.user.user_metadata?.full_name || email,
+            email: userEmail,
+            name: session.user.user_metadata?.full_name || userEmail,
             event: "All Events (Viewer Mode)",
             role: "viewer"
           };
@@ -641,9 +672,6 @@
       }
     });
 
-    /* ══════════════════════════════════════════════════════════════
-       LOGIN — Google via Popup flow with explicit return URL
-       ══════════════════════════════════════════════════════════════ */
     googleBtn.addEventListener("click", async () => {
       googleBtn.disabled = true;
       showStatus(loginStatus, "info", "Opening Google sign-in…");
@@ -665,14 +693,16 @@
       }
     });
 
-    /* ══════════════════════════════════════════════════════════════
-       LOGOUT
-       ══════════════════════════════════════════════════════════════ */
-    logoutBtn.addEventListener("click", () => supabaseClient.auth.signOut());
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await supabaseClient.auth.signOut();
+        currentJudge = null;
+        showLogin();
+      } catch (err) {
+        console.error('Logout failed:', err);
+      }
+    });
 
-    /* ══════════════════════════════════════════════════════════════
-       SHOW PORTAL
-       ══════════════════════════════════════════════════════════════ */
     async function showPortal() {
       loginSection.hidden  = true;
       loginSection.style.display = "none";
@@ -690,25 +720,33 @@
         <div class="team-skeleton"></div>`;
 
       try {
-        let query = supabaseClient.from('team').select('*').eq('present', true);
+        let teamQuery = supabaseClient.from('team').select('*').eq('present', true);
 
-        // Crucial fix: Only filter the Supabase query if the user is a standard Judge
         if (currentJudge.role === "judge") {
           const targetEvent = currentJudge.event;
           if (!targetEvent) {
             teamsContainer.innerHTML = `<p class="portal-empty">Your judge profile does not have an assigned event.</p>`;
             return;
           }
-          query = query.eq('event', targetEvent);
+          teamQuery = teamQuery.eq('event', targetEvent);
         }
 
-        const { data: teamsData, error: teamsError } = await query;
-
+        const { data: teamsData, error: teamsError } = await teamQuery;
         if (teamsError) throw teamsError;
         allLoadedTeams = teamsData || [];
+
+        let scoresQuery = supabaseClient.from('team_scores').select('*');
+        if (currentJudge.role === "judge") {
+          scoresQuery = scoresQuery.eq('judge_email', currentJudge.email);
+        }
+        
+        const { data: scoresData, error: scoresError } = await scoresQuery;
+        if (scoresError) throw scoresError;
+        globalScores = scoresData || [];
+
       } catch (err) {
-        console.error("[db] failed to load teams:", err);
-        teamsContainer.innerHTML = `<p class="portal-empty">The portal is open, but teams could not be loaded right now.</p>`;
+        console.error("[db] failed to load data from Supabase:", err);
+        teamsContainer.innerHTML = `<p class="portal-empty">The portal is open, but data could not be loaded right now.</p>`;
         return;
       }
 
@@ -717,7 +755,6 @@
         return;
       }
 
-      // Show the event filter dropdown for Admins and Viewers
       if (currentJudge.role === "admin" || currentJudge.role === "viewer") {
         adminFilterContainer.style.display = "flex";
         populateEventFilter(allLoadedTeams);
@@ -728,12 +765,8 @@
       renderFilteredTeams();
     }
 
-    /* ══════════════════════════════════════════════════════════════
-       POPULATE EVENT DROPBOX (FILTER)
-       ══════════════════════════════════════════════════════════════ */
     function populateEventFilter(teams) {
       eventFilter.innerHTML = `<option value="All">All Events</option>`;
-      
       const events = [...new Set(teams.map(t => t.event).filter(Boolean))].sort();
       events.forEach(evt => {
         const opt = document.createElement("option");
@@ -745,19 +778,21 @@
 
     eventFilter.addEventListener("change", renderFilteredTeams);
 
-    /* ══════════════════════════════════════════════════════════════
-       RENDER FILTERED TEAMS
-       ══════════════════════════════════════════════════════════════ */
     function renderFilteredTeams() {
       const selectedEvent = eventFilter.value;
       
-      // Filter the cached teams array instantly
       const filtered = (selectedEvent === "All" || currentJudge.role === "judge") 
         ? allLoadedTeams 
         : allLoadedTeams.filter(t => t.event === selectedEvent);
 
-      const scoredCount = filtered.filter(t => t.points && Object.keys(t.points).length > 0).length;
-      updateProgress(scoredCount, filtered.length);
+      let scoredCount = 0;
+      if (currentJudge.role === "admin") {
+        scoredCount = filtered.filter(t => globalScores.some(s => s.team_name === t.name)).length;
+        updateProgress(scoredCount, filtered.length, "teams evaluated");
+      } else {
+        scoredCount = filtered.filter(t => globalScores.some(s => s.team_name === t.name && s.judge_email === currentJudge.email)).length;
+        updateProgress(scoredCount, filtered.length, "teams scored by you");
+      }
 
       teamsContainer.innerHTML = "";
       
@@ -767,69 +802,107 @@
       }
 
       filtered.forEach(team => {
-        teamsContainer.appendChild(buildTeamCard(team, Boolean(team.points), team.points));
+        const teamSubmissions = globalScores.filter(s => s.team_name === team.name);
+        const judgeSpecificRow = teamSubmissions.find(s => s.judge_email === currentJudge.email);
+        
+        teamsContainer.appendChild(buildTeamCard(team, teamSubmissions, judgeSpecificRow));
       });
     }
 
-    function updateProgress(done, total) {
+    function updateProgress(done, total, descriptiveLabel) {
       const pct = total ? Math.round((done / total) * 100) : 0;
       document.getElementById("progressFill").style.width  = pct + "%";
-      document.getElementById("progressText").textContent  = `${done} / ${total} teams listed`;
+      document.getElementById("progressText").textContent  = `${done} / ${total} ${descriptiveLabel}`;
       document.getElementById("progressPct").textContent   = pct + "%";
     }
 
-    /* ══════════════════════════════════════════════════════════════
-       TEAM CARD
-       ══════════════════════════════════════════════════════════════ */
-    function buildTeamCard(team, scored, pointsData) {
-      const TOTAL_MAX  = CRITERIA.reduce((s, c) => s + c.max, 0);
-      const memberList = (team.members || []).join(", ") || "—";
-      const card       = document.createElement("div");
-      card.className   = "j-card" + (scored ? " j-card--scored" : "");
+    function buildTeamCard(team, submissions, judgeRow) {
+      const activeCriteria = getCriteriaForEvent(team.event);
+      const TOTAL_MAX     = activeCriteria.reduce((s, c) => s + c.max, 0);
+      const memberList     = (team.members || []).join(", ") || "—";
+      const card           = document.createElement("div");
+      
+      const isScoredByMe = Boolean(judgeRow);
+      const hasAnyScores = submissions.length > 0;
+      
+      card.className   = "j-card" + (isScoredByMe ? " j-card--scored" : "");
       card.dataset.teamId = team.name; 
 
-      let bodyHTML;
-      const savedPoints = pointsData?.criteria || pointsData?.scores || pointsData || null;
+      let bodyHTML = "";
 
-      // PRIVACY PROTECTION: Viewers see progress indicators, but individual scores and remarks remain hidden
-      if (scored && savedPoints && currentJudge.role !== "viewer") {
-        const total = Number(pointsData?.total) || CRITERIA.reduce((s, c) => s + (Number(savedPoints[c.id]) || 0), 0);
-        const pct   = Math.round((total / TOTAL_MAX) * 100);
-        const bars  = CRITERIA.map(c => {
-          const v    = Number(savedPoints[c.id]) || 0;
-          const w    = Math.round((v / c.max) * 100);
-          return `<div class="j-bar-row">
-            <span class="j-bar-label">${escHtml(c.label)}</span>
-            <div class="j-bar-track"><div class="j-bar-fill" style="width:${w}%"></div></div>
-            <span class="j-bar-val">${v}</span>
-          </div>`;
-        }).join("");
+      if (currentJudge.role === "admin") {
+        if (hasAnyScores) {
+          const grandSum = submissions.reduce((sum, s) => sum + Number(s.total), 0);
+          const avgScore = (grandSum / submissions.length).toFixed(1);
+          const pct = Math.round((parseFloat(avgScore) / TOTAL_MAX) * 100);
 
-        bodyHTML = `
-          <div class="j-score-header">
-            <div class="j-score-big">${total}<span>/${TOTAL_MAX}</span></div>
-            <div class="j-score-pct">${pct}%</div>
-          </div>
-          <div class="j-bars">${bars}</div>
-          ${pointsData.remarks ? `<p class="j-remarks">"${escHtml(pointsData.remarks)}"</p>` : ""}`;
+          let judgesListHTML = submissions.map((s, idx) => `
+            <div class="judge-score-row">
+              <span class="judge-score-name">👤 ${escHtml(s.judge_name)}</span>
+              <div class="judge-score-right">
+                <span class="judge-score-val">${s.total} / ${TOTAL_MAX}</span>
+                <button type="button" class="admin-edit-single-btn" data-sub-idx="${idx}">✏️ Edit</button>
+              </div>
+            </div>
+            ${s.remarks ? `<p class="j-remarks">"${escHtml(s.remarks)}"</p>` : ""}
+          `).join("");
+
+          bodyHTML = `
+            <div class="j-score-header">
+              <div class="j-score-big">${avgScore}<span>/${TOTAL_MAX}</span></div>
+              <div class="j-score-pct">Avg (${pct}%)</div>
+            </div>
+            <div class="admin-judges-breakdown">
+              <div class="admin-breakdown-title">Scores by Judge (${submissions.length})</div>
+              ${judgesListHTML}
+            </div>`;
+        } else {
+          bodyHTML = `<div class="j-unscoredMsg">No scores submitted by any judges yet</div>`;
+        }
       } else {
-        bodyHTML = `<div class="j-unscoredMsg">
-          ${currentJudge.role === "viewer" ? "Scores visible to assigned judges only" : "No points entered yet"}
-        </div>`;
+        if (isScoredByMe && currentJudge.role !== "viewer") {
+          const savedPoints = judgeRow.criteria;
+          const total = Number(judgeRow.total);
+          const pct   = Math.round((total / TOTAL_MAX) * 100);
+          const bars  = activeCriteria.map(c => {
+            const v    = Number(savedPoints[c.id]) || 0;
+            const w    = Math.round((v / c.max) * 100);
+            return `<div class="j-bar-row">
+              <span class="j-bar-label">${escHtml(c.label)}</span>
+              <div class="j-bar-track"><div class="j-bar-fill" style="width:${w}%"></div></div>
+              <span class="j-bar-val">${v}</span>
+            </div>`;
+          }).join("");
+
+          bodyHTML = `
+            <div class="j-score-header">
+              <div class="j-score-big">${total}<span>/${TOTAL_MAX}</span></div>
+              <div class="j-score-pct">${pct}%</div>
+            </div>
+            <div class="j-bars">${bars}</div>
+            ${judgeRow.remarks ? `<p class="j-remarks">"${escHtml(judgeRow.remarks)}"</p>` : ""}`;
+        } else {
+          bodyHTML = `<div class="j-unscoredMsg">
+            ${currentJudge.role === "viewer" ? "Scores visible to assigned judges only" : "No points entered by you yet"}
+          </div>`;
+        }
       }
 
-      // Action control access: Viewer is strictly read-only
       let actionBtnHTML = "";
-      if (currentJudge.role === "admin" || currentJudge.role === "judge") {
+      if (currentJudge.role === "judge") {
         actionBtnHTML = `
-          <button class="j-score-btn ${scored ? "j-score-btn--edit" : ""}" data-team-id="${team.name}">
-            ${scored ? "Edit points" : "Enter points →"}
+          <button class="j-score-btn ${isScoredByMe ? "j-score-btn--edit" : ""}" id="primaryCardAction">
+            ${isScoredByMe ? "Edit your points" : "Enter points →"}
+          </button>`;
+      } else if (currentJudge.role === "admin") {
+        actionBtnHTML = `
+          <button class="j-score-btn" id="primaryCardAction" style="border-color: dashed var(--lines);">
+            + Add score row as Administrator
           </button>`;
       } else {
         actionBtnHTML = `<div style="text-align: center; color: var(--muted); font-size: 0.82rem; margin-top: 1rem; border: 1px dashed var(--lines); padding: 0.75rem; border-radius: 6px; font-style: italic;">Viewer Mode (Read-Only)</div>`;
       }
 
-      // Include a dynamic track tag on cards for Admins/Viewers
       const eventTag = (currentJudge.role !== "judge")
         ? `<span class="j-badge j-badge--pending" style="margin-top:0.3rem; background: rgba(0,0,0,0.05); color: var(--ink); border: 1px solid var(--lines);">${escHtml(team.event)}</span>`
         : "";
@@ -841,36 +914,78 @@
             ${eventTag}
             <p class="j-card__members" style="margin-top: 0.4rem;">${escHtml(memberList)}</p>
           </div>
-          <span class="j-badge ${scored ? "j-badge--done" : "j-badge--pending"}">
-            ${scored ? "✓ Entered" : "Pending"}
+          <span class="j-badge ${isScoredByMe ? "j-badge--done" : "j-badge--pending"}">
+            ${isScoredByMe ? "✓ Your Entry" : (hasAnyScores ? `${submissions.length} Judge(s)` : "Pending")}
           </span>
         </div>
         <div class="j-card__body">${bodyHTML}</div>
         ${actionBtnHTML}`;
 
-      const targetBtn = card.querySelector(".j-score-btn");
-      if (targetBtn) {
-        targetBtn.addEventListener("click", () => openScoreModal(team, pointsData));
+      const mainBtn = card.querySelector("#primaryCardAction");
+      if (mainBtn) {
+        mainBtn.addEventListener("click", () => {
+          openScoreModal(team, judgeRow, currentJudge.email, currentJudge.name);
+        });
       }
+
+      if (currentJudge.role === "admin" && hasAnyScores) {
+        card.querySelectorAll(".admin-edit-single-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const index = parseInt(btn.dataset.subIdx);
+            const selectedSubmission = submissions[index];
+            openScoreModal(team, selectedSubmission, selectedSubmission.judge_email, selectedSubmission.judge_name);
+          });
+        });
+      }
+
       return card;
     }
 
-    /* ══════════════════════════════════════════════════════════════
-       SCORE MODAL
-       ══════════════════════════════════════════════════════════════ */
-    function openScoreModal(team, existing) {
-      if (currentJudge.role === "viewer") return; // Safety blocker
+    function openScoreModal(team, existing, targetingEmail, targetingName) {
+      if (currentJudge.role === "viewer") return;
 
       currentTeam = team;
+      activeTargetEmail = targetingEmail || currentJudge.email;
+      activeTargetName  = targetingName || currentJudge.name;
+
       modalTeamName.textContent = team.name;
       document.getElementById("modalMembers").textContent = (team.members || []).join(", ") || "—";
+      
+      document.getElementById("modalKicker").textContent = `Scoring for: ${activeTargetName}`;
+      
       modalStatus.hidden = true;
+      submitPointsBtn.disabled = false; 
 
-      CRITERIA.forEach(c => {
-        const inp = scoringForm.querySelector(`[name="${c.id}"]`);
-        inp.value = existing?.criteria?.[c.id] ?? existing?.scores?.[c.id] ?? existing?.[c.id] ?? "";
-        inp.style.borderBottomColor = "";
+      // Redraw fields dynamically matching this specific category/event type
+      const activeCriteria = getCriteriaForEvent(team.event);
+      criteriaRows.innerHTML = ""; 
+      
+      activeCriteria.forEach(c => {
+        criteriaRows.insertAdjacentHTML("beforeend", `
+          <label class="criteria-row">
+            <span class="criteria-label">${c.label} <em>/ ${c.max}</em></span>
+            <input
+              type="number"
+              name="${c.id}"
+              min="0"
+              max="${c.max}"
+              step="0.5"
+              placeholder="0"
+              required
+              data-max="${c.max}"
+            >
+          </label>
+        `);
       });
+
+      activeCriteria.forEach(c => {
+        const inp = scoringForm.querySelector(`[name="${c.id}"]`);
+        if(inp) {
+          inp.value = existing?.criteria?.[c.id] ?? "";
+          inp.style.borderBottomColor = "";
+        }
+      });
+
       scoringForm.querySelector("[name=remarks]").value = existing?.remarks ?? "";
       recalcTotal();
 
@@ -882,14 +997,19 @@
       document.body.classList.remove("byteit-modal-open");
       scoreModal.hidden = true;
       currentTeam = null;
+      activeTargetEmail = null;
+      activeTargetName = null;
     }
     modalClose.addEventListener("click", closeScoreModal);
     scoreModal.addEventListener("click", e => { if (e.target === scoreModal) closeScoreModal(); });
 
     function recalcTotal() {
+      if (!currentTeam) return;
+      const activeCriteria = getCriteriaForEvent(currentTeam.event);
       const inputs = [...scoringForm.querySelectorAll("#criteriaRows input")];
       const total  = inputs.reduce((s, i) => s + (parseFloat(i.value) || 0), 0);
-      const max    = CRITERIA.reduce((s, c) => s + c.max, 0);
+      const max    = activeCriteria.reduce((s, c) => s + c.max, 0);
+      
       document.getElementById("liveTotal").textContent = Number.isInteger(total) ? total : total.toFixed(1);
       document.getElementById("livePct").textContent   = max ? Math.round((total / max) * 100) + "%" : "0%";
       const fill = document.getElementById("modalProgressFill");
@@ -897,64 +1017,64 @@
     }
     scoringForm.addEventListener("input", recalcTotal);
 
-    /* ── Submit Points payload ── */
     scoringForm.addEventListener("submit", async e => {
       e.preventDefault();
       if (!currentTeam || currentJudge.role === "viewer") return;
 
+      const activeCriteria = getCriteriaForEvent(currentTeam.event);
       let valid = true;
       const scores = {};
-      CRITERIA.forEach(c => {
+      
+      activeCriteria.forEach(c => {
         const inp = scoringForm.querySelector(`[name="${c.id}"]`);
-        const val = parseFloat(inp.value);
-        if (isNaN(val) || val < 0 || val > c.max) {
-          inp.style.borderBottomColor = "var(--danger)";
-          valid = false;
-        } else {
-          inp.style.borderBottomColor = "";
-          scores[c.id] = val;
+        if (inp) {
+          const val = parseFloat(inp.value);
+          if (isNaN(val) || val < 0 || val > c.max) {
+            inp.style.borderBottomColor = "var(--danger)";
+            valid = false;
+          } else {
+            inp.style.borderBottomColor = "";
+            scores[c.id] = val;
+          }
         }
       });
+      
       if (!valid) {
-        showStatus(modalStatus, "error", "Fix highlighted scores (check 0–max range).");
+        showStatus(modalStatus, "error", "Fix highlighted scores (check range).");
         return;
       }
 
-      const remarks   = scoringForm.querySelector("[name=remarks]").value.trim();
-      const submitBtn = scoringForm.querySelector("[type=submit]");
-      submitBtn.disabled = true;
+      const remarks = scoringForm.querySelector("[name=remarks]").value.trim();
+      submitPointsBtn.disabled = true;
       showStatus(modalStatus, "info", "Saving points…");
 
       try {
-        const total = CRITERIA.reduce((sum, c) => sum + (Number(scores[c.id]) || 0), 0);
+        const total = activeCriteria.reduce((sum, c) => sum + (Number(scores[c.id]) || 0), 0);
         
-        const pointsPayload = {
-          criteria: scores,
-          total,
-          remarks,
-          judgeEmail: currentJudge.email,
-          judgeName: currentJudge.name || currentJudge.email,
-          updatedAt: new Date().toISOString()
-        };
-
         const { error: updateError } = await supabaseClient
-          .from('team')
-          .update({ points: pointsPayload })
-          .eq('name', currentTeam.name);
+          .from('team_scores')
+          .upsert({ 
+            team_name: currentTeam.name,
+            judge_email: activeTargetEmail,
+            judge_name: activeTargetName,
+            criteria: scores,
+            total: total,
+            remarks: remarks,
+            updated_at: new Date().toISOString()
+          }, {
+            onConflict: 'team_name,judge_email'
+          });
 
         if (updateError) throw updateError;
 
-        showStatus(modalStatus, "success", "Saved!");
+        showStatus(modalStatus, "success", "Saved successfully!");
         setTimeout(() => { closeScoreModal(); showPortal(); }, 700);
       } catch (err) {
         showStatus(modalStatus, "error", "Save failed: " + err.message);
-        submitBtn.disabled = false;
+        submitPointsBtn.disabled = false; 
       }
     });
 
-    /* ══════════════════════════════════════════════════════════════
-       HELPERS
-       ══════════════════════════════════════════════════════════════ */
     function showLogin() {
       loginSection.hidden  = false;
       portalSection.hidden = true;
@@ -970,6 +1090,7 @@
     }
 
     function showStatus(el, type, msg) {
+      if(!el) return;
       el.hidden = false;
       el.dataset.type = type;
       el.textContent  = msg;
@@ -989,138 +1110,6 @@
       };
       return map[code] || "Request failed (" + code + ").";
     }
-
-    /* ══════════════════════════════════════════════════════════════
-       GOOGLE OAUTH INITIALIZATION
-       ══════════════════════════════════════════════════════════════ */
-
-    // Initialize Google Sign-In when page loads
-    window.addEventListener('load', function() {
-      // Check if user is already logged into Supabase
-      supabaseClient.auth.onAuthStateChange((event, session) => {
-        if (session && session.user) {
-          currentJudge = {
-            email: session.user.email,
-            name: session.user.user_metadata?.name || session.user.email,
-            role: 'judge' // You may want to set this based on your database
-          };
-          showPortal();
-        } else {
-          showLogin();
-          initializeGoogleSignIn();
-        }
-      });
-    });
-
-    // Initialize Google Sign-In button
-    function initializeGoogleSignIn() {
-      if (typeof google === 'undefined') {
-        console.error('Google Sign-In library not loaded');
-        return;
-      }
-
-      try {
-        google.accounts.id.initialize({
-          client_id: 'YOUR_GOOGLE_CLIENT_ID_HERE', // ⚠️ REPLACE WITH YOUR GOOGLE CLIENT ID
-          callback: handleGoogleSignIn,
-          auto_select: false
-        });
-
-        // Render the sign-in button
-        google.accounts.id.renderButton(
-          document.getElementById('googleSignInButton'),
-          {
-            theme: 'outline',
-            size: 'large',
-            width: '300',
-            locale: 'en'
-          }
-        );
-      } catch (err) {
-        console.error('Error initializing Google Sign-In:', err);
-        showStatus(document.getElementById('loginStatus'), 'error', 'Failed to load Google Sign-In');
-      }
-    }
-
-    // Handle Google Sign-In response
-    async function handleGoogleSignIn(response) {
-      const loginStatus = document.getElementById('loginStatus');
-      
-      if (!response.credential) {
-        showStatus(loginStatus, 'error', 'No credentials received from Google');
-        return;
-      }
-
-      showStatus(loginStatus, 'info', 'Signing in...');
-
-      try {
-        // Sign in to Supabase with Google ID Token
-        const { data, error } = await supabaseClient.auth.signInWithIdToken({
-          provider: 'google',
-          token: response.credential
-        });
-
-        if (error) {
-          console.error('Supabase auth error:', error);
-          throw new Error(error.message);
-        }
-
-        if (data.user) {
-          const userEmail = data.user.email;
-          
-          // Query the judges table to get the role
-          const { data: judgeData, error: judgeError } = await supabaseClient
-            .from('judges')
-            .select('role, name, event')
-            .eq('email', userEmail)
-            .single();
-
-          if (judgeError) {
-            console.error('Error fetching judge data:', judgeError);
-            showStatus(loginStatus, 'error', 'Judge not found in database');
-            await supabaseClient.auth.signOut();
-            return;
-          }
-
-          if (!judgeData) {
-            console.error('No judge record found for:', userEmail);
-            showStatus(loginStatus, 'error', 'You are not registered as a judge');
-            await supabaseClient.auth.signOut();
-            return;
-          }
-
-          currentJudge = {
-            email: userEmail,
-            name: judgeData.name || data.user.user_metadata?.name || userEmail,
-            role: judgeData.role, // Get actual role from database
-            event: judgeData.event || null
-          };
-
-          console.log('Logged in as:', currentJudge);
-
-          showStatus(loginStatus, 'success', 'Welcome! Loading portal...');
-          
-          setTimeout(() => {
-            showPortal();
-          }, 500);
-        }
-      } catch (err) {
-        console.error('Sign-in failed:', err);
-        showStatus(loginStatus, 'error', 'Sign-in failed: ' + err.message);
-      }
-    }
-
-    // Logout function
-    document.getElementById('logoutBtn').addEventListener('click', async () => {
-      try {
-        await supabaseClient.auth.signOut();
-        currentJudge = null;
-        showLogin();
-      } catch (err) {
-        console.error('Logout failed:', err);
-      }
-    });
   </script>
-
 </body>
 </html>
