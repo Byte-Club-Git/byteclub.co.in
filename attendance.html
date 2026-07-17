@@ -15,7 +15,7 @@
       padding-bottom: 8vh;
     }
 
-    /* School Selector Styling */
+    /* School Selector & Utilities Row */
     .selection-wrap {
       margin-top: 2rem;
       background: var(--panel);
@@ -25,7 +25,7 @@
       backdrop-filter: blur(18px);
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 1rem;
     }
     .selection-label {
       font-size: 0.78rem;
@@ -52,11 +52,37 @@
       border-color: var(--accent-1);
     }
 
+    .utility-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .add-event-btn {
+      background: rgba(43,78,107,0.15);
+      color: var(--accent-1);
+      border: 1px solid var(--lines);
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: background 0.2s;
+    }
+    .add-event-btn:hover {
+      background: rgba(43,78,107,0.3);
+    }
+
     /* Teams container */
     #teamsContainer {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
-      gap: 1.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+      gap: 1.5rem;
       margin-top: 2rem;
     }
 
@@ -66,7 +92,7 @@
       border-radius: 8px;
       background: var(--panel);
       backdrop-filter: blur(18px);
-      padding: 1.4rem;
+      padding: 1.5rem;
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
@@ -84,6 +110,7 @@
       gap: 0.75rem;
     }
     .j-card__event-badge {
+      display: inline-block;
       background: rgba(43,78,107,0.1);
       color: var(--accent-1);
       padding: 0.25rem 0.6rem;
@@ -92,19 +119,72 @@
       text-transform: uppercase;
       border-radius: 4px;
       letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
     }
     .j-card__name {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: 800;
       line-height: 1.2;
       text-transform: uppercase;
+    }
+
+    /* Dynamic Row Layout For Members */
+    .members-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
       margin-top: 0.5rem;
     }
-    .j-card__members {
-      margin-top: 0.3rem;
-      color: var(--muted);
-      font-size: 0.85rem;
-      line-height: 1.5;
+    .member-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .card-input {
+      padding: 0.55rem;
+      background: var(--background);
+      color: var(--ink);
+      border: 1px solid var(--lines);
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+      outline: none;
+      font-family: Poppins, sans-serif;
+      font-size: 0.88rem;
+    }
+    .card-input:focus {
+      border-color: var(--accent-1);
+    }
+
+    /* Delete and Add Member Button Variants */
+    .remove-member-btn {
+      background: rgba(234,67,53,0.1);
+      color: var(--danger);
+      border: 1px solid rgba(234,67,53,0.2);
+      border-radius: 4px;
+      padding: 0.55rem 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .remove-member-btn:hover {
+      background: rgba(234,67,53,0.2);
+    }
+    .add-member-row-btn {
+      background: transparent;
+      color: var(--accent-1);
+      border: 1px dashed var(--lines);
+      border-radius: 4px;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: background 0.2s;
+      font-family: Poppins, sans-serif;
+    }
+    .add-member-row-btn:hover {
+      background: rgba(43,78,107,0.05);
+      border-color: var(--accent-1);
     }
 
     /* Stylish Switch Toggle */
@@ -206,7 +286,7 @@
       <h1 class="byteit-title" style="font-size:clamp(2.5rem,6vw,4.5rem); margin-top:0.4rem; line-height:0.9;">
         Attendance
       </h1>
-      <p class="portal-meta" style="color: var(--muted); margin-top: 0.5rem;">Mark and save present schools and teams</p>
+      <p class="portal-meta" style="color: var(--muted); margin-top: 0.5rem;">Mark, manage rows, and save present schools and teams</p>
     </div>
 
     <div class="selection-wrap">
@@ -214,6 +294,13 @@
       <select id="schoolSelect" class="school-dropdown">
         <option value="" disabled selected>Loading schools...</option>
       </select>
+      
+      <div class="utility-controls">
+        <div id="participantCounter" style="display: none; font-size: 1rem; font-weight: 700; color: var(--accent-1);">
+          Total Participants Loaded: <span id="totalCount">0</span>
+        </div>
+        <button id="addEventBtn" class="add-event-btn" type="button" style="display: none;">+ Add Event / Team</button>
+      </div>
     </div>
 
     <div id="teamsContainer">
@@ -223,7 +310,7 @@
     <div class="action-bar" id="actionBar" style="display: none;">
       <div class="toast-status" id="saveStatus"></div>
       <button class="byteit-button" id="saveBtn" type="button" style="padding: 1rem 3rem; font-size: 1.05rem;">
-        Save Attendance Changes
+        Save Attendance & Details
       </button>
     </div>
   </div>
@@ -232,8 +319,7 @@
 
   <script type="module">
     import {config} from './config.js';
-    const SUPABASE_URL = config.SUPABASE_URL; 
-    const SUPABASE_ANON_KEY = config.SUPABASE_ANON_KEY;
+
 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -243,6 +329,9 @@
     const actionBar = document.getElementById("actionBar");
     const saveBtn = document.getElementById("saveBtn");
     const saveStatus = document.getElementById("saveStatus");
+    const participantCounter = document.getElementById("participantCounter");
+    const totalCount = document.getElementById("totalCount");
+    const addEventBtn = document.getElementById("addEventBtn");
 
     // Runtime state
     let allTeams = [];             // Stores all teams loaded from Supabase
@@ -274,13 +363,7 @@
         uniqueSchools = Array.from(schoolSet).sort();
 
         // Populate the dropdown
-        schoolSelect.innerHTML = `<option value="" disabled selected>-- Choose a School --</option>`;
-        uniqueSchools.forEach(school => {
-          const opt = document.createElement("option");
-          opt.value = school;
-          opt.textContent = school;
-          schoolSelect.appendChild(opt);
-        });
+        updateSchoolDropdown();
 
       } catch (err) {
         console.error("Failed to load teams:", err);
@@ -288,10 +371,24 @@
       }
     }
 
+    function updateSchoolDropdown() {
+      const savedValue = schoolSelect.value;
+      schoolSelect.innerHTML = `<option value="" disabled ${!savedValue ? 'selected' : ''}>-- Choose a School --</option>`;
+      uniqueSchools.forEach(school => {
+        const opt = document.createElement("option");
+        opt.value = school;
+        opt.textContent = school;
+        if (school === savedValue) opt.selected = true;
+        schoolSelect.appendChild(opt);
+      });
+    }
+
     /* ── DROPDOWN CHANGE HANDLER ────────────────────────────── */
     schoolSelect.addEventListener("change", (e) => {
-      const targetSchool = e.target.value;
-      
+      filterAndRenderSchoolTeams(e.target.value);
+    });
+
+    function filterAndRenderSchoolTeams(targetSchool) {
       // Filter teams that correspond to this school
       selectedSchoolTeams = allTeams.filter(t => {
         const nameStr = String(t.name);
@@ -300,11 +397,26 @@
       });
 
       renderTeamCards();
+      updateParticipantCount();
       
-      // Hide status toast and reveal Action Row
+      // Setup UI configurations
       saveStatus.style.display = "none";
       actionBar.style.display = "flex";
-    });
+      addEventBtn.style.display = "inline-block";
+    }
+
+    /* ── UPDATE PARTICIPANT COUNT ───────────────────────────── */
+    function updateParticipantCount() {
+      let grandTotal = 0;
+      selectedSchoolTeams.forEach(team => {
+        if (team.members && Array.isArray(team.members)) {
+          grandTotal += team.members.length;
+        }
+      });
+      
+      totalCount.textContent = grandTotal;
+      participantCounter.style.display = "block";
+    }
 
     /* ── RENDER ATTENDANCE CARDS ────────────────────────────── */
     function renderTeamCards() {
@@ -317,9 +429,9 @@
       teamsContainer.innerHTML = "";
       selectedSchoolTeams.forEach(team => {
         const isPresent = Boolean(team.present);
-        const cleanEventName = team.event || "Event";
+        const cleanEventName = team.event || "";
         
-        // Extract team sub-name (e.g. "Snap.IT Team 1")
+        // Extract team sub-name variant (e.g. "Snap.IT Team 1")
         let displayTitle = team.name;
         if (team.name.includes(" - ")) {
           displayTitle = team.name.split(" - ").slice(1).join(" - ");
@@ -329,14 +441,22 @@
         card.className = `j-card ${isPresent ? 'j-card--present' : ''}`;
         card.id = `card-${escapeId(team.name)}`;
 
-        const membersList = (team.members || []).join(", ") || "No members assigned";
-
+        // Base structural framing of text and member containers
         card.innerHTML = `
-          <div class="j-card__top">
-            <div>
-              <span class="j-card__event-badge">${escHtml(cleanEventName)}</span>
-              <h2 class="j-card__name">${escHtml(displayTitle)}</h2>
-              <p class="j-card__members">${escHtml(membersList)}</p>
+          <div class="j-card__top" style="width: 100%;">
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 0.5rem;">
+              <div>
+                <span class="j-card__event-badge">${escHtml(cleanEventName)}</span>
+                <h3 class="j-card__name">${escHtml(displayTitle)}</h3>
+              </div>
+
+              <div style="display: flex; gap: 0.3rem; flex-direction: column; margin-top: 0.5rem;">
+                <label style="font-size: 0.68rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Team Members</label>
+                <div class="members-section" id="membersSection-${escapeId(team.name)}">
+                  </div>
+                <button type="button" class="add-member-row-btn" style="margin-top: 0.4rem;">+ Add  Member  Row</button>
+              </div>
+
             </div>
           </div>
           <div class="attendance-control">
@@ -350,17 +470,76 @@
           </div>
         `;
 
-        // Interactive toggle change (local updates)
+        const membersSection = card.querySelector(`#membersSection-${escapeId(team.name)}`);
+        const addRowBtn = card.querySelector('.add-member-row-btn');
+
+        // Function to render a single member row block
+        function renderMemberRow(nameValue, index) {
+          const row = document.createElement('div');
+          row.className = 'member-row';
+          row.innerHTML = `
+            <input type="text" class="card-input member-field" value="${escHtml(nameValue)}" placeholder="Enter member name">
+            <button type="button" class="remove-member-btn"></button>
+          `;
+
+          // Track changes on input field values
+          const inputField = row.querySelector('.member-field');
+          inputField.addEventListener('input', () => {
+            rebuildTeamMembersArray();
+          });
+
+          // Delete row functionality
+          const removeBtn = row.querySelector('.remove-member-btn');
+          removeBtn.addEventListener('click', () => {
+            row.remove();
+            rebuildTeamMembersArray();
+          });
+
+          membersSection.appendChild(row);
+        }
+
+        // Parse state objects back into local variable structures
+        function rebuildTeamMembersArray() {
+          const inputs = membersSection.querySelectorAll('.member-field');
+          const finalMembersList = [];
+          inputs.forEach(inp => {
+            if (inp.value.trim() !== "") {
+              finalMembersList.push(inp.value.trim());
+            }
+          });
+
+          team.members = finalMembersList;
+          const masterRef = allTeams.find(t => t.name === team.name);
+          if (masterRef) masterRef.members = finalMembersList;
+
+          // Re-evaluate global participant count dynamically
+          updateParticipantCount();
+        }
+
+        // Initialize rows with values loaded from array state
+        if (team.members && team.members.length > 0) {
+          team.members.forEach((member, idx) => {
+            renderMemberRow(member, idx);
+          });
+        } else {
+          // Present at least one empty entry slot if array structure is clear
+          renderMemberRow("", 0);
+        }
+
+        // Append empty element fields on button click interactions
+        addRowBtn.addEventListener('click', () => {
+          renderMemberRow("", membersSection.children.length);
+        });
+
+        // Interactive toggle status checkbox changes
         const checkbox = card.querySelector('input[type="checkbox"]');
         checkbox.addEventListener("change", (event) => {
           const checked = event.target.checked;
           
-          // Update local state arrays
           team.present = checked;
           const masterRef = allTeams.find(t => t.name === team.name);
           if (masterRef) masterRef.present = checked;
 
-          // Update UI styles immediately
           const cardEl = document.getElementById(`card-${escapeId(team.name)}`);
           const labelEl = document.getElementById(`status-label-${escapeId(team.name)}`);
           
@@ -379,30 +558,86 @@
       });
     }
 
-    /* ── SAVE ATTENDANCE TO DATABASE ────────────────────────── */
+    /* ── ADD NEW EVENT & TEAM BUTTON INTERACTION ───────────── */
+    addEventBtn.addEventListener("click", () => {
+      const currentSchool = schoolSelect.value;
+      if (!currentSchool) return;
+
+      const newEventName = prompt("Enter the Event Name (e.g., Snap.IT):", "New Event");
+      if (newEventName === null || newEventName.trim() === "") return;
+
+      const newTeamVariant = prompt("Enter the Team Variant Name (e.g., Team 1):", "Team 1");
+      if (newTeamVariant === null || newTeamVariant.trim() === "") return;
+
+      const fullGeneratedKeyName = `${currentSchool} - ${newTeamVariant.trim()}`;
+
+      // Check if team identity key exists locally
+      if (allTeams.some(t => t.name.toLowerCase() === fullGeneratedKeyName.toLowerCase())) {
+        alert("A team configuration with this name already exists for this school.");
+        return;
+      }
+
+      // Format clean runtime entry model state object
+      const newTeamObject = {
+        name: fullGeneratedKeyName,
+        event: newEventName.trim(),
+        members: [],
+        present: false,
+        isNewRecord: true // Internal save mutation tracking flag
+      };
+
+      // Append entry row updates inside local tracking lists
+      allTeams.push(newTeamObject);
+      filterAndRenderSchoolTeams(currentSchool);
+      showToast("info", "New event/team added locally! Don't forget to save changes.");
+    });
+
+    /* ── SAVE ATTENDANCE & DETAILS TO DATABASE ───────────────── */
     saveBtn.addEventListener("click", async () => {
       saveBtn.disabled = true;
-      showToast("info", "Updating attendance database...");
+      showToast("info", "Updating and syncing entries with remote database...");
 
       try {
-        // Build individual update promises in parallel
         const updatePromises = selectedSchoolTeams.map(team => {
-          return supabaseClient
-            .from('team')
-            .update({ present: team.present })
-            .eq('name', team.name);
+          if (team.isNewRecord) {
+            const cleanedInsertRecord = { 
+              name: team.name, 
+              event: team.event, 
+              members: team.members || [], 
+              present: team.present 
+            };
+            return supabaseClient
+              .from('team')
+              .insert([cleanedInsertRecord]);
+          } else {
+            return supabaseClient
+              .from('team')
+              .update({ 
+                present: team.present,
+                members: team.members || []
+              })
+              .eq('name', team.name);
+          }
         });
 
         const results = await Promise.all(updatePromises);
         
-        // Inspect if any queries threw errors
+        // Check if any network operations failed
         const errorResult = results.find(r => r.error);
         if (errorResult) throw errorResult.error;
 
-        showToast("success", "Attendance successfully saved!");
+        showToast("success", "All updates and row values synced successfully!");
+
+        // Normalize state reference targets after successful updates are completed
+        selectedSchoolTeams.forEach(t => {
+          if (t.isNewRecord) {
+            delete t.isNewRecord;
+          }
+        });
+
       } catch (err) {
-        console.error("Save error:", err);
-        showToast("error", "Failed to save: " + err.message);
+        console.error("Database save mutation error:", err);
+        showToast("error", "Failed to save mutations: " + err.message);
       } finally {
         saveBtn.disabled = false;
       }
@@ -422,7 +657,6 @@
     }
 
     function escapeId(str) {
-      // Replaces whitespace and special characters so they can safely act as DOM element IDs
       return btoa(unescape(encodeURIComponent(str))).replace(/=/g, "");
     }
 

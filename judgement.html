@@ -75,6 +75,39 @@
       transition: width 0.6s cubic-bezier(0.25,1,0.5,1);
     }
 
+    /* Event Filter Dropdown Styling */
+    .filter-wrapper {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.5rem 0;
+    }
+    .filter-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .filter-select {
+      background: var(--panel);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--lines);
+      color: var(--ink);
+      font-family: Poppins, sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.5rem 1.8rem 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .filter-select:focus {
+      border-color: var(--accent-1);
+    }
+
     /* Teams grid */
     #teamsContainer {
       display: grid;
@@ -409,6 +442,13 @@
       <div class="j-progress-track"><div id="progressFill"></div></div>
     </div>
 
+    <div class="filter-wrapper" id="adminFilterContainer" style="display: none;">
+      <span class="filter-label">Filter Event:</span>
+      <select class="filter-select" id="eventFilter">
+        <option value="All">All Events</option>
+      </select>
+    </div>
+
     <div id="teamsContainer"></div>
   </div>
 
@@ -471,9 +511,6 @@
   <script type="module">
     
     import {config} from './config.js';
-    /* ── SUPABASE CONFIG ────────────────────────────────────── */
-    //const SUPABASE_URL = "%SUPABASE_URL%"; // Fill in your project URL
-    //const SUPABASE_ANON_KEY = "%SUPABASE_ANON_KEY%"; // Fill in your anon key -->
 
     const supabaseClient = supabase.createClient(config.SUPABASE_URL, config.SUPABASE_ANON_KEY);
 
@@ -505,9 +542,14 @@
     const criteriaRows    = document.getElementById("criteriaRows");
     const modalClose      = document.getElementById("modalClose");
     const modalStatus     = document.getElementById("modalStatus");
+    
+    // Filter Elements
+    const adminFilterContainer = document.getElementById("adminFilterContainer");
+    const eventFilter          = document.getElementById("eventFilter");
 
-    let currentJudge = null;   // { email, name, event }
-    let currentTeam  = null;   // { name, members[], event, points }
+    let currentJudge   = null;   // { email, name, event, role: 'admin' | 'judge' | 'viewer' }
+    let currentTeam    = null;   // { name, members[], event, points }
+    let allLoadedTeams = [];     // Cached copy of fetched teams for dynamic dropdown sorting
 
     /* ══════════════════════════════════════════════════════════════
        BUILD SCORING CRITERIA INPUTS
@@ -547,32 +589,50 @@
       if (isProcessingAuth) return;
       isProcessingAuth = true;
 
-      showStatus(loginStatus, "info", "Verifying judge credentials…");
+      showStatus(loginStatus, "info", "Verifying credentials…");
 
       try {
-        const judgeEmail = session.user.email.trim().toLowerCase();
+        const email = session.user.email.trim().toLowerCase();
         
+        // Query the judges database table first
         const { data: judgeData, error: judgeError } = await supabaseClient
           .from('judges')
           .select('*')
-          .eq('email', judgeEmail)
+          .eq('email', email)
           .maybeSingle();
 
-        if (judgeError || !judgeData) {
-          console.log("[db] judge doc exists: false for", judgeEmail);
-          showStatus(loginStatus, "error", "This Google account is not a registered judge. Contact the organiser.");
+        if (judgeData) {
+          const assignedEvent = (judgeData.event || "").toLowerCase();
           
-          await supabaseClient.auth.signOut();
-          isProcessingAuth = false;
-          return;
+          // Self-Healing Logic: If the judge is mapped to "All Events" or "Admin", classify them as Admin
+          if (assignedEvent.includes("all") || assignedEvent.includes("admin")) {
+            currentJudge = { 
+              email, 
+              ...judgeData,
+              name: judgeData.name || "System Administrator",
+              event: "All Events (Admin Mode)",
+              role: "admin"
+            };
+          } else {
+            currentJudge = { 
+              email, 
+              ...judgeData,
+              role: "judge"
+            };
+          }
+          showPortal();
+        } else {
+          // Default fallback to read-only viewer mode
+          currentJudge = {
+            email,
+            name: session.user.user_metadata?.full_name || email,
+            event: "All Events (Viewer Mode)",
+            role: "viewer"
+          };
+          showPortal();
         }
-        
-        console.log("[db] judge doc exists: true for", judgeEmail);
-        currentJudge = { email: judgeEmail, ...judgeData };
-        console.log("[auth] judge loaded:", currentJudge);
-        showPortal();
       } catch (err) {
-        console.error("[db] Supabase check failed:", err);
+        console.error("[db] Access verification failed:", err);
         showStatus(loginStatus, "error", "Database error: " + err.message);
       } finally {
         isProcessingAuth = false;
@@ -580,9 +640,6 @@
     });
 
     /* ══════════════════════════════════════════════════════════════
-       LOGIN — Google via Popup flow
-       ══════════════════════════════════════════════════════════════ */
-   /* ══════════════════════════════════════════════════════════════
        LOGIN — Google via Popup flow with explicit return URL
        ══════════════════════════════════════════════════════════════ */
     googleBtn.addEventListener("click", async () => {
@@ -593,7 +650,6 @@
         provider: 'google',
         options: {
           queryParams: { prompt: 'select_account' },
-          // Forces the auth flow to route explicitly back to this exact sub-page
           redirectTo: window.location.origin + window.location.pathname
         }
       });
@@ -603,7 +659,7 @@
         showStatus(loginStatus, "error", friendlyError(error.status || error.message));
         googleBtn.disabled = false;
       } else {
-        showStatus(loginStatus, "success", "Signed in. Verifying judge access…");
+        showStatus(loginStatus, "success", "Signed in. Loading portal…");
       }
     });
 
@@ -623,45 +679,92 @@
       portalSection.style.display = "block";
       requestAnimationFrame(() => portalSection.scrollIntoView({ block: "start" }));
 
-      judgeNameEl.textContent  = currentJudge.name  || currentJudge.email;
-      judgeEventEl.textContent = currentJudge.event || "—";
+      judgeNameEl.textContent  = currentJudge.name;
+      judgeEventEl.textContent = currentJudge.event;
 
       teamsContainer.innerHTML = `
         <div class="team-skeleton"></div>
         <div class="team-skeleton"></div>
         <div class="team-skeleton"></div>`;
 
-      let teams = [];
       try {
-        const targetEvent = currentJudge.event;
-        if (!targetEvent) {
-          teamsContainer.innerHTML = `<p class="portal-empty">Your judge profile does not have an assigned event.</p>`;
-          return;
+        let query = supabaseClient.from('team').select('*').eq('present', true);
+
+        // Crucial fix: Only filter the Supabase query if the user is a standard Judge
+        if (currentJudge.role === "judge") {
+          const targetEvent = currentJudge.event;
+          if (!targetEvent) {
+            teamsContainer.innerHTML = `<p class="portal-empty">Your judge profile does not have an assigned event.</p>`;
+            return;
+          }
+          query = query.eq('event', targetEvent);
         }
 
-        const { data: teamsData, error: teamsError } = await supabaseClient
-          .from('team')
-          .select('*')
-          .eq('event', targetEvent);
+        const { data: teamsData, error: teamsError } = await query;
 
         if (teamsError) throw teamsError;
-        teams = teamsData || [];
+        allLoadedTeams = teamsData || [];
       } catch (err) {
         console.error("[db] failed to load teams:", err);
-        teamsContainer.innerHTML = `<p class="portal-empty">The judge portal is open, but teams could not be loaded right now.</p>`;
+        teamsContainer.innerHTML = `<p class="portal-empty">The portal is open, but teams could not be loaded right now.</p>`;
         return;
       }
 
-      if (teams.length === 0) {
-        teamsContainer.innerHTML = `<p class="portal-empty">No teams registered for <strong>${escHtml(currentJudge.event)}</strong> yet.</p>`;
+      if (allLoadedTeams.length === 0) {
+        teamsContainer.innerHTML = `<p class="portal-empty">No teams registered/present here yet.</p>`;
         return;
       }
 
-      const scoredCount = teams.filter(t => t.points && Object.keys(t.points).length > 0).length;
-      updateProgress(scoredCount, teams.length);
+      // Show the event filter dropdown for Admins and Viewers
+      if (currentJudge.role === "admin" || currentJudge.role === "viewer") {
+        adminFilterContainer.style.display = "flex";
+        populateEventFilter(allLoadedTeams);
+      } else {
+        adminFilterContainer.style.display = "none";
+      }
+
+      renderFilteredTeams();
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       POPULATE EVENT DROPBOX (FILTER)
+       ══════════════════════════════════════════════════════════════ */
+    function populateEventFilter(teams) {
+      eventFilter.innerHTML = `<option value="All">All Events</option>`;
+      
+      const events = [...new Set(teams.map(t => t.event).filter(Boolean))].sort();
+      events.forEach(evt => {
+        const opt = document.createElement("option");
+        opt.value = evt;
+        opt.textContent = evt;
+        eventFilter.appendChild(opt);
+      });
+    }
+
+    eventFilter.addEventListener("change", renderFilteredTeams);
+
+    /* ══════════════════════════════════════════════════════════════
+       RENDER FILTERED TEAMS
+       ══════════════════════════════════════════════════════════════ */
+    function renderFilteredTeams() {
+      const selectedEvent = eventFilter.value;
+      
+      // Filter the cached teams array instantly
+      const filtered = (selectedEvent === "All" || currentJudge.role === "judge") 
+        ? allLoadedTeams 
+        : allLoadedTeams.filter(t => t.event === selectedEvent);
+
+      const scoredCount = filtered.filter(t => t.points && Object.keys(t.points).length > 0).length;
+      updateProgress(scoredCount, filtered.length);
 
       teamsContainer.innerHTML = "";
-      teams.forEach(team => {
+      
+      if (filtered.length === 0) {
+        teamsContainer.innerHTML = `<p class="portal-empty">No teams found for the selected event.</p>`;
+        return;
+      }
+
+      filtered.forEach(team => {
         teamsContainer.appendChild(buildTeamCard(team, Boolean(team.points), team.points));
       });
     }
@@ -669,12 +772,12 @@
     function updateProgress(done, total) {
       const pct = total ? Math.round((done / total) * 100) : 0;
       document.getElementById("progressFill").style.width  = pct + "%";
-      document.getElementById("progressText").textContent  = `${done} / ${total} teams entered`;
+      document.getElementById("progressText").textContent  = `${done} / ${total} teams listed`;
       document.getElementById("progressPct").textContent   = pct + "%";
     }
 
     /* ══════════════════════════════════════════════════════════════
-       TEAM CARD (Identified by team.name field)
+       TEAM CARD
        ══════════════════════════════════════════════════════════════ */
     function buildTeamCard(team, scored, pointsData) {
       const TOTAL_MAX  = CRITERIA.reduce((s, c) => s + c.max, 0);
@@ -685,7 +788,9 @@
 
       let bodyHTML;
       const savedPoints = pointsData?.criteria || pointsData?.scores || pointsData || null;
-      if (scored && savedPoints) {
+
+      // PRIVACY PROTECTION: Viewers see progress indicators, but individual scores and remarks remain hidden
+      if (scored && savedPoints && currentJudge.role !== "viewer") {
         const total = Number(pointsData?.total) || CRITERIA.reduce((s, c) => s + (Number(savedPoints[c.id]) || 0), 0);
         const pct   = Math.round((total / TOTAL_MAX) * 100);
         const bars  = CRITERIA.map(c => {
@@ -706,25 +811,45 @@
           <div class="j-bars">${bars}</div>
           ${pointsData.remarks ? `<p class="j-remarks">"${escHtml(pointsData.remarks)}"</p>` : ""}`;
       } else {
-        bodyHTML = `<div class="j-unscoredMsg">No points entered yet</div>`;
+        bodyHTML = `<div class="j-unscoredMsg">
+          ${currentJudge.role === "viewer" ? "Scores visible to assigned judges only" : "No points entered yet"}
+        </div>`;
       }
+
+      // Action control access: Viewer is strictly read-only
+      let actionBtnHTML = "";
+      if (currentJudge.role === "admin" || currentJudge.role === "judge") {
+        actionBtnHTML = `
+          <button class="j-score-btn ${scored ? "j-score-btn--edit" : ""}" data-team-id="${team.name}">
+            ${scored ? "Edit points" : "Enter points →"}
+          </button>`;
+      } else {
+        actionBtnHTML = `<div style="text-align: center; color: var(--muted); font-size: 0.82rem; margin-top: 1rem; border: 1px dashed var(--lines); padding: 0.75rem; border-radius: 6px; font-style: italic;">Viewer Mode (Read-Only)</div>`;
+      }
+
+      // Include a dynamic track tag on cards for Admins/Viewers
+      const eventTag = (currentJudge.role !== "judge")
+        ? `<span class="j-badge j-badge--pending" style="margin-top:0.3rem; background: rgba(0,0,0,0.05); color: var(--ink); border: 1px solid var(--lines);">${escHtml(team.event)}</span>`
+        : "";
 
       card.innerHTML = `
         <div class="j-card__top">
           <div class="j-card__meta">
             <h2 class="j-card__name">${escHtml(team.name)}</h2>
-            <p class="j-card__members">${escHtml(memberList)}</p>
+            ${eventTag}
+            <p class="j-card__members" style="margin-top: 0.4rem;">${escHtml(memberList)}</p>
           </div>
           <span class="j-badge ${scored ? "j-badge--done" : "j-badge--pending"}">
             ${scored ? "✓ Entered" : "Pending"}
           </span>
         </div>
         <div class="j-card__body">${bodyHTML}</div>
-        <button class="j-score-btn ${scored ? "j-score-btn--edit" : ""}" data-team-id="${team.name}">
-          ${scored ? "Edit points" : "Enter points →"}
-        </button>`;
+        ${actionBtnHTML}`;
 
-      card.querySelector(".j-score-btn").addEventListener("click", () => openScoreModal(team, pointsData));
+      const targetBtn = card.querySelector(".j-score-btn");
+      if (targetBtn) {
+        targetBtn.addEventListener("click", () => openScoreModal(team, pointsData));
+      }
       return card;
     }
 
@@ -732,6 +857,8 @@
        SCORE MODAL
        ══════════════════════════════════════════════════════════════ */
     function openScoreModal(team, existing) {
+      if (currentJudge.role === "viewer") return; // Safety blocker
+
       currentTeam = team;
       modalTeamName.textContent = team.name;
       document.getElementById("modalMembers").textContent = (team.members || []).join(", ") || "—";
@@ -768,10 +895,10 @@
     }
     scoringForm.addEventListener("input", recalcTotal);
 
-    /* ── Submit Points payload to PostgreSQL ── */
+    /* ── Submit Points payload ── */
     scoringForm.addEventListener("submit", async e => {
       e.preventDefault();
-      if (!currentTeam) return;
+      if (!currentTeam || currentJudge.role === "viewer") return;
 
       let valid = true;
       const scores = {};
@@ -808,7 +935,6 @@
           updatedAt: new Date().toISOString()
         };
 
-        // Queries perfectly using 'name' row filtering logic mapping your exact layout
         const { error: updateError } = await supabaseClient
           .from('team')
           .update({ points: pointsPayload })
@@ -865,4 +991,3 @@
 
 </body>
 </html>
-
