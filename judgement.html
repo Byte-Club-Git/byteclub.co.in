@@ -551,7 +551,7 @@
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     /* ══════════════════════════════════════════════════════════════
-       DIFERENT JUDGEMENT CRITERIA FOR ALL EVENTS
+       DIFFERENT JUDGEMENT CRITERIA FOR ALL EVENTS
        ══════════════════════════════════════════════════════════════ */
     const EVENT_CRITERIA_MAP = {
       "default": [
@@ -561,22 +561,23 @@
         { id: "impact",        label: "Impact & Utility",  max: 10 },
         { id: "design",        label: "Design & UX",       max: 10 },
       ],
-      "hackathon": [
-        { id: "technical",     label: "Technical Complexity",max: 20 },
-        { id: "originality",   label: "Originality",         max: 15 },
-        { id: "viability",     label: "Market Viability",    max: 10 },
-        { id: "ui_ux",         label: "UI/UX Quality",       max: 5  }
+      "Make.IT": [
+        { id: "Relevance",     label: "Relevance",max: 10 },
+        { id: "Editing",   label: "Editing",         max: 10 },
+        { id: "Quality",     label: "Quality",    max: 10 },
+         { id: "Aesthetic Appeal",     label: "Aesthetic Appeal",    max: 10 }
       ],
-      "web design": [
-        { id: "visuals",       label: "Visual Design",       max: 15 },
-        { id: "accessibility", label: "Accessibility & Code",max: 15 },
-        { id: "responsiveness",label: "Responsiveness",      max: 10 },
+      "Think.IT": [
+        { id: "Creativity",       label: "Creativity ",       max: 10 },
+        { id: "Feasibility ", label: "Feasibility ",max: 10 },
+        { id: "Design of the Pitch",label: "Design of the Pitch",      max: 10 },
         { id: "content",       label: "Content Layout",      max: 10 }
       ],
-      "coding": [
-        { id: "accuracy",      label: "Test Cases Passed",   max: 30 },
-        { id: "optimization",  label: "Code Optimization",   max: 10 },
-        { id: "readability",   label: "Readability & Style", max: 10 }
+      "Electroart": [
+        { id: "Creativity & Originality",       label: "Creativity & Originality ",       max: 10 },
+        { id: "Aesthetic Appeal ", label: "Aesthetic Appeal ",max: 10 },
+        { id: "Effective Use of Electronic Components",label: "Effective Use of Electronic Components",      max: 10 },
+        { id: "Theme Relevance",       label: "Theme Relevance",      max: 10 }
       ]
     };
 
@@ -951,19 +952,20 @@
       modalTeamName.textContent = team.name;
       document.getElementById("modalMembers").textContent = (team.members || []).join(", ") || "—";
       
-      document.getElementById("modalKicker").textContent = `Scoring for: ${activeTargetName}`;
+      // Clearly list event parameters to the judge layout inside the wrapper kicker
+      document.getElementById("modalKicker").textContent = `Scoring for: ${activeTargetName} (${team.event})`;
       
       modalStatus.hidden = true;
       submitPointsBtn.disabled = false; 
 
-      // Redraw fields dynamically matching this specific category/event type
+      // Wipe modal criteria nodes out clean and load dynamic metrics setup matching event type parameters
       const activeCriteria = getCriteriaForEvent(team.event);
       criteriaRows.innerHTML = ""; 
       
       activeCriteria.forEach(c => {
         criteriaRows.insertAdjacentHTML("beforeend", `
           <label class="criteria-row">
-            <span class="criteria-label">${c.label} <em>/ ${c.max}</em></span>
+            <span class="criteria-label">${escHtml(c.label)} <em>/ ${c.max}</em></span>
             <input
               type="number"
               name="${c.id}"
